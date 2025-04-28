@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/stylecss.css">
     <title>Sign Up</title>
 </head>
 <body>
-    
     <header> ITSCode </header>
-    <div>
-        <p> Regístrate </p>
-        
-        <form action="">
-            <input type="text" name="username" placeholder="Nombre de usuario">
-            <input type="email" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Contraseña">
-            <input type="password" name="confirm-password" placeholder="Repetir contraseña">
-            <input type="button" value="Registrarse">
-        </form>
-
-        <a href="login.html"> ¿YA TIENES UNA CUENTA? INICIA SESIÓN</a>
-    </div>
-
+    <main>
+        <div class="signup-container">
+            <h2> Regístrate </h2>
+            <form action="#" class="signup-form">
+                <input type="text" name="username" placeholder="Nombre Completo">
+                <input type="text" name="nickname" placeholder="Nombre de usuario">
+                <input type="email" name="email" placeholder="Email">
+                <input type="password" name="password" placeholder="Contraseña">
+                <button type="submit"> Registrarse </button>
+            </form>
+        </div>
+        <div class="login-box">
+            <span> ¿YA TIENES UNA CUENTA? </span>
+            <a href="login.html"> INICIA SESIÓN </a>
+        </div>
+    </main>
     <footer> © 2025 SoftHype. All rights reserved. </footer>
-
 </body>
 </html>
