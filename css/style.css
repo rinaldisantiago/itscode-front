@@ -35,7 +35,6 @@ html{
 
 }
 
-
 .left-panel p {
   font-size: 1.1em;
   max-width: 400px;
@@ -64,10 +63,6 @@ html{
   width: 360px;
   border: 1px solid black;
   text-align: center;
-}
-
-.icon {
-  margin-bottom: 15px;
 }
 
 .card-right h1 {
@@ -122,7 +117,7 @@ a:hover {
   text-decoration: underline;
 }
 
-footer {
+.footer-card {
   margin-top: 20px;
   font-size: 0.75em;
 }
