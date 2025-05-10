@@ -5,26 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    <section>
-        <h1>Bienvenido a ITSCode</h1>
-        <p>Unite a nuestra red social para compartir ideas, proyectos y experiencias con toda la tecnicatura.</p>
-        <img src="#" alt="Logotipo de ITSCode">
-    </section>
 
-    <main>
-        <h2>Regístrate</h2>
-        <p>Crea tu cuenta para comenzar.</p>
-        <form action="#">
-            <input type="text" name="username" placeholder="Nombre Completo">
-            <input type="email" name="email" placeholder="Correo Electrónico">
-            <input type="text" name="nickname" placeholder="Nombre de Usuario">
-            <input type="password" name="password" placeholder="Contraseña">
-            <button type="submit">Registrarse</button>
-        </form>
-        <a href="login.html">¿Ya tienes una cuenta? Inicia sesión</a>
+    <main class="container">
+        <section class="left-panel">
+            <h1>Bienvenido a <span>ITSCode</span></h1>
+            <p>Unite a nuestra red social para compartir ideas, proyectos y experiencias con toda la tecnicatura.</p>
+            <img src="#" alt="Logotipo de ITSCode">
+        </section>
+
+        <section class="right-panel">
+            <article class="login-card">
+                <h2>Regístrate</h2>
+                <p class="subtitle">Crea tu cuenta para comenzar.</p>
+                <form id="login-form">
+                    <div class="input-group">
+                        <input type="text" name="username" placeholder="Nombre Completo">
+                    </div>
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Correo Electrónico">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" name="nickname" placeholder="Nombre de Usuario">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" name="password" placeholder="Contraseña">
+                    </div>
+                    <button type="submit">Registrarse</button>
+                </form>
+                <a href="login.html">¿Ya tienes una cuenta? Inicia sesión</a>
+                <footer>
+                    <p>© 2025 SoftHype. All rights reserved.</p>
+                </footer>
+            </article>
+        </section>
     </main>
-    <footer>© 2025 SoftHype. All rights reserved.</footer>
 </body>
 </html>

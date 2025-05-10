@@ -1,0 +1,128 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+html{
+  font-size: 100%;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.left-panel {
+  width: 50%;
+  height: 100vh;
+  padding: 15%;
+  border-right: 1px solid black;
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+}
+
+.left-panel h2 {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+
+}
+
+
+.left-panel p {
+  font-size: 1.1em;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.left-panel img {
+  margin-top: 30px;
+  max-width: 80%;
+}
+
+.right-panel {
+  width: 50%;
+  height: 100vh;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.login-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  width: 360px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.icon {
+  margin-bottom: 15px;
+}
+
+.login-card h1 {
+  font-size: 2.3em;
+  margin-bottom: 10px;
+}
+
+.login-card h1 span {
+  font-weight: normal;
+
+}
+
+.subtitle {
+  font-size: 0.95em;
+  margin-bottom: 25px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 38px;
+  font-size: 1em;
+  border: 1px solid black;
+
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0 20px;
+  border: none;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #464b4c;
+}
+
+a {
+  display: block;
+  margin: 6px 0;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 0.75em;
+}
