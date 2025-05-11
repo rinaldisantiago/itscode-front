@@ -121,3 +121,59 @@ a:hover {
   margin-top: 20px;
   font-size: 0.75em;
 }
+
+.navbar {
+  padding: 15px 30px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+.navbar nav {
+  position: absolute;
+  right: 50px;
+  bottom: 10px;
+}
+
+.navbar h1 {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+.navbar nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 1em;
+  display: inline;
+}
+
+.navbar nav ul li{
+  display: inline;
+}
+
+.navbar nav a:hover {
+  text-decoration: underline;
+}
+
+li {
+    list-style-type: none;
+    display: inline;
+}
+
+.user-data{
+    margin-top: 100px;
+}
+
+.block{
+    display: block;
+}
+
+footer {
+    height: 100px; 
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  footer p {
+    font-size: 0.8em;
+    padding-top: 50px;
+}
