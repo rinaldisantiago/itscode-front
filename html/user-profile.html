@@ -6,65 +6,72 @@
     <title>Perfil de Usuario - ITSCode</title>
     <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon"/>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="navbar"> 
-        <h1>ITSCode</h1> 
+    <header class="navbar">
+        <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
         <nav>
             <ul>
                 <li>
-                    <a href="index.html">Inicio</a>
+                    <a href="/index.html"><i class="fas fa-home"></i> Inicio</a>
                 </li>
 
                 <li>
-                    <a href="following.html">Buscar</a>
+                    <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
                 </li>
 
                 <li>
-                    <a href="my-profile.html">Mi Perfil</a>
+                    <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section class="user-data">
-            <img src="#" alt="Avatar del Usuario">
-            <h2>Nombre de Usuario</h2>
-            <h3>Nombre completo del Usuario</h3>
-            <address>ejemplo@email.com</address>
-            <button>Seguir</button>
+
+    <main class="profile-conteiner">
+        <section class="user-info">
+            <img src="/img/ejemplo.png" id="avatar" class="avatar" alt="Avatar del Usuario">
+            <div class="details">
+                <h2 id="nikname">Nombre de Usuario</h2>
+                <h3 id="nombre">Nombre completo del Usuario</h3>
+                <p id="bio">ejemplo@email.com</p>
+            </div>
+            <article class="stats">
+                <span> publicaciones</span>
+                <span> seguidores</span>
+                <span> seguidos</span>
+            </article>
+            <button class="follow-btn"><i class="fas fa-user-friends"></i>Seguir</button>
         </section>
 
-        <section>
-            <ul>
-                <li>Publicaciones</li>
-                <li>Seguidores</li>
-                <li>Seguidos</li>
-            </ul>
-        </section>
-
-        <section>
+        <section class="user-profile-post">
             <h3>Publicaciones</h3>
 
-            <article>
+            <article class="post">
                 <img src="/img/agregar img.png" alt="Imagen de post 1">
                 <p>Tema 1</p>
-                <p>Contenido 1</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem officia porro quibusdam harum doloribus, non placeat
+                    repellat, error animi ratione hic voluptas. Voluptates excepturi eligendi mollitia eum tenetur deserunt laudantium!
+                </p>
             </article>
 
-            <article>
+            <article class="post">
                 <img src="/img/agregar img.png" alt="Imagen de post 2">
                 <p>Titulo 2</p>
-                <p>Contenido 2</p>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur laboriosam velit dolore doloribus architecto
+                    neque eius rem provident, modi non dignissimos sunt sint magnam suscipit quam! Libero magnam quia vitae?
+                </p>
             </article>
 
-            <article>
+            <article class="post">
                 <img src="/img/agregar img.png" alt="Imagen de post 3">
                 <p>Titulo 3</p>
-                <p>Contenido 3</p>
+                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur laboriosam velit dolore doloribus architecto
+                    neque eius rem provident, modi non dignissimos sunt sint magnam suscipit quam! Libero magnam quia vitae?
+                </p>
             </article>
         </section>
     </main>
