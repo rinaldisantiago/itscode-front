@@ -109,9 +109,9 @@ button:hover {
   background: #0097a7;
 }
 
-.user-profile-post h3 {
+.user-profile-post h2 {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.5em;
   margin-bottom: 20px;
   color: #00d0ff;
 } 
@@ -124,6 +124,23 @@ button:hover {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
+  text-align: center;
+
+}
+
+.post .img-post {
+  display: block;  
+  margin: 15px auto; 
+  width: 40%;
+  border-radius: 8px;
+}
+ 
+.post .avatar{
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 10px;
 }
 
 footer {
