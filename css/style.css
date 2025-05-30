@@ -2,14 +2,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: 1px dashed red;
 }
 
 body {
   font-family: 'Rajdhani', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
 }
 
 html{
   font-size: 100%;
+}
+
+.grid-body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 10% 80% 10%;
+  grid-template-areas: 
+  "navbar"
+  "post-container"
+  "footer";
 }
 
 .container {
@@ -32,7 +47,6 @@ html{
 .left-panel h2 {
   font-size: 2.5em;
   margin-bottom: 15px;
-
 }
 
 .left-panel p {
@@ -94,16 +108,16 @@ html{
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0 20px;
+  background: #00bcd4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
   border: none;
-  font-weight: bold;
-  font-size: 1em;
+  cursor: pointer;
 }
 
 button:hover {
-  background-color: #464b4c;
+  background: #0097a7;
 }
 
 a {
@@ -123,31 +137,32 @@ a:hover {
 }
 
 .navbar {
+  background-color: #00bcd4;
   padding: 15px 30px;
-  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   top: 0;
 }
 .navbar nav {
-  position: absolute;
+  display: flex;
   right: 50px;
   bottom: 10px;
 }
 
 .navbar h1 {
-  font-size: 1.8em;
+  font-size: 2.5em;
   font-weight: bold;
 }
 
 .navbar nav a {
   margin-left: 20px;
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.2em;
+  font-weight: bold;
   display: inline;
-}
-
-.navbar nav ul li{
-  display: inline;
+  color: white;
 }
 
 .navbar nav a:hover {
@@ -155,16 +170,57 @@ a:hover {
 }
 
 li {
-    list-style-type: none;
-    display: inline;
+  list-style-type: none;
+  display: inline;
 }
 
-.user-data{
-    margin-top: 100px;
+.post-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.block{
-    display: block;
+.post-container h2{
+  text-align: center;
+  margin-bottom: 5%;
+  color: #00d0ff;
+}
+
+.post-container section form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-container section form .content-form {
+  width: 50%;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.post-container section form .input {
+  padding: 0px;
+}
+
+.post-container section form textarea {
+  resize: none; 
+  overflow: auto; 
+  white-space: pre-wrap;  
+}
+
+.post-container section form div {
+  width: 50%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons-post {
+  width: 20%;
 }
 
 footer {
@@ -176,4 +232,26 @@ footer {
   footer p {
     font-size: 0.8em;
     padding-top: 50px;
+}
+
+.footer {
+  align-self: end;
+  height: auto;
+  margin-top: 10px;
+}
+
+.footer p {
+  padding-top: 0;
+}
+
+#navbar {
+  grid-area: navbar;
+}
+
+#post-container {
+  grid-area: post-container;
+}
+
+#footer {
+  grid-area: footer;
 }
