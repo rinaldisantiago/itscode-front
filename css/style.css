@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  outline: 1px dashed red;
+  /* outline: 1px dashed red; */
 }
 
 body {
@@ -15,7 +15,7 @@ html{
   font-size: 100%;
 }
 
-.grid-body {
+.grid-post-create {
   width: 100vw;
   height: 100vh;
   display: grid;
@@ -145,7 +145,6 @@ a:hover {
   width: 100%;
   top: 0;
 }
-
 
 .navbar nav {
   display: flex;
@@ -409,7 +408,14 @@ footer {
   text-align: center;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
-  padding: 20px 0;
+  padding: 20px 0;
+}
+
+.footer-post {
+  align-self: end;
+  margin-top: 10px;
+  height: auto;
+  padding: 0;
 }
 
 #navbar {
@@ -420,13 +426,6 @@ footer {
   grid-area: post-container;
 }
 
-#footer {
-  align-self: end;
-  height: auto;
-  margin-top: 10px;
+#footer-post {
   grid-area: footer;
-}
-
-#footer p {
-  padding-top: 0;
 }
