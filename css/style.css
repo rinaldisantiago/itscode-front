@@ -501,6 +501,24 @@ footer {
   .post .img-post {
     width: 70%;
   }
+
+  .user-info {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  width: 90%;
+  }
+
+  .stats {
+  justify-content: center;
+  gap: 10px;
+  }
+
+  .follow-btn {
+  margin-left: 0;
+  }
+
 }
 
 @media screen and (max-width: 420px) {
@@ -554,6 +572,36 @@ footer {
 
   .navbar nav a {
     font-size: 1em;
+  }
+
+  .user-info {
+  gap: 15px;
+  padding: 15px;
+  }
+
+  .avatar {
+  width: 60px;
+  height: 60px;
+  }
+
+  .details h2 {
+  font-size: 1.4em;
+  }
+
+  .details h3 {
+  font-size: 1em;
+  }
+
+  .follow-btn {
+  width: 100%;
+  padding: 8px;
+  font-size: 1em;
+  }
+  
+  .stats {
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.85em;
   }
 }
 
