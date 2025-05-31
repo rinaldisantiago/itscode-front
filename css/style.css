@@ -20,7 +20,7 @@ html{
   height: 100vh;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 10% 80% 10%;
+  grid-template-rows: 10% 85% 5%;
   grid-template-areas: 
   "navbar"
   "post-container"
@@ -202,7 +202,7 @@ li {
 
 .post-container h2{
   text-align: center;
-  margin-bottom: 5%;
+  margin-bottom: 2.5%;
   color: #00d0ff;
 }
 
@@ -220,7 +220,14 @@ li {
   padding: 10px;
 }
 
-.post-container section form .input {
+.post-container section form .background-oscure {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(61, 246, 246, 0.665);
+  color: white;
+}
+
+.post-container section form .file-image {
   padding: 0px;
 }
 
@@ -232,7 +239,7 @@ li {
 
 .post-container section form div {
   width: 50%;
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -240,6 +247,14 @@ li {
 
 .buttons-post {
   width: 20%;
+}
+
+.back-button {
+  background-color: #dc3545;
+}
+
+.back-button:hover {
+  background-color: #b72834;
 }
 
 .user-data{
