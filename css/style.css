@@ -9,8 +9,6 @@ body {
   font-family: 'Rajdhani', sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: white;
 }
 
 html{
@@ -137,7 +135,7 @@ a:hover {
   margin-top: 20px;
   font-size: 0.75em;
 }
-  
+
 .navbar {
   background-color: #00bcd4;
   padding: 15px 30px;
