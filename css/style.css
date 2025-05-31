@@ -6,185 +6,6 @@
 
 body {
   font-family: 'Rajdhani', sans-serif;
-}
-
-html{
-  font-size: 100%;
-}
-
-.container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-
-.left-panel {
-  width: 50%;
-  height: 100vh;
-  padding: 15%;
-  border-right: 1px solid black;
-  position: absolute;
-  left: 0;
-  top: 0;
-  text-align: center;
-}
-
-.left-panel h2 {
-  font-size: 2.5em;
-  margin-bottom: 15px;
-
-}
-
-.left-panel p {
-  font-size: 1.1em;
-  max-width: 400px;
-  margin: 20px auto;
-}
-
-.left-panel img {
-  margin-top: 30px;
-  max-width: 80%;
-}
-
-.right-panel {
-  width: 50%;
-  height: 100vh;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.card-right {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 40px;
-  width: 360px;
-  border: 1px solid black;
-  text-align: center;
-}
-
-.card-right h1 {
-  font-size: 2.3em;
-  margin-bottom: 10px;
-}
-
-.card-right h1 span {
-  font-weight: normal;
-
-}
-
-.subtitle {
-  font-size: 0.95em;
-  margin-bottom: 25px;
-}
-
-.input-group {
-  position: relative;
-  margin-bottom: 15px;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 12px 12px 12px 38px;
-  font-size: 1em;
-  border: 1px solid black;
-
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0 20px;
-  border: none;
-  font-weight: bold;
-  font-size: 1em;
-}
-
-button:hover {
-  background-color: #464b4c;
-}
-
-a {
-  display: block;
-  margin: 6px 0;
-  font-size: 0.9em;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.footer-card {
-  margin-top: 20px;
-  font-size: 0.75em;
-}
-
-.navbar {
-  padding: 15px 30px;
-  position: absolute;
-  width: 100%;
-  top: 0;
-}
-.navbar nav {
-  position: absolute;
-  right: 50px;
-  bottom: 10px;
-}
-
-.navbar h1 {
-  font-size: 1.8em;
-  font-weight: bold;
-}
-
-.navbar nav a {
-  margin-left: 20px;
-  text-decoration: none;
-  font-size: 1em;
-  display: inline;
-}
-
-.navbar nav ul li{
-  display: inline;
-}
-
-.navbar nav a:hover {
-  text-decoration: underline;
-}
-
-li {
-    list-style-type: none;
-    display: inline;
-}
-
-.user-data{
-    margin-top: 100px;
-}
-
-.block{
-    display: block;
-}
-
-footer {
-    height: 100px; 
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  footer p {
-    font-size: 0.8em;
-    padding-top: 50px;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Rajdhani', sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
 }
@@ -274,19 +95,6 @@ html{
 
 }
 
-button {
-  background: #00bcd4;
-  padding: 10px 15px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0097a7;
-}
-
 a {
   display: block;
   margin: 6px 0;
@@ -312,7 +120,6 @@ a:hover {
   width: 100%;
   top: 0;
 }
-
 
 .navbar nav {
   display: flex;
@@ -343,6 +150,23 @@ li {
     display: inline;
 }
 
+.profile-conteiner{
+  text-align: center;
+}
+
+.user-info {
+  margin: 30px auto 40px auto;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
+  width: 70%;
+}
 
 .block{
     display: block;
@@ -374,7 +198,7 @@ li {
 
 .search-input input {
   height: 50px; 
-  width: 700px;
+  width: 100%;
   padding: 10px;
   border: none;
   background: rgba(255, 255, 255, 0.1);
@@ -390,7 +214,6 @@ li {
   gap: 20px;
 }
 
-
 .card-user {
   width: 20%;
   margin: 0 auto 30px auto;
@@ -400,12 +223,6 @@ li {
   text-align: center;
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
   margin-bottom: 20px;
-}
-.avatar {
-  width: 80px; 
-  height: 80px;
-  object-fit: cover; 
-  border-radius: 50%;
 }
 
 .post {
@@ -432,12 +249,89 @@ li {
   margin: 15px auto;
   border-radius: 8px;
 }
+
+.avatar {
+  width: 80px; 
+  height: 80px;
+  object-fit: cover; 
+  border-radius: 50%;
+}
+
+.details h2 {
+  font-size: 2em;
+  color: #00d0ff;
+}
+
+.details p {
+  color: #d3eaff;
+  margin: 10px 0;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  font-size: 1em;
+  color: #8fd8ff;
+  margin: auto;
+}
+
+.follow-btn {
+  margin-left: auto;
+}
+
+button {
+  background: #00bcd4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0097a7;
+}
+
+.user-profile-post h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #00d0ff;
+} 
+
+.post {
+  color: white;
+  width: 65%;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
+  text-align: center;
+
+}
+
+.post .img-post {
+  display: block;  
+  margin: 15px auto; 
+  width: 40%;
+  border-radius: 8px;
+}
+ 
+.post .avatar{
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
 footer {
   margin-top: 60px;
   text-align: center;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
-  padding: 20px 0;
+  padding: 20px 0;
 }
 
 .menu-toggle {
@@ -518,8 +412,6 @@ footer {
     width: 70%;
   }
 }
-
-
 
 @media screen and (max-width: 420px) {
   .menu-toggle i {
