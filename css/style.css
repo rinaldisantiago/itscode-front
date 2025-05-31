@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline: 1px dashed red; */
 }
 
 body {
@@ -107,19 +106,6 @@ html{
 
 }
 
-button {
-  background: #00bcd4;
-  padding: 10px 15px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0097a7;
-}
-
 a {
   display: block;
   margin: 6px 0;
@@ -175,13 +161,6 @@ li {
   display: inline;
 }
 
-.post-container{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .profile-conteiner{
   text-align: center;
 }
@@ -200,46 +179,8 @@ li {
   width: 70%;
 }
 
-.post-container h2{
-  text-align: center;
-  margin-bottom: 5%;
-  color: #00d0ff;
-}
-
-.post-container section form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.post-container section form .content-form {
-  width: 50%;
-  margin-top: 10px;
-  padding: 10px;
-}
-
-.post-container section form .input {
-  padding: 0px;
-}
-
-.post-container section form textarea {
-  resize: none; 
-  overflow: auto; 
-  white-space: pre-wrap;  
-}
-
-.post-container section form div {
-  width: 50%;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.buttons-post {
-  width: 20%;
+.block{
+    display: block;
 }
 
 .user-data{
@@ -270,6 +211,7 @@ li {
   display:flex;
   height: 50px; 
   width: 100%;
+  width: 100%;
   padding: 10px;
   border: none;
   background: rgba(255, 255, 255, 0.1);
@@ -294,13 +236,6 @@ li {
   text-align: center;
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
   margin-bottom: 20px;
-}
-
-.avatar {
-  width: 80px; 
-  height: 80px;
-  object-fit: cover; 
-  border-radius: 50%;
 }
 
 .post {
@@ -404,29 +339,221 @@ button:hover {
   margin-bottom: 10px;
 }
 
+
+.avatar {
+  width: 80px; 
+  height: 80px;
+  object-fit: cover; 
+  border-radius: 50%;
+}
+
+.details h2 {
+  font-size: 2em;
+  color: #00d0ff;
+}
+
+.details p {
+  color: #d3eaff;
+  margin: 10px 0;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  font-size: 1em;
+  color: #8fd8ff;
+  margin: auto;
+}
+
+.follow-btn {
+  margin-left: auto;
+}
+
+button {
+  background: #00bcd4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0097a7;
+}
+
+.user-profile-post h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #00d0ff;
+} 
+
+.post {
+  color: white;
+  width: 65%;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
+  text-align: center;
+
+}
+
+.post .img-post {
+  display: block;  
+  margin: 15px auto; 
+  width: 40%;
+  border-radius: 8px;
+}
+ 
+.post .avatar{
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
 footer {
   margin-top: 60px;
   text-align: center;
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.5);
-  padding: 20px 0;
+  padding: 20px 0;
 }
 
-.footer-post {
-  align-self: end;
-  margin-top: 10px;
-  height: auto;
-  padding: 0;
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
 }
 
-#navbar {
-  grid-area: navbar;
+.menu-toggle i {
+  font-size: 2rem;
+  transition: font-size 0.2s ease-in-out;
 }
 
-#post-container {
-  grid-area: post-container;
+
+@media screen and (max-width: 1024px) {
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  #nav-links {
+    display: none;
+    width: 100%;
+    background-color: #00bcd4;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  #nav-links.active {
+    display: flex;
+  }
+
+  #nav-links ul {
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+    padding: 0;
+  }
+
+  #nav-links li {
+    display: block;
+    margin: 10px 0;
+  }
+
+  .navbar nav a {
+    margin: 0;
+    padding: 10px 0;
+  }
+
+  .search-input {
+    width: 80%;
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+
+  .search-input input {
+    width: 100%;
+  }
+
+  .card-user {
+    width: 40%;
+  }
+
+  .post {
+    width: 80%;
+  }
+
+  .post .img-post {
+    width: 70%;
+  }
 }
 
-#footer-post {
-  grid-area: footer;
+@media screen and (max-width: 420px) {
+  .menu-toggle i {
+    font-size: 1.5rem;
+  }
+
+  .navbar h1 {
+    font-size: 2.5em; 
+  }
+
+  .user-data {
+    padding: 20px;
+  }
+
+  .search-input {
+    width: 95%;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    height: auto;
+  }
+
+  .search-input input {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .card-users {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-user {
+    width: 90%;
+  }
+
+  .post {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .post .img-post {
+    width: 100%;
+  }
+
+  .post .avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar nav a {
+    font-size: 1em;
+  }
 }
+
