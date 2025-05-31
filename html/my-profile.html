@@ -14,7 +14,10 @@
 <body>
     <header class="navbar">
         <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-        <nav>
+        <button class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id ="nav-links">
             <ul>
                 <li>
                     <a href="/index.html"><i class="fas fa-home"></i> Inicio</a>
@@ -81,5 +84,12 @@
     <footer>
         <p>© 2025 SoftHype. All rights reserved.</p>
     </footer>
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById("nav-links");
+            nav.classList.toggle("active");
+        }
+    </script>
+
 </body>
 </html>
