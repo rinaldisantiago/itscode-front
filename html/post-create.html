@@ -10,50 +10,51 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 
 <body>
+    <div class="grid-post-create">
+        <header class="navbar" id="navbar"> 
+            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1> 
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/index.html"><i class="fas fa-home"></i> Inicio</a>
+                    </li>
 
-    <header class="navbar"> 
-        <h1>ITSCode</h1> 
-        <nav>
-            <ul>
-                <li>
-                    <a href="index.html">Inicio</a>
-                </li>
+                    <li>
+                        <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
+                    </li>
 
-                <li>
-                    <a href="following.html">Buscar</a>
-                </li>
+                    <li>
+                        <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
-                <li>
-                    <a href="my-profile.html">Mi Perfil</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+        <main class="post-container" id="post-container">
+            <h2>Crear Publicación</h2>
 
-    <main class="user-data">
-        <h2>Crear Publicación</h2>
+            <section>
+                <form>
+                    <input class="content-form" type="text" name="titulo" placeholder="Tema de la publicación..." />
+                    <input class="content-form input" type="file" name="post-image">
+                    <textarea class="content-form" name="contenido" placeholder="Escribe algo..." rows="15"></textarea>
+                    <div>
+                        <button class="buttons-post" type="submit">Publicar</button>
+                        <button class="buttons-post" type="reset">Limpiar</button>
+                        <button class="buttons-post">Volver</button>   
+                    </div>
+                </form>
+            </section>
+        </main>
 
-        <section>
-            <form>
-                <input class="block" type="text" name="titulo" placeholder="Tema de la publicación..." />
-                <img class="block" src="/img/agregar img.png" alt="Imagen de post 1">
-                <textarea class="block" name="contenido" placeholder="Escribe algo..." rows="15"></textarea>
-                <div>
-                    <button type="submit">Publicar</button>
-                    <button type="reset">Limpiar</button>
-                    <button><a href="/html/index.html">Volver</a></button>   
-                </div>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>© 2025 SoftHype. Todos los derechos reservados.</p>
-    </footer>
-
+        <footer class="footer-post" id="footer-post">
+            <p>© 2025 SoftHype. Todos los derechos reservados.</p>
+        </footer>
+    </div>
 </body>
 
 </html>
