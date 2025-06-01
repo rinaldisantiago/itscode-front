@@ -358,6 +358,19 @@ button:hover {
   background: #0097a7;
 }
 
+.edit-btn{
+  background: #00bcd4;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background: #0097a7;
+}
+
 .user-profile-post h2 {
   text-align: center;
   font-size: 1.5em;
