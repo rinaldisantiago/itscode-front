@@ -133,7 +133,7 @@ html {
 }
 
 .left-panel h2 {
-  font-size:3rem;
+  font-size: 3rem;
   max-width: 30vw;
   color: #00d0ff;
 }
@@ -154,6 +154,7 @@ html {
   min-width: 80%;
 }
 
+/*PANEL DERECHO*/
 .right-panel {
   flex: 1;
   display: flex;
@@ -191,7 +192,7 @@ html {
 
 .card-right h1 {
   font-size: 2.3em;
-  margin-bottom: 0vw;
+  margin-bottom: 1rem;
   color: #00d0ff;
 }
 
@@ -214,7 +215,7 @@ html {
 .input-group i {
   position: absolute;
   left: 5%;
-  top: 0%;
+  top: 30%;
   bottom: 84%;
   transform: translateY(190%);
   color: rgba(255, 255, 255, 0.5);
@@ -581,6 +582,34 @@ footer {
     margin-left: 0;
   }
 
+
+  .left-panel {
+    width: 50%;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: center;
+    flex-basis: 100%;
+  }
+
+  .right-panel {
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 50%;
+    height: 100vh;
+    flex-direction: column;
+    flex-basis: 100%;
+  }
+
+  .card-right {
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 80%;
+    flex-direction: column;
+  }
+
+
 }
 
 @media screen and (max-width: 420px) {
@@ -665,4 +694,28 @@ footer {
     gap: 6px;
     font-size: 0.85em;
   }
+
+  .right-panel {
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 100%;
+    flex-direction: column;
+    flex-basis: 100%;
+  }
+
+  .card-right {
+    justify-content: space-evenly;
+    align-items: flex-start;
+    width: 80%;
+    flex-direction: column;
+    flex-basis: 100%;
+  }
+
+  .a {
+    align-items: flex-start;
+    padding: 8px;
+    order: 2;
+    flex-direction: column;
+  }
+
 }
