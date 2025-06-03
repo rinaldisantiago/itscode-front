@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline: 1px dashed red; */
+  outline: 1px dashed red; 
 }
 
 body {
@@ -17,14 +17,18 @@ html {
 
 .grid-post-create {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 10% 85% 5%;
-  grid-template-areas:
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 
     "navbar"
     "post-container"
     "footer";
+}
+
+p{
+  font-size: 1.1em;
 }
 
 .post-container {
@@ -40,6 +44,14 @@ html {
   color: #00d0ff;
 }
 
+.box-section {
+  margin: 0 10%;
+  padding: 15px 0px;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
+  border-radius: 8px;
+}
+
 .post-container section form {
   width: 100%;
   display: flex;
@@ -49,15 +61,25 @@ html {
 }
 
 .post-container section form .content-form {
-  width: 50%;
-  margin-top: 10px;
-  padding: 10px;
+  width: 80%;
+  margin-top: 20px;
+  padding: 20px 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1em;
+}
+
+.post-container section form .no-margin {
+  margin-top: 0;
+}
+
+.post-container section form .label-file-image {
+  padding: 0;
+  text-align: center;
 }
 
 .post-container section form .background-oscure {
-  background: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(61, 246, 246, 0.665);
   color: white;
 }
 
@@ -72,30 +94,32 @@ html {
 }
 
 .post-container section form div {
-  width: 50%;
-  margin-top: 20px;
+  width: 80%;
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.buttons-post {
-  width: 20%;
+.grid-post-create .buttons-post {
+  width: 100%;
+  max-width: 200px;
+  padding: 12px 20px;
+  font-size: 1.1em;
 }
 
-.back-button {
+.clean-button {
   background-color: #dc3545;
 }
 
-.back-button:hover {
+.clean-button:hover {
   background-color: #b72834;
 }
 
-.footer-post {
+.grid-post-create .footer-post {
   align-self: end;
   margin-top: 10px;
   height: auto;
-  padding: 0;
 }
 
 #navbar {
@@ -364,7 +388,7 @@ li {
 }
 
 .search-input {
-  width: 30%;
+  width: 40%;
   height: 140px;
   margin: 0 auto 40px auto;
   display: flex;
@@ -376,6 +400,18 @@ li {
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
 }
 
+.search-input a {
+  text-decoration: none;
+  display: flex;
+  height: 50px;
+  width: 80%;
+  padding: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(251, 249, 249, 0.192);
+  font-size: 18px;
+}
 .search-input input {
   display: flex;
   height: 50px;
@@ -384,7 +420,7 @@ li {
   border: none;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  color: rgb(251, 249, 249);
+  color: rgba(251, 249, 249, 0.192);
   font-size: 18px;
 }
 
@@ -456,7 +492,7 @@ button:hover {
 
 .post {
   color: white;
-  width: 65%;
+  width: 55%;
   margin: 20px auto;
   padding: 15px;
   border-radius: 12px;
@@ -469,7 +505,9 @@ button:hover {
   display: block;
   margin: 15px auto;
   width: 40%;
+  max-height: 300px;
   border-radius: 8px;
+  object-fit: contain;
 }
 
 .post .avatar {
@@ -483,7 +521,7 @@ button:hover {
 footer {
   margin-top: 60px;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.8em;
   color: rgba(255, 255, 255, 0.5);
   padding: 20px 0;
 }
@@ -498,11 +536,24 @@ footer {
 }
 
 .menu-toggle i {
-  font-size: 2rem;
+  font-size: 2em;
   transition: font-size 0.2s ease-in-out;
 }
 
 @media screen and (max-width: 1024px) {
+  .post-container section form .content-form {
+    font-size: 1em;
+  }
+
+  .grid-post-create .post-container form div {
+    gap: 15px; 
+  }
+
+  .grid-post-create .buttons-post {
+    max-width: 180px;
+    font-size: 0.9em;
+  }
+
   .navbar {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -612,7 +663,26 @@ footer {
 
 }
 
+
 @media screen and (max-width: 420px) {
+  .post-container section form .content-form {
+    width: 90%;
+    font-size: 0.9em;
+  }
+
+  .grid-post-create .post-container section form div {
+    width: 90%;
+    gap: 5px;
+  }
+
+  .grid-post-create .buttons-post {
+    max-width: 160px;
+  }
+
+  .grid-post-create .post-container {
+    padding: 10px;
+  }
+
   .menu-toggle i {
     font-size: 1.5rem;
   }
@@ -688,7 +758,7 @@ footer {
     padding: 8px;
     font-size: 1em;
   }
-
+  
   .stats {
     flex-wrap: wrap;
     gap: 6px;
@@ -710,5 +780,4 @@ footer {
     flex-direction: column;
     flex-basis: 100%;
   }
-
 }
