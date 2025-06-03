@@ -711,11 +711,4 @@ footer {
     flex-basis: 100%;
   }
 
-  .a {
-    align-items: flex-start;
-    padding: 8px;
-    order: 2;
-    flex-direction: column;
-  }
-
 }
