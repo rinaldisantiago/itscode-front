@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muro - ITSCode</title>
+    <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="nav-links">
+            <ul>
+                <li>
+                    <a href="wall.html"><i class="fas fa-home"></i> Inicio</a>
+                </li>
+
+                <li>
+                    <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
+                </li>
+
+                <li>
+                    <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="user-data">
+        <h2>Inicio</h2>
+
+        <section class="search-input">
+            <img class="avatar" src="../img/fotoCv.jpg" alt="Avatar de usuario" />
+            <a href="post-create.html">Hablemos . . .</a>
+        </section>
+
+        <section>
+            
+            <article class ="post">
+                <img class= "img-post" src="../img/toyotaro-dragon-ball-super-ilustracion.webp" alt="Imagen de post 1">
+                <img class= "avatar" src="../img/santi.jpg" alt="avatar de usuario">
+                <p>Tema 1</p>
+                <h3>Santi Rinaldi</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt alias velit blanditiis dolor soluta possimus at officiis nostrum quibusdam maxime, voluptates eius cupiditate qui, dolorum libero, porro ipsum repudiandae sunt?</p>
+            </article>
+            <article class ="post">
+                <img class= "img-post" src="../img/348530-admin.jpg" alt="Imagen de post 1">
+                <img class= "avatar" src="../img/juli.jpg" alt="avatar de usuario">
+                <h3>Juli Turco</h3>
+                <p>Tema 2</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium aliquid rem architecto corporis, eligendi iure quis officiis fuga ad sint omnis. Nam voluptas maxime adipisci non eaque consequatur nemo asperiores.</p>
+            </article>
+            <article class ="post">
+                <img class= "img-post" src="../img/fotoCv.jpg" alt="Imagen de post 1">
+                <img class= "avatar" src="../img/emi.jpg" alt="avatar de usuario">
+                <h3>Emiliano Almiron</h3>
+                <p>Tema 3</p>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et, beatae eligendi placeat dignissimos dicta illo autem quaerat, sequi cum vel libero magnam hic quod! Nisi itaque magnam accusantium error officia.</p>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 SoftHype. Todos los derechos reservados.</p>
+    </footer>
+    <script>
+    function toggleMenu() {
+        const nav = document.getElementById("nav-links");
+        nav.classList.toggle("active");
+    }
+    </script>
+
+</body>
+
+</html>

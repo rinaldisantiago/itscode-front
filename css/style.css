@@ -285,6 +285,7 @@ p{
 }
 
 .btn:hover {
+  text-decoration: none;
   background-color: #0097a7;
 }
 
