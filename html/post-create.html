@@ -5,30 +5,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crear Publicación - ITSCode</title>
-    <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
     <div class="grid-post-create">
-        <header class="navbar" id="navbar"> 
-            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1> 
-            <nav>
+        <header class="navbar" id="navbar">
+            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="nav-links">
                 <ul>
                     <li>
-                        <a href="/index.html"><i class="fas fa-home"></i> Inicio</a>
+                        <a href="../index.html"><i class="fas fa-home"></i> Inicio</a>
                     </li>
 
                     <li>
-                        <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
+                        <a href="../html/following.html"><i class="fas fa-search"></i> Buscar</a>
                     </li>
 
                     <li>
-                        <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                        <a href="../html/my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
                     </li>
                 </ul>
             </nav>
@@ -37,15 +40,17 @@
         <main class="post-container" id="post-container">
             <h2>Crear Publicación</h2>
 
-            <section>
+            <section class="box-section">
                 <form>
-                    <input class="content-form" type="text" name="titulo" placeholder="Tema de la publicación..." />
-                    <input class="content-form input" type="file" name="post-image">
-                    <textarea class="content-form" name="contenido" placeholder="Escribe algo..." rows="15"></textarea>
+                    <input class="content-form no-margin background-oscure" type="text" name="post-title"
+                        placeholder="Tema de la publicación..." />
+                    <label for="load-post-image" class="content-form label-file-image">Agregar Imagen:</label>
+                    <input class="content-form file-image" type="file" name="load-post-image" />
+                    <textarea class="content-form background-oscure" name="post-content" placeholder="Escribe algo..."
+                        rows="13"></textarea>
                     <div>
                         <button class="buttons-post" type="submit">Publicar</button>
-                        <button class="buttons-post" type="reset">Limpiar</button>
-                        <button class="buttons-post">Volver</button>   
+                        <button class="buttons-post clean-button" type="reset">Limpiar</button>
                     </div>
                 </form>
             </section>
@@ -55,6 +60,12 @@
             <p>© 2025 SoftHype. Todos los derechos reservados.</p>
         </footer>
     </div>
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById("nav-links");
+            nav.classList.toggle("active");
+        }
+    </script>
 </body>
 
 </html>
