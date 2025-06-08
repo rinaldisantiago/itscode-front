@@ -223,7 +223,11 @@ p{
   font-weight: normal;
   color: #ffffff;
 }
-
+.card-right h2 {
+  font-size: 2em;
+  margin-bottom: auto;
+  color: #00d0ff;
+}
 .subtitle {
   font-size: 0.95em;
   margin-bottom: 25px;
@@ -676,7 +680,9 @@ footer {
     width: 50%;
     flex-direction: column;
   }
-
+  .card-right h2 {
+    font-size: 1.5em;
+  }
 
 }
 
