@@ -712,7 +712,7 @@ footer {
 }
 
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 700px) {
   .post-container section form .content-form {
     width: 90%;
     font-size: 0.9em;
