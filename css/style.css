@@ -134,7 +134,6 @@ p {
   grid-area: footer;
 }
 
-/*LOGIN*/
 .container {
   display: flex;
   width: 100%;
@@ -178,7 +177,6 @@ p {
   min-width: 80%;
 }
 
-/*PANEL DERECHO*/
 .right-panel {
   display: flex;
   justify-content: center;
@@ -358,6 +356,11 @@ a:hover {
   display: flex;
   right: 50px;
   bottom: 10px;
+  text-decoration: none;
+}
+
+.navbar nav a{
+  text-decoration: none;
 }
 
 .navbar h1 {
@@ -365,22 +368,98 @@ a:hover {
   font-weight: bold;
 }
 
-.navbar nav a {
-  margin-left: 20px;
-  text-decoration: none;
-  font-size: 1.2em;
-  font-weight: bold;
-  display: inline;
-  color: white;
+:root{
+    --bg:#00bcd4;
+    --clr: #fff;
+  }
+  
+ul {
+    display: flex;
+    gap: 30px;
 }
 
-.navbar nav a:hover {
-  text-decoration: underline;
+ul li {
+    position: relative;
+    list-style: none;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.5s;
 }
 
-li {
-  list-style-type: none;
-  display: inline;
+ul li::before{
+    content: "";
+    position: absolute;
+    inset: 30px;
+    box-shadow: 0 0 0 10px var(--clr),
+    0 0 0 20px var(--bg),
+    0 0 0 22px var(--clr);
+    transition: 0.5s;
+}
+
+ul li:hover::before{
+    inset: 15px;
+}
+
+ul li::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    transform: rotate(45deg);
+    transition: 0.5s;
+} 
+
+ul li:hover::after{
+    inset: 0px;
+    transform: rotate(0deg);
+}
+
+ul li a{
+    position: relative;
+    text-decoration: none;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ul li a i{
+    font-size: 2em;
+    transition: 0.5s;
+    color: var(--clr);
+    opacity: 1;
+}
+
+ul li:hover a i {
+    color: var(--clr);
+    transform: translateY(-40%);/*dfasdas*/
+}
+
+ul li a span{
+    position: absolute;
+    color:var(--clr);
+    opacity: 0;
+    transition: 0.5s;
+    transform: scale(0) translateY(200%);
+    display: flex;
+    text-align: center;
+}
+
+.miPerfil{
+    font-size: 75%;
+}
+
+ul li:hover a span{
+    opacity: 1;
+    transform: scale(1) translateY(100%);
+}
+
+ul li:hover a i,
+ul li a span{
+    filter:drop-shadow(0 0 20px var(--clr)) drop-shadow(0 0 40px var(--clr)) drop-shadow(0 0 60px var(--clr));
 }
 
 .profile-conteiner {
@@ -712,7 +791,7 @@ footer {
 }
 
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 768px) {
   .post-container section form .content-form {
     width: 90%;
     font-size: 0.9em;
@@ -829,3 +908,4 @@ footer {
     flex-basis: 100%;
   }
 }
+
