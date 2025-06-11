@@ -16,27 +16,27 @@
 <body>
     <header class="navbar">
         <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-        <button class="menu-toggle" onclick="toggleMenu()">
+        <button class="menu-toggle">
             <i class="fas fa-bars"></i>
         </button>
         <nav id="nav-links">
-            <ul>
-                <li class="color">
+            <ul class="nav-content">
+                <li class="nav-list">
                     <a href="wall.html">
                         <i class="fas fa-home"></i>
                         <span> Inicio </span>
                     </a>
-
+    
                 </li>
-
-                <li class="color">
+    
+                <li class="nav-list">
                     <a href="following.html">
                         <i class="fas fa-search"></i>
                         <span>Buscar</span>
                     </a>
                 </li>
-
-                <li class="color">
+    
+                <li class="nav-list">
                     <a href="my-profile.html">
                         <i class="fas fa-user-circle"></i>
                         <span class="miPerfil">Mi Perfil</span>
@@ -104,12 +104,7 @@
     <footer>
         <p>© 2025 SoftHype. All rights reserved.</p>
     </footer>
-    <script>
-        function toggleMenu() {
-            const nav = document.getElementById("nav-links");
-            nav.classList.toggle("active");
-        }
-    </script>
+    <script src="../js/script.js"></script>
 
 </body>
 

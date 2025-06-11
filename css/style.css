@@ -350,13 +350,7 @@ a:hover {
   align-items: center;
   width: 100%;
   top: 0;
-}
-
-.navbar nav {
-  display: flex;
-  right: 50px;
-  bottom: 10px;
-  text-decoration: none;
+  height: 114px;
 }
 
 .navbar nav a{
@@ -373,12 +367,12 @@ a:hover {
     --clr: #fff;
   }
   
-ul {
+.nav-content {
     display: flex;
     gap: 30px;
 }
 
-ul li {
+.nav-content .nav-list {
     position: relative;
     list-style: none;
     width: 80px;
@@ -390,7 +384,7 @@ ul li {
     transition: 0.5s;
 }
 
-ul li::before{
+.nav-content .nav-list::before{
     content: "";
     position: absolute;
     inset: 30px;
@@ -400,11 +394,11 @@ ul li::before{
     transition: 0.5s;
 }
 
-ul li:hover::before{
+.nav-content .nav-list:hover::before{
     inset: 15px;
 }
 
-ul li::after {
+.nav-content .nav-list::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -413,12 +407,12 @@ ul li::after {
     transition: 0.5s;
 } 
 
-ul li:hover::after{
+.nav-content .nav-list:hover::after{
     inset: 0px;
     transform: rotate(0deg);
 }
 
-ul li a{
+.nav-content .nav-list a{
     position: relative;
     text-decoration: none;
     z-index: 10;
@@ -426,19 +420,19 @@ ul li a{
     justify-content: center;
     align-items: center;
 }
-ul li a i{
+.nav-content .nav-list a i{
     font-size: 2em;
     transition: 0.5s;
     color: var(--clr);
     opacity: 1;
 }
 
-ul li:hover a i {
+.nav-content .nav-list:hover a i {
     color: var(--clr);
     transform: translateY(-40%);/*dfasdas*/
 }
 
-ul li a span{
+.nav-content .nav-list a span{
     position: absolute;
     color:var(--clr);
     opacity: 0;
@@ -452,13 +446,13 @@ ul li a span{
     font-size: 75%;
 }
 
-ul li:hover a span{
+.nav-content .nav-list:hover a span{
     opacity: 1;
     transform: scale(1) translateY(100%);
 }
 
-ul li:hover a i,
-ul li a span{
+.nav-content .nav-list:hover a i,
+.nav-content .nav-list a span{
     filter:drop-shadow(0 0 20px var(--clr)) drop-shadow(0 0 40px var(--clr)) drop-shadow(0 0 60px var(--clr));
 }
 
@@ -646,19 +640,6 @@ footer {
   padding: 20px 0;
 }
 
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.menu-toggle i {
-  font-size: 2em;
-  transition: font-size 0.2s ease-in-out;
-}
 
 @media screen and (max-width: 1024px) {
   .post-container section form .content-form {
@@ -672,45 +653,6 @@ footer {
   .grid-post-create .buttons-post {
     max-width: 180px;
     font-size: 0.9em;
-  }
-
-  .navbar {
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  #nav-links {
-    display: none;
-    width: 100%;
-    background-color: #00bcd4;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 10px;
-  }
-
-  #nav-links.active {
-    display: flex;
-  }
-
-  #nav-links ul {
-    width: 100%;
-    flex-direction: column;
-    text-align: center;
-    padding: 0;
-  }
-
-  #nav-links li {
-    display: block;
-    margin: 10px 0;
-  }
-
-  .navbar nav a {
-    margin: 0;
-    padding: 10px 0;
   }
 
   .search-input {
@@ -810,14 +752,6 @@ footer {
     padding: 10px;
   }
 
-  .menu-toggle i {
-    font-size: 1.5rem;
-  }
-
-  .navbar h1 {
-    font-size: 2.5em;
-  }
-
   .user-data {
     padding: 20px;
   }
@@ -858,10 +792,6 @@ footer {
     height: 30px;
   }
 
-  .navbar nav a {
-    font-size: 1em;
-  }
-
   .user-info {
     gap: 15px;
     padding: 15px;
@@ -899,7 +829,6 @@ footer {
     flex-direction: column;
     flex-basis: 100%;
   }
-
   .card-right {
     justify-content: space-evenly;
     align-items: flex-start;
