@@ -130,7 +130,7 @@ p {
   grid-area: post-container;
 }
 
-#footer-post {
+#footer {
   grid-area: footer;
 }
 
@@ -204,7 +204,6 @@ p {
   width: 50%;
   border: none;
   text-align: center;
-
 }
 
 .icon {
@@ -325,12 +324,15 @@ a:hover {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .btnActualizar:hover {
   background-color: #0097a7;
 }
+
 .btnCancelar:hover {
   background-color: #dc3545;
 }
+
 .imagen {
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
   border-radius: 20px;
@@ -401,6 +403,22 @@ li {
 
 .block {
   display: block;
+}
+
+.grid-following {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "navbar"
+    "user-data"
+    "footer";
+}
+
+#user-data {
+  grid-area: user-data;
 }
 
 .user-data {
@@ -710,7 +728,6 @@ footer {
   }
 
 }
-
 
 @media screen and (max-width: 700px) {
   .post-container section form .content-form {

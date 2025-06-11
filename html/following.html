@@ -12,86 +12,88 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <header class="navbar">
-        <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-        <button class="menu-toggle" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav id ="nav-links">
-            <ul>
-                <li>
-                    <a href="wall.html"><i class="fas fa-home"></i> Inicio</a>
-                </li>
+    <div class="grid-following">
+        <header id="navbar" class="navbar">
+            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id ="nav-links">
+                <ul>
+                    <li>
+                        <a href="wall.html"><i class="fas fa-home"></i> Inicio</a>
+                    </li>
 
-                <li>
-                    <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
-                </li>
+                    <li>
+                        <a href="following.html"><i class="fas fa-search"></i> Buscar</a>
+                    </li>
 
-                <li>
-                    <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+                    <li>
+                        <a href="my-profile.html"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
 
-    <main class="user-data">
-        <h2>Buscar</h2>
-        <section >
-            <div class="search-input">
-                <input type="text" placeholder="Buscar usuarios..." />
-            </div>
-        </section>
+        <main id="user-data" class="user-data">
+            <h2>Buscar</h2>
+            <section >
+                <div class="search-input">
+                    <input type="text" placeholder="Buscar usuarios..." />
+                </div>
+            </section>
+            
+            <section>
+                <h2>Sugerencias de usuarios</h2>
+                <div class = "card-users">
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/yami-min.webp" alt="Usuario 1" />
+                        <p>Yami Contreras</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/zoe-min.webp" alt="Usuario 2" />
+                        <p>Zoe Abarracin</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/marcos-min.webp" alt="Usuario 3" />
+                        <p>Marcos Albarracin</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/dani-min.webp" alt="Usuario 4" />
+                        <p>Dani Llanes</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/vero-min.webp" alt="Usuario 5" />
+                        <p>Vero Ramirez</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/coty-min.webp" alt="Usuario 6" />
+                        <p>Coty Rodriguez</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/Eze-min.webp" alt="Usuario 7" />
+                        <p>Eze Figueroa</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class = "avatar" src="../img/Fede Piedrasanta-min.webp" alt="Usuario 8" />
+                        <p>Fede Piedrasanta</p>
+                        <button type="button">Seguir</button>
+                    </div>
+                </div>
+            </section>
+        </main>
         
-        <section>
-            <h2>Sugerencias de usuarios</h2>
-            <div class = "card-users">
-                <div class="card-user">
-                    <img class = "avatar" src="../img/yami.jpg" alt="Usuario 1" />
-                    <p>Yami Contreras</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/zoe.jpg" alt="Usuario 2" />
-                    <p>Zoe Abarracin</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/marcos.jpg" alt="Usuario 3" />
-                    <p>Marcos Albarracin</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/dani.jpg" alt="Usuario 4" />
-                    <p>Dani Llanes</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/vero.jpg" alt="Usuario 5" />
-                    <p>Vero Ramirez</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/coty.jpg" alt="Usuario 6" />
-                    <p>Coty Rodriguez</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/Eze.jpg" alt="Usuario 7" />
-                    <p>Eze Figueroa</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class = "avatar" src="../img/Fede Piedrasanta.png" alt="Usuario 8" />
-                    <p>Fede Piedrasanta</p>
-                    <button type="button">Seguir</button>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <p>© 2025 SoftHype. All rights reserved.</p>
-    </footer>
+        <footer id="footer">
+            <p>© 2025 SoftHype. All rights reserved.</p>
+        </footer>
+    </div>
     <script>
     function toggleMenu() {
         const nav = document.getElementById("nav-links");
