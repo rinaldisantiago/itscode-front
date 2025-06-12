@@ -459,7 +459,6 @@ a:hover {
 .nav-content .nav-list:hover a i {
   color: var(--clr);
   transform: translateY(-40%);
-  /*dfasdas*/
 }
 
 .nav-content .nav-list a span {
@@ -940,12 +939,7 @@ footer {
     gap: 0;
     justify-content: center;
     align-items: center;
-  }
-
-  .nav-list a {
-    display: flex;
-    align-items: center;
-    color: white;
+    height: 150px;
   }
 
   .nav-content .nav-list::before,
@@ -953,24 +947,41 @@ footer {
     display: none;
   }
 
-  .nav-content {
-    height: 150px;
-  }
-
   .nav-content .nav-list {
     all: unset;
+    width: 100%; 
+    text-align: center; 
   }
+  
+  .nav-content .nav-list a {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    color: white;
+    padding: 10px 0;
+  }
+
 
   .nav-content .nav-list a span {
     all: unset;
-    padding: 10px;
+    padding-left: 10px; 
     font-size: 20px;
     font-weight: bold;
+    color: white;
+  }
+  
+  .nav-list a i {
+    font-size: 25px !important;
   }
 
-  .nav-list a i {
-    font-size: 25px !important
+
+  .nav-content .nav-list:hover a i,
+  .nav-content .nav-list:hover a span {
+    transform: none; 
+    filter: none;   
+    color: white;  
   }
+
 
   .card-user:hover {
     transform: none;
