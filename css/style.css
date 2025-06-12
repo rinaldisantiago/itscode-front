@@ -442,6 +442,10 @@ a:hover {
     text-align: center;
 }
 
+.navbar{
+  position: sticky;
+}
+
 .miPerfil{
     font-size: 75%;
 }
@@ -454,6 +458,20 @@ a:hover {
 .nav-content .nav-list:hover a i,
 .nav-content .nav-list a span{
     filter:drop-shadow(0 0 20px var(--clr)) drop-shadow(0 0 40px var(--clr)) drop-shadow(0 0 60px var(--clr));
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu-toggle i {
+  font-size: 2em;
+  transition: font-size 0.2s ease-in-out;
 }
 
 .profile-conteiner {
@@ -639,6 +657,8 @@ footer {
   color: rgba(255, 255, 255, 0.5);
   padding: 20px 0;
 }
+
+
 
 
 @media screen and (max-width: 1024px) {
@@ -836,5 +856,63 @@ footer {
     flex-direction: column;
     flex-basis: 100%;
   }
+
+.navbar {
+    flex-wrap: wrap;
+    padding: 10px 20px;
+    height: auto;
+  }
+
+  .menu-toggle {
+    display: block;
+    margin-left: auto;
+    color: white;
+  }
+
+  #nav-links {
+    display: none;
+    width: 100%;
+  }
+
+  #nav-links.active {
+    display: block;
+  }
+
+  .nav-content {
+    flex-direction: column;
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-list a {
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+
+  .nav-content .nav-list::before,
+  .nav-content .nav-list::after {
+    display: none;
+  }
+
+  .nav-content{
+    height: 150px;
+  }
+  .nav-content .nav-list{
+    all:unset;
+  }
+  .nav-content .nav-list a span{
+    all:unset;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .nav-list a i{
+    font-size: 25px !important
+  }
+  
+
 }
 
