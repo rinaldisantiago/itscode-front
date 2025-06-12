@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buscar - ITSCode</title>
-    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
@@ -14,96 +14,98 @@
 </head>
 
 <body>
-    <header class="navbar">
-        <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-        <button class="menu-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav id="nav-links">
-            <ul class="nav-content">
-                <li class="nav-list">
-                    <a href="wall.html">
-                        <i class="fas fa-home"></i>
-                        <span> Inicio </span>
-                    </a>
-    
-                </li>
-    
-                <li class="nav-list">
-                    <a href="following.html">
-                        <i class="fas fa-search"></i>
-                        <span>Buscar</span>
-                    </a>
-                </li>
-    
-                <li class="nav-list">
-                    <a href="my-profile.html">
-                        <i class="fas fa-user-circle"></i>
-                        <span class="miPerfil">Mi Perfil</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <div class="grid-following">
+        <header id="navbar" class="navbar">
+            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="nav-links">
+                <ul class="nav-content">
+                    <li class="nav-list">
+                        <a href="wall.html">
+                            <i class="fas fa-home"></i>
+                            <span> Inicio </span>
+                        </a>
 
-    <main class="user-data">
-        <h2>Buscar</h2>
-        <section>
-            <div class="search-input">
-                <input type="text" placeholder="Buscar usuarios..." />
-            </div>
-        </section>
+                    </li>
 
-        <section>
-            <h2>Sugerencias de usuarios</h2>
-            <div class="card-users">
-                <div class="card-user">
-                    <img class="avatar" src="../img/yami.jpg" alt="Usuario 1" />
-                    <p>Yami Contreras</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/zoe.jpg" alt="Usuario 2" />
-                    <p>Zoe Abarracin</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/marcos.jpg" alt="Usuario 3" />
-                    <p>Marcos Albarracin</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/dani.jpg" alt="Usuario 4" />
-                    <p>Dani Llanes</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/vero.jpg" alt="Usuario 5" />
-                    <p>Vero Ramirez</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/coty.jpg" alt="Usuario 6" />
-                    <p>Coty Rodriguez</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/Eze.jpg" alt="Usuario 7" />
-                    <p>Eze Figueroa</p>
-                    <button type="button">Seguir</button>
-                </div>
-                <div class="card-user">
-                    <img class="avatar" src="../img/Fede Piedrasanta.png" alt="Usuario 8" />
-                    <p>Fede Piedrasanta</p>
-                    <button type="button">Seguir</button>
-                </div>
-            </div>
-        </section>
-    </main>
+                    <li class="nav-list">
+                        <a href="following.html">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar</span>
+                        </a>
+                    </li>
 
-    <footer>
-        <p>© 2025 SoftHype. All rights reserved.</p>
-    </footer>
+                    <li class="nav-list">
+                        <a href="my-profile.html">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="miPerfil">Mi Perfil</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main id="user-search" class="user-search">
+            <h2>Buscar</h2>
+            <section>
+                <div class="search-input">
+                    <input type="text" placeholder="Buscar usuarios..." />
+                </div>
+            </section>
+
+            <section>
+                <h2>Sugerencias de usuarios</h2>
+                <div class="card-users">
+                    <div class="card-user">
+                        <img class="avatar" src="../img/yami-min.webp" alt="Usuario 1" />
+                        <a class="user-name user-name-search" href="user-profile.html">Yami Contreras</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/zoe-min.webp" alt="Usuario 2" />
+                        <a class="user-name user-name-search" href="user-profile.html">Zoe Albarracin</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/marcos-min.webp" alt="Usuario 3" />
+                        <a class="user-name user-name-search" href="user-profile.html">Marcos Albarracin</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/dani-min.webp" alt="Usuario 4" />
+                        <a class="user-name user-name-search" href="user-profile.html">Dani Llanes</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/vero-min.webp" alt="Usuario 5" />
+                        <a class="user-name user-name-search" href="user-profile.html">Vero Ramirez</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/coty-min.webp" alt="Usuario 6" />
+                        <a class="user-name user-name-search" href="user-profile.html">Coty Rodriguez</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/Eze-min.webp" alt="Usuario 7" />
+                        <a class="user-name user-name-search" href="user-profile.html">Eze Figueroa</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                    <div class="card-user">
+                        <img class="avatar" src="../img/Fede Piedrasanta-min.webp" alt="Usuario 8" />
+                        <a class="user-name user-name-search" href="user-profile.html">Fede Piedrasanta</a>
+                        <button type="button">Seguir</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer id="footer" class="footer-following">
+            <p>© 2025 SoftHype. All rights reserved.</p>
+        </footer>
+    </div>
     <script src="../js/script.js"></script>
 
 </body>
