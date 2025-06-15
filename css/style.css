@@ -323,6 +323,17 @@ a:hover {
   text-decoration: underline;
 }
 
+.button-modal-boostrap{
+  display: block;
+  margin: 1px 0;
+  color: #ffffff;
+  font-size: 1em;
+}
+
+.button-modal-boostrap:hover {
+  text-decoration: none;
+}
+
 .user-name,
 .user-name-search {
   pointer-events: none;
@@ -486,7 +497,7 @@ a:hover {
   position: sticky;
 }
 
-.my-profile {
+.text-button {
   font-size: 75%;
 }
 
@@ -784,7 +795,6 @@ footer {
     width: 50%;
     height: 100%;
     flex-direction: column;
-
   }
 
   .card-right {
@@ -961,22 +971,20 @@ footer {
     align-items: center;
     justify-content: center; 
     color: white;
-    padding: 10px 0;
+    padding: 5px 0;
   }
-
 
   .nav-content .nav-list a span {
     all: unset;
     padding-left: 10px; 
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     color: white;
   }
   
   .nav-list a i {
-    font-size: 25px !important;
+    font-size: 15px !important;
   }
-
 
   .nav-content .nav-list:hover a i,
   .nav-content .nav-list:hover a span {
@@ -984,7 +992,6 @@ footer {
     filter: none;   
     color: white;  
   }
-
 
   .card-user:hover {
     transform: none;
