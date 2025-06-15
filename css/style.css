@@ -260,12 +260,13 @@ h1,
 }
 
 .input-group i {
-  position: absolute;
+   position: absolute;
   left: 4%;
-  top: 30%;
-  bottom: 84%;
-  transform: translateY(190%);
   color: rgba(255, 255, 255, 0.5);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
 .input-group input {
