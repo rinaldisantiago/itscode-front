@@ -82,11 +82,11 @@
             <section class="box-section">
                 <form>
                     <input class="content-form no-margin background-oscure" type="text" name="post-title"
-                        placeholder="Tema de la publicación..." required />
+                        placeholder="Tema de la publicación..." aria-label="Campo obligatorio: título de la publicación en formato texto" required />
                     <label for="load-post-image" class="content-form label-file-image">Agregar Imagen:</label>
-                    <input class="content-form file-image" type="file" name="load-post-image" />
+                    <input id="load-post-image" class="content-form file-image" type="file" aria-label="Opcional: agregar imagen a la publicación"/>
                     <textarea class="content-form background-oscure" name="post-content" placeholder="Escribe algo..."
-                        rows="13" required></textarea>
+                        rows="13" aria-label="Campo obligatorio: contenido de la publicación en formato texto" required></textarea>
                     <div>
                         <button class="buttons-post" type="submit">Publicar</button>
                         <button class="buttons-post clean-button" type="reset">Limpiar</button>
