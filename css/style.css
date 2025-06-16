@@ -593,7 +593,7 @@ a:hover {
   height: 50px;
   padding: 10px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(252, 252, 252, 0.849);
   border-radius: 8px;
   font-size: 18px;
 }
@@ -601,12 +601,12 @@ a:hover {
 .post-create-redirection a {
   text-decoration: none;
   width: 80%;
-  color: rgba(251, 249, 249, 0.192);
+  color: rgba(61, 59, 59, 0.483);
 }
 
 .search-input input {
   width: 100%;
-  color: #ffffff;
+  color: (61, 59, 59, 0.483);
 }
 
 .card-users {
@@ -719,6 +719,64 @@ button:hover {
   height: 40px;
   border-radius: 50%;
   margin-bottom: 10px;
+}
+
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  margin-top: 15px;
+  border-top: 1px solid rgba(61, 246, 246, 0.2);
+  border-bottom: 1px solid rgba(61, 246, 246, 0.2);
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #d3eaff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: rgba(0, 188, 212, 0.2);
+  color: #fff;
+}
+
+.comment-section {
+  margin-top: 15px;
+}
+
+.comment-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.comment-form .avatar {
+  width: 35px;
+  height: 35px;
+  margin-top: 5px;
+}
+
+.comment-form textarea {
+  flex-grow: 1;
+  background-color: rgba(252, 252, 252, 0.849);
+  border-radius: 12px;
+  padding: 10px 15px;
+  color: #313233;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1em;
+  resize: none;
+  border:2px solid #0e7280a8;
 }
 
 footer {
@@ -911,7 +969,6 @@ footer {
   }
 
   .follow-btn {
-    width: 100%;
     padding: 8px;
     font-size: 1em;
   }
