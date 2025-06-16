@@ -137,7 +137,8 @@ p {
 }
 
 .clean-button {
-  background-color: #dc3545;
+  background-color: #00bcd4;
+  transition: background-color 0.3s;
 }
 
 .clean-button:hover {
@@ -171,7 +172,7 @@ p {
 }
 
 .left-panel h2 {
-  font-size: 3rem;
+  font-size: 3em;
   max-width: 90%;
   color: #00d0ff;
   margin-bottom: 1.5%;
@@ -182,7 +183,7 @@ p {
 }
 
 .left-panel p {
-  font-size: 1.1rem;
+  font-size: 1.1em;
   max-width: 80%;
   color: #d3eaff;
   margin-bottom: 2.5%;
@@ -260,7 +261,7 @@ h1,
 }
 
 .input-group i {
-   position: absolute;
+  position: absolute;
   left: 4%;
   color: rgba(255, 255, 255, 0.5);
   height: 100%;
@@ -275,7 +276,7 @@ h1,
   height: 100%;
   width: 100%;
   padding: 3% 3% 3% 15%;
-  font-size: 1rem;
+  font-size: 1em;
   border: none;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.1);
@@ -285,6 +286,7 @@ h1,
 .input-group input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+
 .input-group i, .input-group input {
   font-size: 1em;
 }
@@ -306,7 +308,7 @@ h1,
   background-color: #00bcd4;
   color: white;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -374,7 +376,7 @@ a:hover {
   background-color: #00bcd4;
   color: white;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -384,7 +386,7 @@ a:hover {
 }
 
 .btn-cancel:hover {
-  background-color: #dc3545;
+  background-color: #b72834;
 }
 
 .imagen {
@@ -792,14 +794,13 @@ footer {
     font-size: 1.5em;
   }
 
-
   .left-panel img {
     width: 80%;
     height: auto;
   }
 
   .left-panel p {
-    font-size: 0.95rem;
+    font-size: 0.95em;
     max-width: 90%;
   }
 
@@ -808,7 +809,7 @@ footer {
   }
 
   .card-right h2 {
-    font-size: 2rem;
+    font-size: 2em;
   }
 
 }
@@ -842,7 +843,7 @@ footer {
   }
 
   .menu-toggle i {
-    font-size: 1.5rem;
+    font-size: 1.5em;
   }
 
   .navbar h1 {
@@ -929,7 +930,6 @@ footer {
     display: none;
   }
 
-
   .right-panel {
     justify-content: center;
     align-items: center;
@@ -942,7 +942,7 @@ footer {
   }
 
   .card-right h1 {
-    font-size: 2.3rem;
+    font-size: 2.3em;
   }
 
   .navbar {
