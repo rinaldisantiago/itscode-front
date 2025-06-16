@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline: 1px dashed red;  */
+  /* outline: 1px dashed red; 	*/
 }
 
 body {
@@ -260,7 +260,7 @@ h1,
 }
 
 .input-group i {
-   position: absolute;
+  position: absolute;
   left: 4%;
   color: rgba(255, 255, 255, 0.5);
   height: 100%;
@@ -285,7 +285,9 @@ h1,
 .input-group input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
-.input-group i, .input-group input {
+
+.input-group i,
+.input-group input {
   font-size: 1em;
 }
 
@@ -332,7 +334,7 @@ a:hover {
   text-decoration: underline;
 }
 
-.button-modal-boostrap{
+.button-modal-boostrap {
   display: block;
   margin: 1px 0;
   color: #ffffff;
@@ -699,7 +701,7 @@ button:hover {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
-  text-align: center;
+  text-align: left; /* MODIFICADO DE 'center' a 'left' */
 }
 
 .post .img-post {
@@ -982,7 +984,7 @@ footer {
 
   .nav-content .nav-list a span {
     all: unset;
-    padding-left: 10px; 
+    padding-left: 10px;
     font-size: 15px;
     font-weight: bold;
     color: white;
@@ -1003,4 +1005,133 @@ footer {
     transform: none;
     transition: none;
   }
+}
+
+/* ============================================= */
+/* === ESTILOS PARA POSTS INTERACTIVOS (NUEVO) === */
+/* ============================================= */
+
+/* 1. Encabezado del Post (Avatar y Nombre) */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.post .avatar {
+  /* Tu clase .avatar ya tiene buenos estilos, solo ajustamos márgenes */
+  margin: 0;
+}
+
+.post-user-info .user-name {
+  font-size: 1.1em;
+  /* Ajusta si es necesario */
+}
+
+.post-topic {
+  font-size: 0.9em;
+  color: #8fd8ff;
+  /* Usamos tu color de enlaces */
+  display: block;
+}
+
+/* 2. Contenido del Post (Texto e Imagen) */
+.post-content p {
+  margin-bottom: 15px;
+  color: #d3eaff;
+  /* Un color suave de tu paleta */
+  line-height: 1.5;
+}
+
+.post-content .img-post {
+  /* Tu clase .img-post ya funciona bien, solo quitamos el margen superior */
+  margin-top: 0;
+  width: 100%;
+  /* Hacemos que la imagen ocupe todo el ancho del post */
+  max-height: 500px;
+  /* Limitamos la altura máxima */
+}
+
+/* 3. Acciones del Post (Botones) */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  margin-top: 15px;
+  border-top: 1px solid rgba(61, 246, 246, 0.2);
+  border-bottom: 1px solid rgba(61, 246, 246, 0.2);
+}
+
+.action-btn {
+  background: none;
+  /* Quitamos el fondo azul por defecto */
+  border: none;
+  color: #d3eaff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: rgba(0, 188, 212, 0.2);
+  /* Usamos tu color principal con transparencia */
+  color: #fff;
+}
+
+.action-btn i {
+  font-size: 1.2em;
+}
+
+/* 4. Sección de Comentarios */
+.comment-section {
+  margin-top: 15px;
+}
+
+.comment-form {
+  display: flex;
+  align-items: flex-start;
+  /* Alinea los items al tope */
+  gap: 10px;
+}
+
+.comment-form .avatar {
+  width: 35px;
+  /* Hacemos el avatar del comentarista un poco más pequeño */
+  height: 35px;
+  margin-top: 5px;
+}
+
+.comment-form textarea {
+  flex-grow: 1;
+  /* Hace que el textarea ocupe el espacio disponible */
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 10px 15px;
+  color: #d4d8db;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1em;
+  resize: none;
+  transition: all 0.3s ease;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: #00bcd4;
+  /* Resaltamos con tu color principal */
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.comment-form button {
+  /* Tu clase 'button' ya está bien, solo ajustamos el padding para este caso */
+  padding: 10px 15px;
+  flex-shrink: 0;
+  /* Evita que el botón se encoja */
 }

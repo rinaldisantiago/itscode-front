@@ -48,6 +48,7 @@
                 <li class="nav-list">
                     <a href="../index.html" data-bs-toggle="modal" data-bs-target="#modal">
                         <i class="fa-solid fa-right-from-bracket"></i>
+
                         <span class="text-button"> Cerrar Sesión </span>
                     </a>
                 </li>
@@ -85,16 +86,48 @@
         <section>
 
             <article class="post">
-                <img class="img-post" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Imagen de post 1">
-                <img class="avatar" src="../img/santi-min.webp" alt="avatar de usuario">
-                <a class="user-name" href="user-profile.html">
-                    <span class="clickable-text">Santiago Rinaldi</span>
-                </a>
-                <p>Tema 1</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt alias velit blanditiis dolor soluta
-                    possimus at officiis nostrum quibusdam maxime, voluptates eius cupiditate qui, dolorum libero, porro
-                    ipsum repudiandae sunt?</p>
+                <div class="post-header">
+                    <img class="avatar" src="../img/santi-min.webp" alt="avatar de usuario">
+                    <div class="post-user-info">
+                        <a class="user-name" href="user-profile.html">
+                            <span class="clickable-text">Santiago Rinaldi</span>
+                        </a>
+                        <span class="post-topic">Tema 1</span>
+                    </div>
+                </div>
+
+                <div class="post-content">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt alias velit blanditiis dolor
+                        soluta
+                        possimus at officiis nostrum quibusdam maxime, voluptates eius cupiditate qui, dolorum libero,
+                        porro
+                        ipsum repudiandae sunt?</p>
+                    <img class="img-post" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Imagen de post 1">
+                </div>
+
+                <div class="post-actions">
+                    <button class="action-btn">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                        <span>12</span> </button>
+                    <button class="action-btn">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                        <span>2</span>
+                    </button>
+                    <button class="action-btn">
+                        <i class="fa-solid fa-comment"></i>
+                        <span>Comentar</span>
+                    </button>
+                </div>
+
+                <div class="comment-section">
+                    <form class="comment-form">
+                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
+                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
+                        <button type="submit">Enviar</button>
+                    </form>
+                </div>
             </article>
+
             <article class="post">
                 <img class="img-post" src="../img/Imagen de WhatsApp 2025-06-03 a las 19.14.08_fee03840-min.webp"
                     alt="Imagen de post 2">
