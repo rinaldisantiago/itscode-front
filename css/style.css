@@ -9,6 +9,24 @@ body {
   font-family: 'Rajdhani', sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
+  --sb-track-color: #232E33;
+  --sb-thumb-color: #00bcd4;
+  --sb-size: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 1px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 1px;
+  border: 3px solid #232E33;
 }
 
 html {
@@ -94,25 +112,37 @@ p {
   padding: 20px 10px;
   font-family: 'Rajdhani', sans-serif;
   font-size: 1.1em;
+  border: none;
 }
 
 .post-container section form .no-margin {
   margin-top: 0;
 }
 
-.post-container section form .label-file-image {
-  padding: 0;
-  text-align: center;
-}
-
-.post-container section form .background-oscure {
+.post-container section form .dark-background {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   color: white;
 }
 
+.post-container section form .label-file-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+  transition: transform 0.5s;
+}
+
+.post-container section form .label-file-image:hover {
+  transform: scale(0.99);
+}
+
 .post-container section form .file-image {
-  padding: 0px;
+  display: none;
 }
 
 .post-container section form textarea {
@@ -238,7 +268,7 @@ p {
 
 .subtitle {
   font-size: 0.95em;
-  color: #d3eaff
+  color: #d3eaff;
 }
 
 .card-right,
@@ -249,7 +279,6 @@ h1,
 .footer-card {
   margin: 20px 0px;
 }
-
 
 .input-group {
   position: relative;
@@ -593,7 +622,7 @@ a:hover {
   height: 50px;
   padding: 10px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(252, 252, 252, 0.849);
   border-radius: 8px;
   font-size: 18px;
 }
@@ -601,12 +630,12 @@ a:hover {
 .post-create-redirection a {
   text-decoration: none;
   width: 80%;
-  color: rgba(251, 249, 249, 0.192);
+  color: rgba(61, 59, 59, 0.483);
 }
 
 .search-input input {
   width: 100%;
-  color: #ffffff;
+  color: (61, 59, 59, 0.483);
 }
 
 .card-users {
@@ -721,6 +750,63 @@ button:hover {
   margin-bottom: 10px;
 }
 
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  margin-top: 15px;
+  border-top: 1px solid rgba(61, 246, 246, 0.2);
+  border-bottom: 1px solid rgba(61, 246, 246, 0.2);
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #d3eaff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: rgba(0, 188, 212, 0.2);
+  color: #fff;
+}
+
+.comment-section {
+  margin-top: 15px;
+}
+
+.comment-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.comment-form .avatar {
+  width: 35px;
+  height: 35px;
+  margin-top: 5px;
+}
+
+.comment-form textarea {
+  flex-grow: 1;
+  background-color: rgba(252, 252, 252, 0.849);
+  border-radius: 12px;
+  padding: 10px 15px;
+  color: #313233;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1em;
+  resize: none;
+  border:2px solid #0e7280a8;
+}
+
 footer {
   margin-top: 60px;
   text-align: center;
@@ -733,6 +819,12 @@ footer {
   margin-top: 0px;
 }
 
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color)
+                     var(--sb-track-color);
+  }
+}
 
 @media screen and (max-width: 1024px) {
   .box-section {
@@ -842,6 +934,10 @@ footer {
     padding: 10px;
   }
 
+  .post-container section form .label-file-image:hover {
+    transform: none;
+  }
+
   .menu-toggle i {
     font-size: 1.5em;
   }
@@ -911,7 +1007,6 @@ footer {
   }
 
   .follow-btn {
-    width: 100%;
     padding: 8px;
     font-size: 1em;
   }
@@ -1016,5 +1111,8 @@ footer {
   .card-user:hover {
     transform: none;
     transition: none;
+  }
+  .comment-section .comment-form textarea{
+    font-size: 0.8em;
   }
 }
