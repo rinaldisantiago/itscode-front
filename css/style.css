@@ -159,6 +159,11 @@ p {
   align-items: center;
 }
 
+.post-title{
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
 .grid-post-create .buttons-post {
   width: 100%;
   max-width: 200px;
