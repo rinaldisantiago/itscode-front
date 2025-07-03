@@ -1154,3 +1154,9 @@ footer {
     font-size: 0.8em;
   }
 }
+
+.footer-p{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
