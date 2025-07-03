@@ -78,6 +78,30 @@ p {
   background-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
   border-radius: 8px;
+  animation: animar-rotacion 6s linear infinite;
+}
+
+@keyframes animar-rotacion {
+  0% {
+    box-shadow: 10px 0 15px rgba(61, 246, 246, 0.6), /* Derecha - Cian */
+                -5px 0 10px rgba(255, 255, 255, 0.2);
+  }
+  25% {
+    box-shadow: 0 10px 15px rgba(125, 166, 255, 0.6), /* Abajo - Azul */
+                0 -5px 10px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: -10px 0 15px rgba(61, 246, 231, 0.6), /* Izquierda - Magenta */
+                5px 0 10px rgba(102, 146, 243, 0.2);
+  }
+  75% {
+    box-shadow: 0 -10px 15px rgba(183, 172, 196, 0.6), /* Arriba - Púrpura */
+                0 5px 10px rgba(179, 184, 255, 0.2);
+  }
+  100% {
+    box-shadow: 10px 0 15px rgba(61, 246, 246, 0.6), /* Vuelve a la Derecha - Cian */
+                -5px 0 10px rgba(133, 135, 136, 0.2);
+  }
 }
 
 .post-container section form {
@@ -152,7 +176,6 @@ p {
 }
 
 .container {
-  min-width: 100vw;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 50% 50%;
