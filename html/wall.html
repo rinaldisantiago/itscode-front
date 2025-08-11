@@ -83,108 +83,7 @@
             <a href="post-create.html">Hablemos . . .</a>
         </section>
 
-        <section>
-
-            <article class="post">
-                <img class="avatar" src="../img/santi-min.webp" alt="avatar de usuario">
-                <a class="user-name" href="user-profile.html">
-                    <span class="clickable-text">Santiago Rinaldi</span>
-                </a>
-                <h3 class="post-title">Juntos "Estudiando"</h3>
-                <p> 
-                    Ponele que en este día nos juntamos a estudiar, jajajajjaa!!! 
-                    En serio!!! Nos juntamos a codear...
-                </p>
-                <img class="img-post" src="../img/juntada-con-amigos-min.webp" alt="Tres hermosos jovenes">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-            <article class="post">
-                <img class="avatar" src="../img/juli-min.webp" alt="avatar de usuario">
-                <a class="user-name" href="user-profile.html">
-                    <span class="clickable-text">Juli Turco</span>
-                </a>
-                <h3 class="post-title">Charla de Facultad de Lenguas</h3>
-                <p>
-                    Escuchando las vivencias de una de las víctimas de la dictadura ocurrida en nuestro país.
-                </p>
-                <img class="img-post" src="../img/Imagen de WhatsApp 2025-06-03 a las 19.14.08_fee03840-min.webp" alt="Grupo de personas en una charla">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-            <article class="post">
-                <img class="avatar" src="../img/emi-min.webp" alt="avatar de usuario">
-                <a class="user-name" href="user-profile.html">
-                    <span class="clickable-text">Emiliano Almiron</span>
-                </a>
-                <h3 class="post-title">De cumpleaños en la facu</h3>
-                <p>
-                    Festejando (de forma atrasada) el cumpleaños de Eze, espero que hayas disfrutado de nuestra compañia
-                    como nosotros disfrutamos de la tuya!
-                </p>
-                <img class="img-post" src="../img/Imagen de WhatsApp 2025-06-03 a las 19.14.02_e37fd184-min.webp" alt="Personas celebrando">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-
-        </section>
+        <section id="posts-collection" class="posts-collection"></section>
     </main>
 
     <footer>
@@ -196,6 +95,9 @@
         crossorigin="anonymous">
     </script>
     <script src="../js/script.js"></script>
+    <script src="../js/Wall/Post.js"></script>
+    <script src="../js/Wall/postRepository.js"></script>
+    <script src="../js/Wall/postPresentation.js"></script>
 
 </body>
 
