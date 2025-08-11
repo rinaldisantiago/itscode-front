@@ -76,111 +76,12 @@
     </div>
 
     <main class="profile-conteiner">
-        <section class="user-info">
-            <img src="../img/santi-min.webp" id="avatar" class="avatar" alt="Avatar del Usuario">
-            <article class="details">
-                <h2 id="nickname">rinaldisantiago</h2>
-                <h3 id="name">Santiago Rinaldi</h3>
-                <p id="bio">santiago.rinaldi@gmail.com</p>
-            </article>
-            <article class="stats">
-                <span>100 publicaciones </span>
-                <span>300 seguidores </span>
-                <span>30 seguidos</span>
-            </article>
-            <button class="follow-btn"><i class="fas fa-user-friends"></i>Dejar de Seguir</button>
-        </section>
+        <section id = "infoUserVisit"> </section>
 
         <section class="user-profile-post">
             <h2>Publicaciones</h2>
 
-            <article class="post">
-                <h3 class="post-title">Juntos "Estudiando"</h3>
-                <p>
-                    Ponele que en este día nos juntamos a estudiar, jajajajjaa!!! 
-                    En serio!!! Nos juntamos a codear...
-                </p>
-                <img class="img-post" src="../img/juntada-con-amigos-min.webp" alt="tres hermosos jovenes">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-
-            <article class="post">
-                <h3 class="post-title">Compartiendo en "Futuro Hacker"</h3>
-                <p>
-                    Una excelente tarde con mis compañeros de tecnicatura y con el profe Mati!!!!
-                </p>
-                <img class="img-post" src="../img/charla-min.webp" alt="Personas sentadas">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-
-            <article class="post">
-                <h3 class="post-title">Charla en la UNC Software Libre</h3>
-                <p>
-                    Tarde distinta, excelente charla en la UNC. Compartir con estas personas reconforta el corazón... ¡muy buen equipo de 1.º año!
-                </p>
-                <img class="img-post" src="../img/charla-unc-min.webp" alt="Grupo de personas">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
+            <article id="userPosts"></article>
         </section>
     </main>
     <footer>
@@ -192,6 +93,9 @@
         crossorigin="anonymous">
     </script>
     <script src="../js/script.js"></script>
+    <script src = "../js/UserProfile/UserProfile.js"></script>
+    <script src = "../js/UserProfile/userProfileRepositori.js"></script>
+    <script src = "../js/UserProfile/userProfilePresentation.js"></script>
 </body>
 
 </html>
