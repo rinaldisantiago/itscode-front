@@ -77,115 +77,16 @@
     </div>
 
     <main class="profile-conteiner">
-        <section class="user-info">
-            <img src="../img/fotoCv-min.webp" id="avatar" class="avatar" alt="Avatar del Usuario">
-            <article class="details">
-                <h2 id="nickname">Don Carlos</h2>
-                <h3 id="name">Carlos Hernández</h3>
-                <p id="bio">doncarlos@email.com</p>
-            </article>
-            <article class="stats">
-                <span>3000 publicaciones</span>
-                <span>2000 seguidores</span>
-                <span>1000 seguidos</span>
-            </article>
-            <a href="update-user.html" class="edit-btn">
-                <i class="fas fa-user-edit"></i> Editar
-            </a>
 
-        </section>
+        <section id="infoUser" ></section>
 
-        <section class="user-profile-post">
+        <section  class="user-profile-post">
             <h2>Mis Publicaciones</h2>
-            <article class="post">  
-                <h3 class="post-title">Aprendiendo con el Profe Fede</h3>
-                <p>
-                    El profe siempre predispuesto a enseñar, con la misma paciencia de siempre con los alumnos, ¡gracias por todo!
-                </p>
-                <img class="img-post" src="../img/Imagen de WhatsApp 2025-06-03 a las 19.14.08_5021af47-min.webp" alt="tres personas viendo un pizarron">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-
-            <article class="post">
-                <h3 class="post-title">Saliendo de la Tecnicatura</h3>
-                <p>
-                    Después de un arduo día codeando, llevando a mi amigo Santiago Rinaldi a su casa.
-                </p>
-                <img class="img-post" src="../img/Imagen de WhatsApp 2025-06-03 a las 19.14.07_c264d27b-min.webp" alt="dos personas haciendo pulgar hacia arriba">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
-
-            <article class="post">
-                <h3 class="post-title">Un dia Especial</h3>
-                <p>
-                    En este día se inauguró la "COVACHA". Con un gran esfuerzo, pudimos rescatar esta 
-                    aula del instituto para convertirla en un espacio para poder estudiar y tomar algo calentito.
-                </p>
-                <img class="img-post" src="../img/estreno-covacha-min.webp" alt="Grupo de personas">
-                <section class="post-actions">
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>12</span> </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>2</span>
-                    </button>
-                    <button class="action-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>0</span>
-                    </button>
-                </section>
-            
-                <section class="comment-section">
-                    <form class="comment-form">
-                        <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </section>
-            </article>
+            <article id="myPosts"></article>
         </section>
+
     </main>
+
     <footer>
         <p>© 2025 CodeHype. All rights reserved.</p>
     </footer>
@@ -195,7 +96,9 @@
         crossorigin="anonymous">
     </script>
     <script src="../js/script.js"></script>
-
+    <script src = "../js/MyProfile/MyProfile.js"></script>
+    <script src = "../js/MyProfile/myProfileRepositori.js"></script>
+    <script src = "../js/MyProfile/myProfilePresentation.js"></script>
 </body>
 
 </html>
