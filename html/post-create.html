@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="ITSCode, crear publicación, publicar, post, compartir" />
+    <meta name="description" content="Comparte tus ideas, anécdotas y conocimientos en ITSCode. Crea publicaciones para mostrar tu trabajo 
+    a la comunidad y que los usuarios interactúen contigo." />
     <title>Crear Publicación - ITSCode</title>
     <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -19,7 +22,7 @@
     <div class="grid-post-create">
         <header id="navbar" class="navbar">
             <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-            <button class="menu-toggle">
+            <button class="menu-toggle" aria-label="Menú de navegación">
                 <i class="fas fa-bars"></i>
             </button>
             <nav id="nav-links">
@@ -68,8 +71,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn " data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De
-                                acuerdo</a></button>
+                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De acuerdo</a></button>
                     </div>
                 </div>
             </div>
@@ -81,12 +83,24 @@
 
             <section class="box-section">
                 <form>
-                    <input class="content-form no-margin background-oscure" type="text" name="post-title"
-                        placeholder="Tema de la publicación..." aria-label="Campo obligatorio: título de la publicación en formato texto" required />
-                    <label for="load-post-image" class="content-form label-file-image">Agregar Imagen:</label>
-                    <input id="load-post-image" class="content-form file-image" type="file" aria-label="Opcional: agregar imagen a la publicación"/>
-                    <textarea class="content-form background-oscure" name="post-content" placeholder="Escribe algo..."
-                        rows="13" aria-label="Campo obligatorio: contenido de la publicación en formato texto" required></textarea>
+                    <input class="content-form no-margin dark-background" type="text" name="post-title"  
+                        placeholder="Tema de la publicación..." aria-label="Campo obligatorio: título de la publicación en formato texto" 
+                        required 
+                    />
+
+                    <label for="load-post-image" class="content-form dark-background label-file-image" 
+                        aria-label="Opcional: agregar imagen a la publicación">
+                        <i class="fa-solid fa-image"></i>
+                        Agregar Imagen
+                    </label>
+
+                    <input id="load-post-image" class="content-form file-image" type="file" 
+                        accept="image/*" 
+                    />
+
+                    <textarea class="content-form dark-background" name="post-content" placeholder="Escribe algo..." rows="13" 
+                    aria-label="Campo obligatorio: contenido de la publicación en formato texto" required></textarea>
+
                     <div>
                         <button class="buttons-post" type="submit">Publicar</button>
                         <button class="buttons-post clean-button" type="reset">Limpiar</button>
@@ -96,12 +110,14 @@
         </main>
 
         <footer class="footer-post" id="footer">
-            <p>© 2025 SoftHype. All rights reserved.</p>
+            <p>© 2025 CodeHype. All rights reserved.</p>
         </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+    </script>
     <script src="../js/script.js"></script>
 </body>
 
