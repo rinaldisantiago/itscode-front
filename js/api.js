@@ -5,14 +5,13 @@ async function apiFetch(endpoint, options = {}) {
     try {
         const response = await fetch(url, options);
 
-
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || 'Ocurrió un error en la solicitud.');
         }
 
-
         return await response.json();
+        
     } catch (error) {
 
         Swal.fire({
