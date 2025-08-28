@@ -33,16 +33,17 @@ class MyProfile {
     }
 }
 
-class MyPosts{
+class MyPosts {
     constructor(myPosts) {
-        this.postsTitle = myPosts.postsTitle;
-        this.imgPost = myPosts.imgPost;
-        this.postContent = myPosts.postContent;
-        this.countsLikes = myPosts.countsLikes;
-        this.countsDislikes = myPosts.countsDislikes;
-        this.countsComments = myPosts.countsComments;
-        this.imgAvatar = myPosts.imgAvatar;
+        this.postsTitle = myPosts.title;
+        this.imgPost = myPosts.fileUrl; 
+        this.postContent = myPosts.content;
+        this.countsLikes = myPosts.likes;
+        this.countsDislikes = myPosts.dislikes;
+        this.countsComments = myPosts.commentsCount;
+        this.imgAvatar = myPosts.userAvatar;
     }
+
 
     getNode = () => {
         const myPosts = document.createElement("article");

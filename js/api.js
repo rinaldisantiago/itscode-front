@@ -1,6 +1,6 @@
 async function apiFetch(endpoint, options = {}) {
-    const baseUrl = 'http://tu-api.com/v1';
-    const url = `${baseUrl}${endpoint}`;
+    const baseUrl = 'http://localhost:5052'; 
+    const url = `${baseUrl}${endpoint}`
 
     try {
         const response = await fetch(url, options);
