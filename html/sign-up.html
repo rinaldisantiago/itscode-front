@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="ITSCode, registrarse, crear cuenta, nuevo usuario, unirse, red académica digital">
-    <meta name="description" content="Únete gratis a ITSCode, la red social del Instituto Técnico Superior Córdoba. 
-    Crea tu cuenta, comparte ideas y conecta con tu comunidad académica." />
-    <title>Registrarse - ITSCode</title>
-    <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon"/>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="ITSCode, registrarse, crear cuenta, nuevo usuario, unirse, red académica digital">
+        <meta name="description" content="Únete gratis a ITSCode, la red social del Instituto Técnico Superior Córdoba. 
+            Crea tu cuenta, comparte ideas y conecta con tu comunidad académica." />
+        <title>Registrarse - ITSCode</title>
+        <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <main class="container">
-        <section class="left-panel">
-            <h2>Bienvenido a <span>ITSCode</span></h2>
-            <p>Unite a nuestra red social para compartir ideas, proyectos y experiencias con toda la tecnicatura.</p>
-            <img class = "imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando">
-        </section>
+    </head>
 
-        <section class="right-panel">
-            <article class="card-right">
-                <h2>Regístrate</h2>
-                <p class="subtitle">Crea tu cuenta para comenzar.</p>
-                <form>
-                    <div class="input-group">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                        <input type="text" name="username" placeholder="Nombre Completo">
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
-                        <input type="email" name="email" placeholder="Correo Electrónico">
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                        <input type="text" name="nickname" placeholder="Nombre de Usuario">
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        <input type="password" name="password" placeholder="Contraseña">
-                    </div>
-                    <a href="../index.html" class="btn">Registrarse</a>
-                </form>
-                <a href="../index.html">¿Ya tienes una cuenta? <strong>Inicia sesión</strong></a>
-                <footer class="footer-card">
-                    <p>© 2025 CodeHype. All rights reserved.</p>
-                </footer>
-            </article>
-        </section>
-    </main>
-        <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-        crossorigin="anonymous">
-    </script>
-    <script src="../js/script.js"></script>
-    <script src="../js/Singup/Singup.js"></script>
-    <script src="../js/Singup/SingupPresentation.js"></script>
-    <script src="../js/Singup/SingupRepository.js"></script>
+    <body>
 
-</body>
+        <main class="container">
+            <section class="left-panel">
+                <h2>Bienvenido a <span>ITSCode</span></h2>
+                <p>Unite a nuestra red social para compartir ideas, proyectos y experiencias con toda la tecnicatura.</p>
+                <img class="imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando">
+            </section>
+
+            <section class="right-panel">
+                <article class="card-right">
+                    <h2>Regístrate</h2>
+                    <p class="subtitle">Crea tu cuenta para comenzar.</p>
+                    <form id="registration-form">
+                        <div class="input-group">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <input type="text" name="username" placeholder="Nombre Completo">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <input type="email" name="email" placeholder="Correo Electrónico">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            <input type="text" name="nickname" placeholder="Nombre de Usuario">
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                            <input type="password" name="password" placeholder="Contraseña">
+                        </div>
+                        <button id="btn" type="submit" class="btn">Registrarse</button>
+
+                    </form>
+                    <a href="../index.html">¿Ya tienes una cuenta? <strong>Inicia sesión</strong></a>
+                    <footer class="footer-card">
+                        <p>© 2025 CodeHype. All rights reserved.</p>
+                    </footer>
+                </article>
+            </section>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+            </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../js/api.js"></script>
+        <script src="../js/Singup/SingUp.js"></script>
+
+    </body>
+
 </html>
