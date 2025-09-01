@@ -20,7 +20,6 @@ function getPost(callback) {
         })
         .then(data => {
             console.log("Datos recibidos de la API:", data);
-            // 🔹 Enviamos SOLO el array al callback
             callback(data.posts);
         })
         .catch(error => {

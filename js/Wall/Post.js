@@ -8,6 +8,7 @@ class Post {
     this.fileUrl = post.fileUrl;
     this.userName = post.userName;  
     this.userAvatar = post.userAvatar;
+    console.log(this.userAvatar)
     this.comments = post.comments || [];
   }
 
@@ -16,7 +17,7 @@ class Post {
         post.className = 'post';
         post.innerHTML = `
             <img class="avatar" src="${this.userAvatar}" alt="avatar de usuario">
-                <a class="user-name" href="${this.userName}">
+                <a class="user-name" href="user-profile.html">
                     <span class="clickable-text">${this.userName}</span>
                 </a>
                 <h3 class="post-title">${this.title}</h3>
@@ -51,6 +52,3 @@ class Post {
     }
 }
 
-class User {
-    
-}

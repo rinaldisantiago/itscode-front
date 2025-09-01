@@ -17,4 +17,4 @@ class Following {
 
         return following;
     }
-}
+}                    

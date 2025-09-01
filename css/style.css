@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* outline: 1px dashed red;  */
+  /* outline: 1px dashed red; 	*/
 }
 
 body {
@@ -96,6 +96,30 @@ p {
   background-color: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.205);
   border-radius: 8px;
+  animation: animar-rotacion 6s linear infinite;
+}
+
+@keyframes animar-rotacion {
+  0% {
+    box-shadow: 10px 0 15px rgba(61, 246, 246, 0.6), /* Derecha - Cian */
+                -5px 0 10px rgba(255, 255, 255, 0.2);
+  }
+  25% {
+    box-shadow: 0 10px 15px rgba(125, 166, 255, 0.6), /* Abajo - Azul */
+                0 -5px 10px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: -10px 0 15px rgba(61, 246, 231, 0.6), /* Izquierda - Magenta */
+                5px 0 10px rgba(102, 146, 243, 0.2);
+  }
+  75% {
+    box-shadow: 0 -10px 15px rgba(183, 172, 196, 0.6), /* Arriba - Púrpura */
+                0 5px 10px rgba(179, 184, 255, 0.2);
+  }
+  100% {
+    box-shadow: 10px 0 15px rgba(61, 246, 246, 0.6), /* Vuelve a la Derecha - Cian */
+                -5px 0 10px rgba(133, 135, 136, 0.2);
+  }
 }
 
 .post-container section form {
@@ -373,7 +397,7 @@ a:hover {
   text-decoration: underline;
 }
 
-.button-modal-boostrap{
+.button-modal-boostrap {
   display: block;
   margin: 1px 0;
   color: #ffffff;
@@ -745,7 +769,7 @@ button:hover {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px rgba(61, 246, 246, 0.665);
-  text-align: center;
+  text-align: left; /* MODIFICADO DE 'center' a 'left' */
 }
 
 .post .img-post {
@@ -1129,7 +1153,7 @@ footer {
 
   .nav-content .nav-list a span {
     all: unset;
-    padding-left: 10px; 
+    padding-left: 10px;
     font-size: 15px;
     font-weight: bold;
     color: white;
@@ -1153,4 +1177,10 @@ footer {
   .comment-section .comment-form textarea{
     font-size: 0.8em;
   }
+}
+
+.footer-p{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
