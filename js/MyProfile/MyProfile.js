@@ -1,6 +1,6 @@
 class MyProfile {
     constructor(myProfile) {
-        this.imgAvatar = myProfile.imgAvatar;
+        this.imgAvatar = myProfile.urlAvatar;
         this.fullName = myProfile.fullName;
         this.email = myProfile.email;
         this.userName = myProfile.userName;
