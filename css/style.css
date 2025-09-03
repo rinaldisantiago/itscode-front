@@ -1184,3 +1184,53 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+
+.existing-comment {
+    display: flex;
+    align-items: flex-start; 
+    gap: 10px;
+    margin-top: 10px;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    /* Nuevo: Añadido para controlar mejor el espaciado si el botón es pequeño y no se "estira" */
+    justify-content: space-between; 
+}
+
+.existing-comment .avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0; 
+}
+
+.existing-comment p {
+    font-size: 0.9em;
+    margin: 0;
+    line-height: 1.4;
+    flex-grow: 1; /* Permite que el párrafo ocupe el espacio restante */
+    word-break: break-word; 
+    padding-right: 10px; /* Para asegurar un espacio entre el texto y el ícono */
+}
+
+.existing-comment p strong {
+    color: #00d0ff;
+    font-size: 1.1em;
+}
+
+/* Nuevo: Estilos para el botón de eliminar comentario */
+.delete-comment-btn {
+    color: rgba(255, 255, 255, 0.6); /* Color inicial más discreto */
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: color 0.3s ease; /* Transición suave para el hover */
+    align-self: flex-start; /* Para que se alinee con la parte superior del comentario */
+    flex-shrink: 0; /* Asegura que el botón no se encoja */
+}
+
+.delete-comment-btn:hover {
+    color: #b72834; /* Rojo para indicar acción de eliminar al pasar el ratón */
+}
