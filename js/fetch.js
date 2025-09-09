@@ -1,4 +1,3 @@
-
 function apiFetch(url, config, success, objeto) { 
     const fullUrl = `http://localhost:5052${url}`;
 
