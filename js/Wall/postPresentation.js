@@ -1,6 +1,4 @@
-// wall.js
-
-const socialWallContainer = document.getElementById("socialWallContainer");
+const socialWallContainer = document.getElementById("posts-collection");
 const USER_LOGGER_ID = 1; // **¡CAMBIAR!** Obtener esto del contexto de autenticación
 let wallCurrentPage = 1; // Empezamos en la página 1
 

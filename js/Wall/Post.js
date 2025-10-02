@@ -58,7 +58,7 @@ class Post {
                     <textarea placeholder="Escribe un comentario..." rows="1"></textarea>
                     <button type="submit">Enviar</button>
                 </form>
-                            </section>
+            </section>
         `;
         return post;
 

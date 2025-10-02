@@ -29,18 +29,18 @@ function apiFetch(url, config, success, objeto) {
     const fullUrl = `http://localhost:5052${url}`;
 
     fetch(fullUrl, config)
-        .then(async response => { // Usamos async para poder usar await
+        .then(async response => { // ¡CAMBIO CRUCIAL: USAMOS async!
             if (!response.ok) {
-                // 1. Intentamos leer el cuerpo del error como JSON
                 let errorData = null;
                 try {
-                    errorData = await response.json();
+                    // 1. Intentamos leer el JSON de error que viene de .NET
+                    errorData = await response.json(); 
                 } catch (e) {
-                    // Si falla al leer el JSON (ej: error 500 sin cuerpo JSON)
+                    // Si falla la lectura, lanzamos el error HTTP genérico
                     throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
                 }
                 
-                // 2. Si leímos el cuerpo, lanzamos el mensaje detallado de .NET
+                // 2. Si leemos el JSON, usamos el error detallado del servidor
                 const detailedError = errorData.error || errorData.message || 'Error desconocido del servidor.';
                 throw new Error(detailedError);
             }
@@ -50,7 +50,7 @@ function apiFetch(url, config, success, objeto) {
             success(data);
         })
         .catch(error => {
-            // Ahora 'error.message' contendrá el detalle del error de .NET
+            // Este SweetAlert ahora DEBE mostrar el detalle de la excepción C#
             Swal.fire({
                 icon: 'error',
                 title: 'Error de conexión',
