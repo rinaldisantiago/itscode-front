@@ -25,25 +25,11 @@
 //         });
 // }
 
-function apiFetch(url, config, success, objeto) { 
+function apiFetch(url, config, success) { 
     const fullUrl = `http://localhost:5052${url}`;
 
     fetch(fullUrl, config)
-        .then(async response => { // ¡CAMBIO CRUCIAL: USAMOS async!
-            if (!response.ok) {
-                let errorData = null;
-                try {
-                    // 1. Intentamos leer el JSON de error que viene de .NET
-                    errorData = await response.json(); 
-                } catch (e) {
-                    // Si falla la lectura, lanzamos el error HTTP genérico
-                    throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
-                }
-                
-                // 2. Si leemos el JSON, usamos el error detallado del servidor
-                const detailedError = errorData.error || errorData.message || 'Error desconocido del servidor.';
-                throw new Error(detailedError);
-            }
+        .then(response => { 
             return response.json();
         })
         .then(data => {
