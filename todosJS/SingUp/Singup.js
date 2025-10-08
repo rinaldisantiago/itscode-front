@@ -1,5 +1,6 @@
 
 const form = document.getElementById("registration-form");
+const inputName = document.getElementById("input-name");
 
 
 form.addEventListener("submit", async (evt) => {
@@ -13,24 +14,15 @@ form.addEventListener("submit", async (evt) => {
         password: dataForm.get("password")
     };
 
-
-    const data = await apiFetch('/users/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataUser)
-    });
-
-    if(data){
+    const data = updateUser(dataUser, (data) => {
         Swal.fire({
             icon: 'success',
             title: '¡Registro Exitoso!',
             text: data.message || 'Tu cuenta ha sido creada con éxito.',
         });
-
+        //TODO: Guardar en localstorage el id del usuario logueado.
         setTimeout(() => {
             window.location.href = '/login.html';
         }, 2000);
-    }
+    });
 });

@@ -82,8 +82,8 @@
             <h2>Crear Publicación</h2>
 
             <section class="box-section">
-                <form>
-                    <input class="content-form no-margin dark-background" type="text" name="post-title"  
+                <form id="frmPost" method="post">
+                    <input id="txt_post_title" class="content-form no-margin dark-background" type="text" name="post-title"  
                         placeholder="Tema de la publicación..." aria-label="Campo obligatorio: título de la publicación en formato texto" 
                         required 
                     />
@@ -98,11 +98,11 @@
                         accept="image/*" 
                     />
 
-                    <textarea class="content-form dark-background" name="post-content" placeholder="Escribe algo..." rows="13" 
+                    <textarea id="txt_post_description" class="content-form dark-background" name="post-content" placeholder="Escribe algo..." rows="13" 
                     aria-label="Campo obligatorio: contenido de la publicación en formato texto" required></textarea>
 
                     <div>
-                        <button class="buttons-post" type="submit">Publicar</button>
+                        <button id="btn_form_post" class="buttons-post" type="submit">Publicar</button>
                         <button class="buttons-post clean-button" type="reset">Limpiar</button>
                     </div>
                 </form>
@@ -119,6 +119,8 @@
         crossorigin="anonymous">
     </script>
     <script src="../js/script.js"></script>
+    <script src="../js/PostCreate/PostCreate.js"></script>
+    <script src="../js/PostCreate/postCreateRepository.js"></script>
 </body>
 
 </html>
