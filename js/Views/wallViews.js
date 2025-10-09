@@ -11,19 +11,62 @@ import { PostPresentation } from '../presentation/postPresentation.js';
 const POSTS_CONTAINER_SELECTOR = 'main.post-section > section:last-of-type'; 
 const LOGGED_USER_ID = 1; // ⚠️ TEMPORAL: LEER DE SESIÓN ⚠️
 
-// --- Funciones de Interacción (setupWallInteractions y updateInteractionCounters) ---
 
-/**
- * Adjunta los event listeners para las interacciones (Like/Dislike) y comentarios
- * en el contenedor principal del muro.
- */
+function updateButtonState(currentButton, newInteractionId) {
+    const postArticle = currentButton.closest('article.post');
+    if (!postArticle) return;
+
+    // 1. Obtener el botón opuesto
+    const isLike = currentButton.classList.contains('like-btn');
+    const oppositeButton = postArticle.querySelector(isLike ? '.dislike-btn' : '.like-btn');
+
+    // 2. Leer contadores (si no están disponibles en el DTO, esta es la mejor aproximación)
+    let likesCount = parseInt(postArticle.querySelector('.likes-count').textContent);
+    let dislikesCount = parseInt(postArticle.querySelector('.dislikes-count').textContent);
+
+    if (newInteractionId) {
+        // A. Se acaba de crear (Like o Dislike)
+        
+        // 2a. Actualizar contadores
+        if (isLike) {
+            likesCount++;
+            if (oppositeButton.dataset.interactionId) dislikesCount--; // Si había Dislike, lo quitamos
+        } else {
+            dislikesCount++;
+            if (oppositeButton.dataset.interactionId) likesCount--; // Si había Like, lo quitamos
+        }
+        
+        // 2b. Resetear el botón opuesto (porque lo eliminamos en el backend)
+        oppositeButton.classList.remove('active');
+        oppositeButton.dataset.interactionId = ''; // Quitar ID del opuesto
+        
+        // 2c. Activar el botón actual
+        currentButton.classList.add('active');
+        currentButton.dataset.interactionId = newInteractionId; // Establecer la nueva ID
+        
+    } else {
+        // B. Se acaba de eliminar (Quitar Like o Dislike)
+        
+        // 2a. Actualizar contadores
+        if (isLike) likesCount--; else dislikesCount--;
+
+        // 2b. Desactivar el botón
+        currentButton.classList.remove('active');
+        currentButton.dataset.interactionId = ''; // Quitar la ID
+    }
+
+    // 3. Actualizar el DOM con los nuevos contadores
+    postArticle.querySelector('.likes-count').textContent = Math.max(0, likesCount);
+    postArticle.querySelector('.dislikes-count').textContent = Math.max(0, dislikesCount);
+}
+
+
 function setupWallInteractions(containerElement) {
     const interactionRepo = new InteractionRepository();
     const commentRepo = new CommentRepository();
     
     // --- MANEJO DE LIKES Y DISLIKES ---
     
-    // Delegación de eventos: Escuchamos clicks en todo el contenedor
     containerElement.addEventListener('click', async (event) => {
         const likeButton = event.target.closest('.like-btn');
         const dislikeButton = event.target.closest('.dislike-btn');
@@ -38,22 +81,48 @@ function setupWallInteractions(containerElement) {
             targetButton = dislikeButton;
             interactionType = INTERACTION_TYPE.DISLIKE;
         }
-
-        if (targetButton) {
-            event.preventDefault(); // Evitar cualquier acción por defecto
-            const postId = parseInt(targetButton.dataset.postId); 
-
-            try {
-                // Llama al repositorio (crea la interacción, la lógica de la API debe manejar el toggle o error)
-                await interactionRepo.createInteraction(postId, LOGGED_USER_ID, interactionType);
                 
-                // Actualiza solo el contador (o recarga toda la vista)
-                // Por ahora, recarga para asegurar que se vea el cambio reflejado.
-                await loadWallView(); 
+        if (targetButton) {
+            event.preventDefault(); 
+            // Usamos la variable local 'interactionType' que ya definimos.
+            const currentInteractionType = interactionType; 
+            const postId = parseInt(targetButton.dataset.postId); 
+            
+            // 🔑 CLAVE: Intentamos leer el ID de la interacción existente del botón
+            const interactionId = targetButton.dataset.interactionId; 
+            
+            try {
+                if (interactionId && interactionId !== "") { 
+                    // 1. ELIMINAR INTERACCIÓN (Quitar Like/Dislike)
+                    await interactionRepo.deleteInteraction(interactionId);
+                    
+                    // 🛑 SOLUCIÓN: Actualizar el estado del botón a "eliminado"
+                    updateButtonState(targetButton, null); // Pasamos null para indicar eliminación
+                    
+                } else {
+                    // 2. CREAR INTERACCIÓN (Dar Like/Dislike)
+                    const response = await interactionRepo.createInteraction(postId, LOGGED_USER_ID, currentInteractionType);
+                    
+                    // 🛑 SOLUCIÓN: Actualizar el estado del botón con el ID devuelto por el backend
+                    if (response && response.interactionId) {
+                         // El backend (CreateInteraction) debe devolver { interactionId: 123 }
+                         updateButtonState(targetButton, response.interactionId); 
+                    } else {
+                         // Manejar caso donde el POST es exitoso pero no devuelve el ID (Error leve)
+                         console.warn("Interacción creada, pero ID no devuelto. Forzando recarga.");
+                         await loadWallView(); 
+                    }
+                }
+                
+                // 🛑 ELIMINAMOS LA RECARGA COMPLETA QUE CAUSABA EL ERROR 400
+                // await loadWallView(); 
 
             } catch (error) {
-                console.error('Fallo en la interacción:', error);
-                // El apiFetch ya muestra un Swal, pero puedes añadir un mensaje específico aquí.
+                // Si el error es 400 Bad Request, ya sabemos por qué. Lo ignoramos o mostramos un mensaje.
+                console.error('Fallo en la interacción (400 Bad Request esperado si se hace clic dos veces rápido):', error);
+                
+                // Si el error fue al crear, forzamos recarga para ver el estado real del backend
+                if (!interactionId) await loadWallView(); 
             }
         }
     });

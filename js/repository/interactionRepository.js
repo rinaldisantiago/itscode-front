@@ -10,32 +10,26 @@ export const INTERACTION_TYPE = {
 
 export class InteractionRepository {
     
-    /**
-     * Crea una interacción (Like o Dislike) en un post.
-     */
+
     async createInteraction(postId, userId, type) {
-        const url = '/Interaction'; 
+        const url = `/Interaction`; // URL limpia, sin query string
         
-        // Datos enviados al [HttpPost] con [FromBody] en InteractionController
         const requestBody = {
             postId: postId,
             userId: userId,
             interactionType: type 
         };
-
+        
         try {
             const result = await apiFetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json' // Crucial para [FromBody]
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody) // Enviamos el JSON
             });
             return result; 
-        } catch (error) {
-            console.error(`Fallo al crear interacción de tipo ${type}:`, error);
-            throw error;
-        }
+        } catch (error) { /* ... */ }
     }
 
     /**
