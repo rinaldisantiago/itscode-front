@@ -79,12 +79,22 @@
     <main class="post-section">
         <h2>Inicio</h2>
 
+        <p>Personas Conectadas: <span id="users_online">0</span></p>
+
         <section class="post-create-redirection">
             <img class="avatar" src="../img/fotoCv-min.webp" alt="Tu avatar" />
             <a href="post-create.html">Hablemos . . .</a>
         </section>
 
         <section id="posts-collection" class="posts-collection"></section>
+        <!-- TODO:agregar parte de los comentarios js -->
+        <!-- <section class="comment-section">
+            <div class="existing-comment">
+            <img class="avatar" src="../img/fotoCv-min.webp" alt="Avatar del usuario">
+            <p><strong>Carlos:</strong> ¡Este es un ejemplo de un comentario normal y largo que se extiende por varias líneas para probar cómo se ve el diseño con el tacho de basura!</p>
+            TODO:Este es el icono del tacho de basura
+            <i class="fa-solid fa-trash-can delete-comment-btn"></i> </div> -->
+</section>
     </main>
 
     <footer>
@@ -95,10 +105,9 @@
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous">
     </script>
-    <script src="../js/script.js"></script>
-    <script src="../js/Wall/Post.js"></script>
-    <script src="../js/Wall/postRepository.js"></script>
-    <script src="../js/Wall/postPresentation.js"></script>
+    <script src="../js/count.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/script.js" type="module"></script>
 
 </body>
 
