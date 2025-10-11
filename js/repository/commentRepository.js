@@ -9,7 +9,7 @@ export class CommentRepository {
      */
     async createComment(postId, userId, content) {
         // Endpoint: /Comment/create (según tu CommentController)
-        const url = '/Comment/create'; 
+        const url = '/Comment'; 
         
         // Datos enviados al [HttpPost("create")] con [FromBody]
         const requestBody = {

@@ -10,26 +10,42 @@ export const INTERACTION_TYPE = {
 
 export class InteractionRepository {
     
+    /**
+     * Obtiene las interacciones de un usuario para un post específico.
+     * @param {number} postId - ID del post.
+     * @param {number} userId - ID del usuario.
+     * @returns {Promise<Object|null>} La interacción del usuario o null si no existe.
+     */
 
     async createInteraction(postId, userId, type) {
-        const url = `/Interaction`; // URL limpia, sin query string
+        const url = `/Interaction`;
         
         const requestBody = {
-            postId: postId,
-            userId: userId,
-            interactionType: type 
+            postId: postId,        
+            userId: userId,        
+            interactionType: type  
         };
+        
+        console.log('Enviando petición de interacción:', {
+            url: url,
+            body: requestBody
+        });
         
         try {
             const result = await apiFetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json' // Crucial para [FromBody]
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody) // Enviamos el JSON
+                body: JSON.stringify(requestBody)
             });
+            
+            console.log('Respuesta del backend:', result);
             return result; 
-        } catch (error) { /* ... */ }
+        } catch (error) {
+            console.error("Error al crear interacción:", error);
+            throw error;
+        }
     }
 
     /**
@@ -38,9 +54,8 @@ export class InteractionRepository {
     async deleteInteraction(interactionId) {
         const url = '/Interaction';
         
-        // Tu controlador DeleteInteraction espera [FromBody]
         const requestBody = {
-            interactionId: interactionId
+            interactionId: interactionId  
         };
         
         try {

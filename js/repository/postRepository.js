@@ -21,6 +21,7 @@ export class PostRepository {
             });
 
             // Asume que la respuesta JSON tiene la estructura { posts: [...] }
+            // Cada post debe incluir userInteraction: { interactionId: number, type: number } o null
             return responseData.posts || []; 
 
         } catch (error) {

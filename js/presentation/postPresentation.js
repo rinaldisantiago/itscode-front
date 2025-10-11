@@ -27,6 +27,7 @@ export class PostPresentation {
             return;
         }
 
+        console.log('Posts recibidos:', posts);
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.innerHTML = postsHtml;
 
@@ -39,8 +40,17 @@ export class PostPresentation {
      * @returns {string} El HTML completo del <article class="post">.
      */
     createPostHtml(post) {
-        const postId = post.idPost; 
-        const userId = post.idUser; 
+        // Buscar el ID del post - puede estar en diferentes campos según el backend
+        let postId = post.idPost || post.id || post.Id || post.postId || 0; 
+        const userId = post.idUser || post.userId || post.UserId || 0; 
+
+
+        // Validar que el userId sea válido
+        if (!userId || isNaN(userId)) {
+            console.warn('Post con userId inválido:', post);
+            console.warn('Campos disponibles:', Object.keys(post));
+            return '';
+        }
 
         // 1. OBTENER ESTADO DE INTERACCIÓN DEL BACKEND (userInteraction)
         // Si el backend no envía el objeto, asumimos que no hay interacción.
@@ -57,7 +67,7 @@ export class PostPresentation {
         // 3. GENERAR EL HTML
         return `
             <article class="post" data-post-id="${postId}">
-                <img class="avatar" src="${post.userAvatar || '../img/default-avatar.webp'}" alt="Avatar de ${post.userName}">
+                <img class="avatar" src="${(post.userAvatar && post.userAvatar !== 'string') ? post.userAvatar : '../img/default-avatar.webp'}" alt="Avatar de ${post.userName}">
                 <a class="user-name" href="user-profile.html?id=${userId}">
                     <span class="clickable-text">${post.userName}</span>
                 </a>
@@ -72,7 +82,7 @@ export class PostPresentation {
                         data-interaction-type="${INTERACTION_TYPE.LIKE}"
                         data-interaction-id="${isLiked ? interactionId : ''}"> 
                         <i class="fa-solid fa-thumbs-up"></i>
-                        <span>${post.likesCount || 0}</span>
+                        <span>${post.likesCount || post.likes || 0}</span>
                     </button>
                     
                     <button class="action-btn dislike-btn ${isDisliked ? 'active' : ''}" 
@@ -80,7 +90,7 @@ export class PostPresentation {
                         data-interaction-type="${INTERACTION_TYPE.DISLIKE}"
                         data-interaction-id="${isDisliked ? interactionId : ''}">
                         <i class="fa-solid fa-thumbs-down"></i>
-                        <span>${post.dislikesCount || 0}</span>
+                        <span>${post.dislikesCount || post.dislikes || 0}</span>
                     </button>
 
                     <button class="action-btn comment-count-btn">
@@ -113,7 +123,7 @@ export class PostPresentation {
         
         return comments.map(comment => `
             <div class="comment-item">
-                <img class="avatar small-avatar" src="${comment.userAvatar || '../img/default-avatar.webp'}" alt="Avatar">
+                <img class="avatar small-avatar" src="${(comment.userAvatar && comment.userAvatar !== 'string') ? comment.userAvatar : '../img/default-avatar.webp'}" alt="Avatar">
                 <p>
                     <span class="comment-user">${comment.userName}:</span> 
                     ${comment.content}

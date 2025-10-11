@@ -794,6 +794,22 @@ button:hover {
   color: #fff;
 }
 
+.action-btn.active {
+  background-color: rgba(0, 188, 212, 0.3);
+  color: #00d0ff;
+  transform: scale(1.05);
+}
+
+.action-btn.active:hover {
+  background-color: rgba(0, 188, 212, 0.4);
+}
+
+.action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .comment-section {
   margin-top: 15px;
 }

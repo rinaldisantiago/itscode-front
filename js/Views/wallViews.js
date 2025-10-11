@@ -20,9 +20,11 @@ function updateButtonState(currentButton, newInteractionId) {
     const isLike = currentButton.classList.contains('like-btn');
     const oppositeButton = postArticle.querySelector(isLike ? '.dislike-btn' : '.like-btn');
 
-    // 2. Leer contadores (si no están disponibles en el DTO, esta es la mejor aproximación)
-    let likesCount = parseInt(postArticle.querySelector('.likes-count').textContent);
-    let dislikesCount = parseInt(postArticle.querySelector('.dislikes-count').textContent);
+    // 2. Leer contadores desde los spans dentro de los botones
+    const likeButton = postArticle.querySelector('.like-btn');
+    const dislikeButton = postArticle.querySelector('.dislike-btn');
+    let likesCount = parseInt(likeButton.querySelector('span').textContent);
+    let dislikesCount = parseInt(dislikeButton.querySelector('span').textContent);
 
     if (newInteractionId) {
         // A. Se acaba de crear (Like o Dislike)
@@ -30,10 +32,16 @@ function updateButtonState(currentButton, newInteractionId) {
         // 2a. Actualizar contadores
         if (isLike) {
             likesCount++;
-            if (oppositeButton.dataset.interactionId) dislikesCount--; // Si había Dislike, lo quitamos
+            // Si había Dislike, lo quitamos
+            if (oppositeButton.dataset.interactionId) {
+                dislikesCount--;
+            }
         } else {
             dislikesCount++;
-            if (oppositeButton.dataset.interactionId) likesCount--; // Si había Like, lo quitamos
+            // Si había Like, lo quitamos
+            if (oppositeButton.dataset.interactionId) {
+                likesCount--;
+            }
         }
         
         // 2b. Resetear el botón opuesto (porque lo eliminamos en el backend)
@@ -48,7 +56,11 @@ function updateButtonState(currentButton, newInteractionId) {
         // B. Se acaba de eliminar (Quitar Like o Dislike)
         
         // 2a. Actualizar contadores
-        if (isLike) likesCount--; else dislikesCount--;
+        if (isLike) {
+            likesCount--;
+        } else {
+            dislikesCount--;
+        }
 
         // 2b. Desactivar el botón
         currentButton.classList.remove('active');
@@ -56,8 +68,8 @@ function updateButtonState(currentButton, newInteractionId) {
     }
 
     // 3. Actualizar el DOM con los nuevos contadores
-    postArticle.querySelector('.likes-count').textContent = Math.max(0, likesCount);
-    postArticle.querySelector('.dislikes-count').textContent = Math.max(0, dislikesCount);
+    likeButton.querySelector('span').textContent = Math.max(0, likesCount);
+    dislikeButton.querySelector('span').textContent = Math.max(0, dislikesCount);
 }
 
 
@@ -84,9 +96,12 @@ function setupWallInteractions(containerElement) {
                 
         if (targetButton) {
             event.preventDefault(); 
-            // Usamos la variable local 'interactionType' que ya definimos.
+            
             const currentInteractionType = interactionType; 
-            const postId = parseInt(targetButton.dataset.postId); 
+            const postId = targetButton.dataset.postId; 
+            
+            // Deshabilitar el botón temporalmente para evitar múltiples clics
+            targetButton.disabled = true;
             
             // 🔑 CLAVE: Intentamos leer el ID de la interacción existente del botón
             const interactionId = targetButton.dataset.interactionId; 
@@ -96,33 +111,34 @@ function setupWallInteractions(containerElement) {
                     // 1. ELIMINAR INTERACCIÓN (Quitar Like/Dislike)
                     await interactionRepo.deleteInteraction(interactionId);
                     
-                    // 🛑 SOLUCIÓN: Actualizar el estado del botón a "eliminado"
+                    // Actualizar el estado del botón a "eliminado"
                     updateButtonState(targetButton, null); // Pasamos null para indicar eliminación
                     
                 } else {
                     // 2. CREAR INTERACCIÓN (Dar Like/Dislike)
-                    const response = await interactionRepo.createInteraction(postId, LOGGED_USER_ID, currentInteractionType);
+                    const response = await interactionRepo.createInteraction(parseInt(postId), LOGGED_USER_ID, currentInteractionType);
                     
-                    // 🛑 SOLUCIÓN: Actualizar el estado del botón con el ID devuelto por el backend
+                    // Actualizar el estado del botón con el ID devuelto por el backend
                     if (response && response.interactionId) {
-                         // El backend (CreateInteraction) debe devolver { interactionId: 123 }
+                         // El backend devuelve { message: "...", interactionId: 123 }
                          updateButtonState(targetButton, response.interactionId); 
                     } else {
-                         // Manejar caso donde el POST es exitoso pero no devuelve el ID (Error leve)
+                         // Manejar caso donde el POST es exitoso pero no devuelve el ID
                          console.warn("Interacción creada, pero ID no devuelto. Forzando recarga.");
                          await loadWallView(); 
                     }
                 }
-                
-                // 🛑 ELIMINAMOS LA RECARGA COMPLETA QUE CAUSABA EL ERROR 400
-                // await loadWallView(); 
 
             } catch (error) {
-                // Si el error es 400 Bad Request, ya sabemos por qué. Lo ignoramos o mostramos un mensaje.
-                console.error('Fallo en la interacción (400 Bad Request esperado si se hace clic dos veces rápido):', error);
+                console.error('Error en la interacción:', error);
                 
-                // Si el error fue al crear, forzamos recarga para ver el estado real del backend
-                if (!interactionId) await loadWallView(); 
+                // Si hay error, recargar para mostrar el estado real del backend
+                await loadWallView(); 
+            } finally {
+                // Rehabilitar el botón después de un breve delay
+                setTimeout(() => {
+                    targetButton.disabled = false;
+                }, 500);
             }
         }
     });
