@@ -37,8 +37,7 @@ ITSCode-front/
 │   ├── userRepository.js
 │   ├── presentation/
 │   ├── repository/
-│   └── Views/
-│
+│   └── Views/ 
 └── todosJS/
     ├── Following/
     ├── Index/
