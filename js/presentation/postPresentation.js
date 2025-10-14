@@ -1,5 +1,8 @@
 // js/presentation/PostPresentation.js (Capa de Presentación)
 
+// Importar el tipo de interacción (LIKE = 1, DISLIKE = 2) del repositorio
+import { INTERACTION_TYPE } from '../repository/interactionRepository.js'; 
+
 export class PostPresentation {
     
     constructor(containerSelector) {
@@ -17,8 +20,6 @@ export class PostPresentation {
      */
     renderPosts(posts) {
         if (!this.container) return;
-
-        // Limpiamos el mensaje de carga o el contenido anterior
         this.container.innerHTML = ''; 
 
         if (posts.length === 0) {
@@ -29,21 +30,31 @@ export class PostPresentation {
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.innerHTML = postsHtml;
 
-        // Después de inyectar el HTML, puedes agregar un manejador para el auto-resize de textareas
         this.setupTextareaAutoResize(); 
     }
 
     /**
      * Genera el HTML de un solo post.
-     * @param {Object} post - Objeto con los datos del post (asumiendo nombres como en GetPostResponseDTO).
+     * @param {Object} post - Objeto con los datos del post (debe incluir 'userInteraction').
      * @returns {string} El HTML completo del <article class="post">.
      */
     createPostHtml(post) {
-        // Usamos los IDs para las interacciones
-        const postId = post.idPost; // Asume que tu post tiene un ID
+        const postId = post.idPost; 
         const userId = post.idUser; 
 
-        // Generamos la estructura del post replicando el HTML que nos pasaste:
+        // 1. OBTENER ESTADO DE INTERACCIÓN DEL BACKEND (userInteraction)
+        // Si el backend no envía el objeto, asumimos que no hay interacción.
+        const userInteraction = post.userInteraction || { interactionId: null, type: null };
+        
+        // Determinar si el Like o Dislike está activo
+        const isLiked = userInteraction.type === INTERACTION_TYPE.LIKE;
+        const isDisliked = userInteraction.type === INTERACTION_TYPE.DISLIKE;
+
+        // 2. OBTENER EL ID DE LA INTERACCIÓN EXISTENTE
+        // Este ID es CRUCIAL para que wallViews.js decida llamar a DELETE
+        const interactionId = userInteraction.interactionId || '';
+
+        // 3. GENERAR EL HTML
         return `
             <article class="post" data-post-id="${postId}">
                 <img class="avatar" src="${post.userAvatar || '../img/default-avatar.webp'}" alt="Avatar de ${post.userName}">
@@ -56,14 +67,22 @@ export class PostPresentation {
                 ${post.fileUrl ? `<img class="img-post" src="${post.fileUrl}" alt="Imagen de la publicación">` : ''}
 
                 <section class="post-actions">
-                    <button class="action-btn like-btn" data-post-id="${postId}">
+                    <button class="action-btn like-btn ${isLiked ? 'active' : ''}" 
+                        data-post-id="${postId}" 
+                        data-interaction-type="${INTERACTION_TYPE.LIKE}"
+                        data-interaction-id="${isLiked ? interactionId : ''}"> 
                         <i class="fa-solid fa-thumbs-up"></i>
-                        <span>${post.likes || 0}</span>
+                        <span>${post.likesCount || 0}</span>
                     </button>
-                    <button class="action-btn dislike-btn" data-post-id="${postId}">
+                    
+                    <button class="action-btn dislike-btn ${isDisliked ? 'active' : ''}" 
+                        data-post-id="${postId}" 
+                        data-interaction-type="${INTERACTION_TYPE.DISLIKE}"
+                        data-interaction-id="${isDisliked ? interactionId : ''}">
                         <i class="fa-solid fa-thumbs-down"></i>
-                        <span>${post.dislikes || 0}</span>
+                        <span>${post.dislikesCount || 0}</span>
                     </button>
+
                     <button class="action-btn comment-count-btn">
                         <i class="fa-solid fa-comment"></i>
                         <span>${post.commentsCount || 0}</span>
@@ -86,15 +105,12 @@ export class PostPresentation {
 
     /**
      * Dibuja los comentarios existentes dentro del post.
-     * @param {Array<Object>} comments - Lista de comentarios del post.
-     * @returns {string} HTML de los comentarios.
      */
     renderExistingComments(comments) {
         if (!comments || comments.length === 0) {
-            return ''; // No comments to show
+            return '';
         }
         
-        // Simplemente un ejemplo de cómo se vería un comentario
         return comments.map(comment => `
             <div class="comment-item">
                 <img class="avatar small-avatar" src="${comment.userAvatar || '../img/default-avatar.webp'}" alt="Avatar">
@@ -107,7 +123,7 @@ export class PostPresentation {
     }
     
     /**
-     * Configura el auto-resize para los textareas de comentarios (necesario si se inyectan dinámicamente)
+     * Configura el auto-resize para los textareas de comentarios.
      */
     setupTextareaAutoResize() {
         if (!this.container) return;
