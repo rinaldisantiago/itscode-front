@@ -1,5 +1,5 @@
 
-import { loadWallView } from './views/WallViews.js'; 
+import { loadWallView } from './Views/wallViews.js'; 
 // Importar aquí otros controladores (ej: { loadProfileView } from './Views/profileViews.js')
 
 
