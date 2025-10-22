@@ -1322,3 +1322,98 @@ footer {
     font-size: 0.8em;
   }
 }
+/* ================================================= */
+/* ESTILOS UNIFICADOS PARA COMENTARIOS EXISTENTES */
+/* ================================================= */
+
+/* Contenedor de la lista de comentarios (Añade espacio vertical) */
+.existing-comments-list {
+    display: flex;
+    flex-direction: column;
+    /* CLAVE: Espacio entre cada comentario */
+    gap: 15px; 
+    padding-top: 15px;
+    text-align: left; 
+}
+
+/* Contenedor de cada comentario individual */
+.comment-item {
+    display: flex;
+    /* CLAVE: Alinea el avatar con el inicio de la caja de texto */
+    align-items: flex-start; 
+    gap: 10px;
+    padding: 0 10px;
+    text-align: left; 
+}
+
+/* Avatar del comentario */
+.comment-avatar {
+    width: 35px; 
+    height: 35px;
+    min-width: 35px; 
+    border-radius: 50%;
+    margin: 0;
+    object-fit: cover;
+}
+
+/* Cuerpo del comentario (LA CAJA GRIS CLARO NEÓN) */
+.comment-body {
+    /* CLAVE: Vuelve el fondo de la caja */
+    background-color: rgba(255, 255, 255, 0.1); 
+    padding: 8px 12px;
+    border-radius: 12px;
+    flex-grow: 1; 
+    /* CLAVE: Permite que la caja se ajuste cuando el texto es muy largo */
+    min-width: 0; 
+    text-align: left; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para el nombre de usuario dentro de la caja */
+.comment-body .user-name {
+    margin: 0 0 3px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    display: block; 
+}
+
+/* Contenido del comentario (Texto) */
+.comment-content {
+    margin: 0;
+    font-size: 0.95em; 
+    line-height: 1.4em; /* CLAVE: Define la altura de la línea para el "Ver más" */
+    color: #ddd;
+    
+    /* Propiedades para limitar a 3 líneas (3 * 1.4em = 4.2em) */
+    max-height: 4.2em; 
+    overflow: hidden; 
+    
+    /* Propiedades específicas para limitar líneas en WebKit */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; 
+    -webkit-box-orient: vertical;
+
+    /* CLAVE: Para que el texto largo se rompa y no desborde */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+}
+
+/* Clase para expandir el contenido */
+.comment-content.expanded {
+    max-height: none; 
+    -webkit-line-clamp: unset; 
+}
+
+/* Botón "Ver más" */
+.show-more-btn {
+    background: none;
+    border: none;
+    color: #00bcd4; /* Color neón */
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
+    font-size: 0.85em;
+    /* CLAVE: Alinea el botón a la derecha dentro de la caja */
+    align-self: flex-end; 
+}

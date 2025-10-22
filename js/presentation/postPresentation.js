@@ -1,6 +1,3 @@
-// js/presentation/PostPresentation.js (Capa de Presentación)
-
-// Importar el tipo de interacción (LIKE = 1, DISLIKE = 2) del repositorio
 import { INTERACTION_TYPE } from '../repository/interactionRepository.js'; 
 
 export class PostPresentation {
@@ -14,10 +11,6 @@ export class PostPresentation {
         this.container.innerHTML = '<p class="loading-message">Cargando publicaciones...</p>';
     }
 
-    /**
-     * Dibuja un array de objetos post en el contenedor.
-     * @param {Array<Object>} posts - Lista de publicaciones obtenidas del Repositorio.
-     */
     renderPosts(posts) {
         if (!this.container) return;
         this.container.innerHTML = ''; 
@@ -31,14 +24,12 @@ export class PostPresentation {
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.innerHTML = postsHtml;
 
-        this.setupTextareaAutoResize(); 
+        this.setupShowMoreListeners(); // Se adjunta el listener (delegado) al this.container
+        this.setupTextareaAutoResize();
+         
     }
 
-    /**
-     * Genera el HTML de un solo post.
-     * @param {Object} post - Objeto con los datos del post (debe incluir 'userInteraction').
-     * @returns {string} El HTML completo del <article class="post">.
-     */
+    
     createPostHtml(post) {
         // Buscar el ID del post - puede estar en diferentes campos según el backend
         let postId = post.idPost || post.id || post.Id || post.postId || 0; 
@@ -113,24 +104,79 @@ export class PostPresentation {
         `;
     }
 
-    /**
-     * Dibuja los comentarios existentes dentro del post.
-     */
-    renderExistingComments(comments) {
-        if (!comments || comments.length === 0) {
-            return '';
-        }
-        
-        return comments.map(comment => `
-            <div class="comment-item">
-                <img class="avatar small-avatar" src="${(comment.userAvatar && comment.userAvatar !== 'string') ? comment.userAvatar : '../img/default-avatar.webp'}" alt="Avatar">
-                <p>
-                    <span class="comment-user">${comment.userName}:</span> 
-                    ${comment.content}
-                </p>
-            </div>
-        `).join('');
+   setupShowMoreListeners() {
+    // Verificar si el listener ya ha sido configurado (para evitar duplicados)
+    if (this.showMoreListenerSet) {
+        return;
     }
+
+    // Usar el contenedor principal (this.container) para la delegación de eventos
+    this.container.addEventListener('click', (event) => {
+        // 1. Verificar si el elemento clickeado es el botón "Ver más"
+        if (event.target.classList.contains('show-more-btn')) {
+            const button = event.target;
+            // 2. El contenido (<p class="comment-content">) es el elemento justo antes del botón en el DOM
+            const content = button.previousElementSibling; 
+            
+            // 3. Alternar la clase 'expanded' para mostrar/ocultar
+            content.classList.toggle('expanded');
+            
+            // 4. Cambiar el texto del botón
+            if (content.classList.contains('expanded')) {
+                button.textContent = 'Ver menos...';
+            } else {
+                button.textContent = 'Ver más...';
+            }
+            
+            event.preventDefault(); // Evita cualquier comportamiento de formulario o navegación
+        }
+    });
+
+    this.showMoreListenerSet = true; // Marcar como configurado
+}
+
+
+renderExistingComments(comments) {
+    if (!comments || comments.length === 0) {
+        return ''; 
+    }
+    
+    // Función de ejemplo para el umbral de "Ver más"
+    const checkNeedsMore = (content) => content.length > 100; 
+
+    const commentsHtml = comments.map(comment => {
+        const content = comment.content;
+        const needsMore = checkNeedsMore(content);
+        const showMoreButton = needsMore ? 
+            '<button class="show-more-btn">Ver más...</button>' : '';
+        
+        // Obtenemos el ID del usuario que comenta
+        const commentUserId = comment.idUser || comment.userId || 0; 
+        
+        return `
+        <div class="comment-item" data-comment-id="${comment.idComment || comment.id}">
+            <a href="user-profile.html?id=${commentUserId}">
+                <img class="avatar comment-avatar" src="${(comment.userAvatar && comment.userAvatar !== 'string') ? comment.userAvatar : '../img/emi-min.webp'}" alt="Avatar de ${comment.userName}">
+            </a>
+            
+            <div class="comment-body">
+                
+                <a class="user-name" href="user-profile.html?id=${commentUserId}">
+                    <span class="clickable-text">${comment.userName}</span> 
+                </a>
+                
+                <p class="comment-content">${content}</p>
+                
+                ${showMoreButton} 
+                
+            </div>
+            
+        </div>
+        `;
+    }).join('');
+
+    return `<div class="existing-comments-list">${commentsHtml}</div>`;
+}  
     
     /**
      * Configura el auto-resize para los textareas de comentarios.
