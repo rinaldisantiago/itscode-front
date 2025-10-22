@@ -11,19 +11,74 @@ import { PostPresentation } from '../presentation/postPresentation.js';
 const POSTS_CONTAINER_SELECTOR = 'main.post-section > section:last-of-type'; 
 const LOGGED_USER_ID = 1; // ⚠️ TEMPORAL: LEER DE SESIÓN ⚠️
 
-// --- Funciones de Interacción (setupWallInteractions y updateInteractionCounters) ---
 
-/**
- * Adjunta los event listeners para las interacciones (Like/Dislike) y comentarios
- * en el contenedor principal del muro.
- */
+function updateButtonState(currentButton, newInteractionId) {
+    const postArticle = currentButton.closest('article.post');
+    if (!postArticle) return;
+
+    // 1. Obtener el botón opuesto
+    const isLike = currentButton.classList.contains('like-btn');
+    const oppositeButton = postArticle.querySelector(isLike ? '.dislike-btn' : '.like-btn');
+
+    // 2. Leer contadores desde los spans dentro de los botones
+    const likeButton = postArticle.querySelector('.like-btn');
+    const dislikeButton = postArticle.querySelector('.dislike-btn');
+    let likesCount = parseInt(likeButton.querySelector('span').textContent);
+    let dislikesCount = parseInt(dislikeButton.querySelector('span').textContent);
+
+    if (newInteractionId) {
+        // A. Se acaba de crear (Like o Dislike)
+        
+        // 2a. Actualizar contadores
+        if (isLike) {
+            likesCount++;
+            // Si había Dislike, lo quitamos
+            if (oppositeButton.dataset.interactionId) {
+                dislikesCount--;
+            }
+        } else {
+            dislikesCount++;
+            // Si había Like, lo quitamos
+            if (oppositeButton.dataset.interactionId) {
+                likesCount--;
+            }
+        }
+        
+        // 2b. Resetear el botón opuesto (porque lo eliminamos en el backend)
+        oppositeButton.classList.remove('active');
+        oppositeButton.dataset.interactionId = ''; // Quitar ID del opuesto
+        
+        // 2c. Activar el botón actual
+        currentButton.classList.add('active');
+        currentButton.dataset.interactionId = newInteractionId; // Establecer la nueva ID
+        
+    } else {
+        // B. Se acaba de eliminar (Quitar Like o Dislike)
+        
+        // 2a. Actualizar contadores
+        if (isLike) {
+            likesCount--;
+        } else {
+            dislikesCount--;
+        }
+
+        // 2b. Desactivar el botón
+        currentButton.classList.remove('active');
+        currentButton.dataset.interactionId = ''; // Quitar la ID
+    }
+
+    // 3. Actualizar el DOM con los nuevos contadores
+    likeButton.querySelector('span').textContent = Math.max(0, likesCount);
+    dislikeButton.querySelector('span').textContent = Math.max(0, dislikesCount);
+}
+
+
 function setupWallInteractions(containerElement) {
     const interactionRepo = new InteractionRepository();
     const commentRepo = new CommentRepository();
     
     // --- MANEJO DE LIKES Y DISLIKES ---
     
-    // Delegación de eventos: Escuchamos clicks en todo el contenedor
     containerElement.addEventListener('click', async (event) => {
         const likeButton = event.target.closest('.like-btn');
         const dislikeButton = event.target.closest('.dislike-btn');
@@ -38,22 +93,52 @@ function setupWallInteractions(containerElement) {
             targetButton = dislikeButton;
             interactionType = INTERACTION_TYPE.DISLIKE;
         }
-
-        if (targetButton) {
-            event.preventDefault(); // Evitar cualquier acción por defecto
-            const postId = parseInt(targetButton.dataset.postId); 
-
-            try {
-                // Llama al repositorio (crea la interacción, la lógica de la API debe manejar el toggle o error)
-                await interactionRepo.createInteraction(postId, LOGGED_USER_ID, interactionType);
                 
-                // Actualiza solo el contador (o recarga toda la vista)
-                // Por ahora, recarga para asegurar que se vea el cambio reflejado.
-                await loadWallView(); 
+        if (targetButton) {
+            event.preventDefault(); 
+            
+            const currentInteractionType = interactionType; 
+            const postId = targetButton.dataset.postId; 
+            
+            // Deshabilitar el botón temporalmente para evitar múltiples clics
+            targetButton.disabled = true;
+            
+            // 🔑 CLAVE: Intentamos leer el ID de la interacción existente del botón
+            const interactionId = targetButton.dataset.interactionId; 
+            
+            try {
+                if (interactionId && interactionId !== "") { 
+                    // 1. ELIMINAR INTERACCIÓN (Quitar Like/Dislike)
+                    await interactionRepo.deleteInteraction(interactionId);
+                    
+                    // Actualizar el estado del botón a "eliminado"
+                    updateButtonState(targetButton, null); // Pasamos null para indicar eliminación
+                    
+                } else {
+                    // 2. CREAR INTERACCIÓN (Dar Like/Dislike)
+                    const response = await interactionRepo.createInteraction(parseInt(postId), LOGGED_USER_ID, currentInteractionType);
+                    
+                    // Actualizar el estado del botón con el ID devuelto por el backend
+                    if (response && response.interactionId) {
+                         // El backend devuelve { message: "...", interactionId: 123 }
+                         updateButtonState(targetButton, response.interactionId); 
+                    } else {
+                         // Manejar caso donde el POST es exitoso pero no devuelve el ID
+                         console.warn("Interacción creada, pero ID no devuelto. Forzando recarga.");
+                         await loadWallView(); 
+                    }
+                }
 
             } catch (error) {
-                console.error('Fallo en la interacción:', error);
-                // El apiFetch ya muestra un Swal, pero puedes añadir un mensaje específico aquí.
+                console.error('Error en la interacción:', error);
+                
+                // Si hay error, recargar para mostrar el estado real del backend
+                await loadWallView(); 
+            } finally {
+                // Rehabilitar el botón después de un breve delay
+                setTimeout(() => {
+                    targetButton.disabled = false;
+                }, 500);
             }
         }
     });
