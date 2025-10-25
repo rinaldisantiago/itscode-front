@@ -1,31 +1,3 @@
-// function apiFetch(url, config, success) { 
-//     const fullUrl = `http://localhost:5052${url}`;
-
-//     fetch(fullUrl, config)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             success(data);
-//         })
-//         .catch(error => {
-//             Swal.fire({
-//                 icon: 'error',
-//                 title: 'Error de conexión',
-//                 text: `Hubo un problema al conectar con el servidor. Detalle: ${error.message}`,
-//             });
-//             console.error('Error en la solicitud:', error);
-//         })
-//         .finally(() => {
-//             // Borrar spin
-//         });
-// }
-
-// js/fetch.js
-// Función de utilidad para manejar todas las llamadas a la API de .NET.
 
 /**
  * Realiza una solicitud a la API y devuelve los datos JSON si es exitosa.
@@ -38,6 +10,7 @@
 export async function apiFetch(url, config = {}) {
     // 1. URL completa
     const fullUrl = `http://localhost:5052${url}`;
+    
 
     // 2. Realizar la solicitud
     try {
@@ -99,4 +72,12 @@ export async function apiFetch(url, config = {}) {
         // 6. Ocultar spinner
         // hideSpinner();
     }
+}
+// Helper para requests con JSON (POST, PUT, etc.)
+export function jsonConfig(method, body) {
+    return {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    };
 }
