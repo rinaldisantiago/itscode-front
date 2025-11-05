@@ -76,24 +76,42 @@ const handleRegistration = async (event) => {
     }
 };
 
-// ... (El resto del archivo: handleLoginClick, inicializadores, etc. no cambia)
 const handleLoginClick = async (event) => {
     event.preventDefault(); 
-    const username = usernameInput ? usernameInput.value.trim() : '';
-    const password = passwordInput ? passwordInput.value.trim() : '';
+
+    // 👇 CAMBIO CLAVE: Usamos FormData para leer los valores del formulario
+    const formData = new FormData(loginForm);
+    const username = formData.get('username')?.trim(); // Lee el input con name="username"
+    const password = formData.get('password')?.trim(); // Lee el input con name="password"
+
     if (!username || !password) {
         Swal.fire({ icon: 'warning', title: 'Faltan datos', text: 'Por favor, introduce tu usuario y contraseña.' });
         return;
     }
+
     if (loginButton) {
         loginButton.textContent = 'Ingresando...';
         loginButton.disabled = true; 
     }
+
     try {
         const result = await loginUser(username, password);
+        
+        console.log('Datos que se guardarán en sesión:', result.user);
+
         localStorage.setItem('userSession', JSON.stringify(result.user));
-        Swal.fire({ icon: 'success', title: '¡Bienvenido!', text: `Sesión iniciada como ${result.user.UserName}. Redireccionando...`, showConfirmButton: false, timer: 1500 })
-            .then(() => { window.location.href = './html/wall.html'; });
+
+        Swal.fire({ 
+            icon: 'success', 
+            title: '¡Bienvenido!', 
+            text: `Sesión iniciada como ${result.user.UserName}. Redireccionando...`, 
+            showConfirmButton: false, 
+            timer: 1500 
+        }).then(() => { 
+            // Redirección al muro
+            window.location.href = '../html/wall.html'; 
+        });
+
     } catch (error) {
         console.error('Fallo en el flujo de login:', error);
     } finally {
