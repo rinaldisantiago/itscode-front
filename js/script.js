@@ -1,17 +1,8 @@
-// js/script.js
-
-// =======================================================
-// 1. IMPORTACIONES
-// =======================================================
-
-// Importamos el controlador de Muro/Wall
-import { loadWallView } from './Views/wallViews.js'; 
-
-// Importamos los controladores de Registro y Login
+import { loadWallView } from './Controller/wallController.js';
 import { loadSignupView, loadLoginView } from './presentation/authPresentation.js'; 
-
-// Importamos el controlador para la página de Creación de Posts
 import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
+// 🚀 NUEVA IMPORTACIÓN: El controlador de la vista de perfil
+import { loadProfileView } from './Controller/profileController.js';
 
 
 // =======================================================
@@ -19,41 +10,44 @@ import { loadPostCreateView } from './presentation/postCreatePresentation.js';
 // =======================================================
 
 function initializeApp() {
-    // Lógica para detectar qué página estamos cargando
-    const path = window.location.pathname;
-    
-    // --- CONTROL DE RUTAS ESPECÍFICAS ---
-    
-    // Ruta: REGISTRO (sign-up.html)
-    if (path.includes('sign-up.html')) {
-        loadSignupView();
-        console.log("Cargando controlador de Registro.");
-    } 
-    
-    // Ruta: LOGIN (index.html o la raíz /)
-    else if (path.endsWith('/') || path.endsWith('/index.html')) {
-        loadLoginView();
-        console.log("Cargando controlador de Login.");
-    }
-    
-    // Ruta: CREAR POST (post-create.html)
-    else if (path.includes('post-create.html')) {
-        loadPostCreateView();
-        console.log("Cargando controlador de Creación de Post.");
+    // Lógica para detectar qué página estamos cargando
+    const path = window.location.pathname;
+    
+    // --- CONTROL DE RUTAS ESPECÍFICAS ---
+    
+    // Ruta: REGISTRO (sign-up.html)
+    if (path.includes('sign-up.html')) {
+        loadSignupView();
+        console.log("Cargando controlador de Registro.");
+    } 
+    
+    // Ruta: LOGIN (index.html o la raíz /)
+    else if (path.endsWith('/') || path.endsWith('/index.html')) {
+        loadLoginView();
+        console.log("Cargando controlador de Login.");
+    }
+    
+    // Ruta: CREAR POST (post-create.html)
+    else if (path.includes('post-create.html')) {
+        loadPostCreateView();
+        console.log("Cargando controlador de Creación de Post.");
+    }
+
+    // 🚀 NUEVA RUTA: MI PERFIL (my-profile.html)
+    else if (path.includes('my-profile.html')) {
+        loadProfileView();
+        console.log("Cargando vista de Mi Perfil.");
     }
 
-    // Ruta: Muro principal (wall.html)
-    else if (path.includes('wall.html')) {
-        loadWallView(); 
-        console.log("Cargando vista del Muro.");
-    } 
-    
-    // Aquí puedes añadir más rutas para otras páginas (ej: mi-perfil.html)
-    
-
-    // --- LÓGICA GLOBAL (se ejecuta en todas las páginas) ---
-    setupNavBarToggle();
-    setupLogoutHandler(); 
+    // Ruta: Muro principal (wall.html)
+    else if (path.includes('wall.html')) {
+        loadWallView(); 
+        console.log("Cargando vista del Muro.");
+    } 
+    
+    // --- LÓGICA GLOBAL (se ejecuta en todas las páginas) ---
+    setupNavBarToggle();
+    setupLogoutHandler(); // Ahora esta función tiene lógica
 }
 
 
@@ -63,18 +57,35 @@ function initializeApp() {
 
 // Lógica del menú de navegación responsive
 function setupNavBarToggle() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active'); 
-        });
-    }
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active'); 
+        });
+    }
 }
 
-// Lógica para el botón de cerrar sesión
+// 🚀 LÓGICA DE LOGOUT IMPLEMENTADA
 function setupLogoutHandler() {
-    // TODO: Implementar la lógica para limpiar localStorage y redirigir al login.
+    // Buscamos el botón "De acuerdo" dentro del modal de cierre de sesión
+    // (Basado en el HTML que me enviaste de 'my-profile.html')
+    const logoutConfirmButton = document.querySelector('.button-modal-boostrap');
+
+    if (logoutConfirmButton) {
+        logoutConfirmButton.addEventListener('click', (event) => {
+            // Prevenimos que el enlace <a> navegue antes de limpiar
+            event.preventDefault(); 
+            
+            // 1. Limpiar la sesión del localStorage
+            localStorage.removeItem('userSession');
+            
+            // 2. Redirigir al Login
+            // Usamos la URL del href del botón para asegurarnos de que sea la correcta
+            const loginUrl = logoutConfirmButton.href; 
+            window.location.href = loginUrl; 
+        });
+    }
 }
 
 
