@@ -1,8 +1,7 @@
 import { loadWallView } from './Controller/wallController.js';
 import { loadSignupView, loadLoginView } from './presentation/authPresentation.js'; 
 import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
-// 🚀 NUEVA IMPORTACIÓN: El controlador de la vista de perfil
-import { loadProfileView } from './Controller/profileController.js';
+
 
 
 // =======================================================

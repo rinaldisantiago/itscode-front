@@ -1,13 +1,14 @@
 // js/Controller/profileController.js
 
 // --- 1. IMPORTACIONES DE MODELO (DATOS) ---
-import { PostRepository, buildFullUrl } from '../repository/postRepository.js';
+import { PostRepository } from '../repository/postRepository.js';
 import { getUserById } from '../repository/userRepository.js'; 
 import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
 import { CommentRepository } from '../repository/commentRepository.js';
 
 // --- 2. IMPORTACIONES DE VISTA (HTML) ---
 import { PostPresentation } from '../presentation/postPresentation.js'; 
+import { renderUserInfo } from '../presentation/profilePresentation.js';
 
 // --- 3. INSTANCIAS DE REPOSITORIO ---
 const postRepo = new PostRepository();
@@ -29,36 +30,6 @@ const getUserSession = () => {
         urlAvatar: rawUser.UrlAvatar || rawUser.urlAvatar
     };
 };
-
-/**
- * Pinta la cabecera del perfil (avatar, nombre, email)
- */
-function renderUserInfo(userData, postCount, container) {
-    container.innerHTML = ''; // Limpiamos el contenedor
-    const avatarUrl = buildFullUrl(userData.urlAvatar); 
-    
-    // Usamos el HTML de tu "modelo"
-    const profileCardHTML = `
-        <section class="user-info">
-            <img src="${avatarUrl}" id="avatar" class="avatar" alt="Avatar de ${userData.userName}">
-            <article class="details">
-                <h2 id="nickname">@${userData.userName}</h2>
-                <h3 id="name">${userData.fullName}</h3>
-                <p id="bio">${userData.email}</p>
-            </article>
-            <article class="stats">
-                <span>${postCount} publicaciones</span>
-                <span>0 seguidores</span>
-                <span>0 seguidos</span>
-            </article>
-            <a href="update-user.html" class="edit-btn">
-                <i class="fas fa-user-edit"></i> Editar
-            </a>
-        </section>
-    `;
-    container.innerHTML = profileCardHTML;
-}
-
 
 // =======================================================
 // --- 🚀 LÓGICA DE INTERACCIÓN (RESTAURADA) ---
