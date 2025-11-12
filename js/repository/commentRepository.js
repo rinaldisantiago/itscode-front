@@ -33,9 +33,6 @@ export class CommentRepository {
         }
     }
     
-    /**
-     * Elimina un comentario por su ID.
-     */
     async deleteComment(commentId) {
         // Endpoint: /Comment?id=X (según tu CommentController)
         const url = '/Comment';

@@ -9,13 +9,6 @@ export const INTERACTION_TYPE = {
 };
 
 export class InteractionRepository {
-    
-    /**
-     * Obtiene las interacciones de un usuario para un post específico.
-     * @param {number} postId - ID del post.
-     * @param {number} userId - ID del usuario.
-     * @returns {Promise<Object|null>} La interacción del usuario o null si no existe.
-     */
 
     async createInteraction(postId, userId, type) {
         const url = `/Interaction`;

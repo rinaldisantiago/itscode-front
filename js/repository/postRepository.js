@@ -47,11 +47,6 @@ export class PostRepository {
     }
 }
 
-/**
- * 🚀 NUEVA FUNCIÓN (Helper)
- * Exportamos esta función por separado para que otras vistas (como profileViews) 
- * puedan usarla para construir URLs de imágenes.
- */
 export function buildFullUrl(relativeUrl) {
     if (!relativeUrl || relativeUrl.startsWith('http')) {
         return relativeUrl || 'https://i.imgur.com/6M5A0b6.png'; // Fallback
