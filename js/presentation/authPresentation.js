@@ -13,9 +13,9 @@ const loginButton = loginForm ? loginForm.querySelector('.btn') : null;
 // --- REGLAS DE VALIDACIÓN (SINCRONIZADAS CON EL HTML) ---
 // 🚨 CAMBIO CLAVE: Las claves coinciden con los 'name' del HTML de registro
 const validationRules = {
-    username: { minLength: 3, fieldName: "Nombre Completo" }, // Coincide con name="username"
+    FullName: { minLength: 3, fieldName: "Nombre Completo" }, // Coincide con name="FullName"
     email: { type: "email", fieldName: "Correo Electrónico" }, // Coincide con name="email"
-    nickname: { minLength: 3, fieldName: "Nombre de Usuario" }, // Coincide con name="nickname"
+    Username: { minLength: 3, fieldName: "Nombre de Usuario" }, // Coincide con name="Username"
     password: { minLength: 6, fieldName: "Contraseña" } // Coincide con name="password"
 };
 

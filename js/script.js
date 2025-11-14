@@ -1,7 +1,8 @@
 import { loadWallView } from './Controller/wallController.js';
 import { loadSignupView, loadLoginView } from './presentation/authPresentation.js'; 
 import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
-
+import { loadProfileView } from './Controller/profileController.js';
+import { loadUpdateUserView } from './Controller/updateUserController.js';
 
 
 // =======================================================
@@ -43,6 +44,11 @@ function initializeApp() {
         loadWallView(); 
         console.log("Cargando vista del Muro.");
     } 
+
+    else if (path.includes('update-user.html')) { // Asegúrate que el nombre del archivo coincida
+        loadUpdateUserView();
+        console.log("Cargando vista de Actualización de Perfil.");
+    }
     
     // --- LÓGICA GLOBAL (se ejecuta en todas las páginas) ---
     setupNavBarToggle();

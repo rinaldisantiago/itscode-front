@@ -45,6 +45,25 @@ export class PostRepository {
             return []; 
         }
     }
+
+    /**
+     * 🚀 NUEVO MÉTODO
+     * Obtiene un único post por su ID.
+     * Asume que existe un endpoint GET /Post/{id}
+     */
+    async getPostById(postId, loggedUserId) {
+        try {
+            // El backend necesita idUserLogger para calcular la interacción del usuario (si le dio like, etc.)
+            const url = `${POST_API_URL}/${postId}?idUserLogger=${loggedUserId}`;
+            
+            const postData = await apiFetch(url);
+            return postData;
+
+        } catch (error) {
+            console.error(`Fallo en PostRepository.getPostById para el post ${postId}:`, error);
+            throw error; // Relanzamos el error para que el llamador se entere
+        }
+    }
 }
 
 export function buildFullUrl(relativeUrl) {

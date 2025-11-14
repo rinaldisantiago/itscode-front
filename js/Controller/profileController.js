@@ -36,6 +36,11 @@ const getUserSession = () => {
 // (Esta es la lógica que me pasaste de tu wallViews.js original)
 // =======================================================
 
+// Variable para la instancia de PostPresentation 
+let postPresentation; 
+// Semaforo para asegurar que los listeners se adjuntan una sola vez
+let profileInteractionsInitialized = false;
+
 function updateButtonState(currentButton, newInteractionId) {
     const postArticle = currentButton.closest('article.post');
     if (!postArticle) return;
@@ -71,6 +76,11 @@ function updateButtonState(currentButton, newInteractionId) {
 }
 
 function setupProfileInteractions(containerElement, loggedUserId) {
+    // Si ya hemos añadido los listeners, no hacemos nada más.
+    if (profileInteractionsInitialized) {
+        return;
+    }
+    
     // --- MANEJO DE LIKES Y DISLIKES ---
     containerElement.addEventListener('click', async (event) => {
         const button = event.target.closest('.like-btn, .dislike-btn');
@@ -110,18 +120,28 @@ function setupProfileInteractions(containerElement, loggedUserId) {
 
             if (!content) return;
 
-           try {
-                await commentRepo.createComment(postId, loggedUserId, content);
-                contentInput.value = '';
-                // 🚨 CAMBIO: Recargamos la vista del perfil para ver el comentario
-                await loadProfileView(); 
-            } catch (error) {
-                console.error('Fallo al crear comentario:', error);
-            }
+            try {
+                // 1. Crear el comentario
+                await commentRepo.createComment(postId, loggedUserId, content);
+                contentInput.value = ''; 
+                contentInput.style.height = 'auto';
+
+                // 2. Obtener el post actualizado del backend
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
+
+                // 3. Re-renderizar solo ese post con la nueva información
+                if (updatedPost && postPresentation) {
+                    postPresentation.updateSinglePost(updatedPost);
+                }
+                
+            } catch (error) {
+                console.error('Fallo al crear y refrescar comentario:', error);
+            }
         }
     });
     
-    // TODO: Adjuntar listener para '.comment-count-btn'
+    // Marcamos los listeners como inicializados
+    profileInteractionsInitialized = true;
 }
 
 
@@ -144,10 +164,11 @@ export async function loadProfileView() {
     if (!infoUserContainer || !myPostsContainer) {
         console.error("IDs de HTML (infoUserContainer o myPostsContainer) no encontrados.");
         return; 
-    }
+    } 
     
     // 3. INSTANCIAR PRESENTACIÓN (VISTA)
-    const postPresentation = new PostPresentation('#myPostsContainer', userSession);
+    // Usamos la variable global para que sea accesible desde los listeners
+    postPresentation = new PostPresentation('#myPostsContainer', userSession);
 
     // 4. ORQUESTAR: Buscar datos y luego pintar
     try {
@@ -163,12 +184,11 @@ export async function loadProfileView() {
         // C. Enviar datos a la Presentación (renderizar posts)
         postPresentation.renderPosts(userPosts); 
         
-        // D. Adjuntar Listeners a los posts renderizados
+        // D. Adjuntar Listeners a los posts renderizados (solo la primera vez)
         setupProfileInteractions(myPostsContainer, user.id);
 
     } catch (error) {
         console.error("Error cargando datos del perfil:", error);
     }
 }
-
 

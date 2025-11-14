@@ -1,5 +1,3 @@
-// js/presentation/postPresentation.js
-
 import { INTERACTION_TYPE } from '../repository/interactionRepository.js'; 
 // 🚨 AÑADIDO: Importamos el helper para construir las URLs
 import { buildFullUrl } from '../repository/postRepository.js';
@@ -47,61 +45,55 @@ export class PostPresentation {
         const isDisliked = userInteraction.type === INTERACTION_TYPE.DISLIKE;
         const interactionId = userInteraction.interactionId || '';
 
-        // 🚨 CAMBIO: Usamos el helper buildFullUrl
         const avatarUrl = buildFullUrl(post.userAvatar);
         const postImageUrl = post.fileUrl ? buildFullUrl(post.fileUrl) : '';
-        // Usamos el helper para el avatar del usuario logueado
         const loggedUserAvatarUrl = buildFullUrl(this.loggedUser.urlAvatar);
 
-        // 3. GENERAR EL HTML (Tu plantilla)
+        // 3. GENERAR EL HTML (basado en tu estructura anterior)
         return `
-            <article class="post" data-post-id="${postId}">
-                <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
-                <a class="user-name" href="user-profile.html?id=${userId}">
-                    <span class="clickable-text">${post.userName}</span>
-                </a>
-                <h3 class="post-title">${post.title}</h3>
-                <p>${post.content ? post.content : ''}</p>
-                
-                ${postImageUrl ? `<img class="img-post" src="${postImageUrl}" alt="Imagen de la publicación">` : ''}
-
-                <section class="post-actions">
-                    <button class="action-btn like-btn ${isLiked ? 'active' : ''}" 
-                        data-post-id="${postId}" 
-                        data-interaction-type="${INTERACTION_TYPE.LIKE}"
-                        data-interaction-id="${interactionId}"
-                        data-count="${post.likesCount || 0}"> 
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        <span>${post.likesCount || 0}</span>
-                    </button>
-                    
-                    <button class="action-btn dislike-btn ${isDisliked ? 'active' : ''}" 
-                        data-post-id="${postId}" 
-                        data-interaction-type="${INTERACTION_TYPE.DISLIKE}"
-                        data-interaction-id="${interactionId}"
-                        data-count="${post.dislikesCount || 0}">
-
-                        <i class="fa-solid fa-thumbs-down"></i>
-                        <span>${post.dislikesCount || 0}</span>
-                    </button>
-
-                    <button class="action-btn comment-count-btn">
-                        <i class="fa-solid fa-comment"></i>
-                        <span>${post.commentsCount || 0}</span>
-                    </button>
-                </section>
-                
-                <section class="comment-section">
-                    <form class="comment-form" data-post-id="${postId}">
-                        <img class="avatar" src="${loggedUserAvatarUrl}" alt="Tu avatar">
-                        <textarea placeholder="Escribe un comentario..." rows="1" name="commentContent"></textarea>
-                        <button type="submit">Enviar</button>
-                    </form>
-                    <div class="existing-comments">
-                        ${this.renderExistingComments(post.comments)}
-                    </div>
-                </section>
-            </article>
+            <article class="post" data-post-id="${postId}">
+                <div class="post-header">
+                    <a href="user-profile.html?id=${userId}"> 
+                        <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
+                        <h4 class="user-name">${post.userName}</h4>
+                    </a>
+                </div>
+                <h3 class="post-title">${post.title}</h3>
+                <p>${post.content ? post.content : ''}</p>
+                ${postImageUrl ? `<img class="img-post" src="${postImageUrl}" alt="Imagen del post">` : ''}
+                <section class="post-actions">
+                    <button class="action-btn like-btn ${isLiked ? 'active' : ''}" 
+                            data-post-id="${postId}" 
+                            data-interaction-type="${INTERACTION_TYPE.LIKE}"
+                            data-interaction-id="${interactionId}"
+                            data-count="${post.likesCount || 0}">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                        <span>${post.likesCount || 0}</span>
+                    </button>
+                    <button class="action-btn dislike-btn ${isDisliked ? 'active' : ''}" 
+                            data-post-id="${postId}" 
+                            data-interaction-type="${INTERACTION_TYPE.DISLIKE}"
+                            data-interaction-id="${interactionId}"
+                            data-count="${post.dislikesCount || 0}">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                        <span>${post.dislikesCount || 0}</span>
+                    </button>
+                    <button class="action-btn comment-count-btn">
+                        <i class="fa-solid fa-comment"></i>
+                        <span>${post.commentsCount || 0}</span>
+                    </button>
+                </section>
+                <section class="comment-section">
+                    <form class="comment-form" data-post-id="${postId}">
+                        <img class="avatar" src="${loggedUserAvatarUrl}" alt="Tu avatar">
+                        <textarea placeholder="Escribe un comentario..." rows="1" name="commentContent"></textarea>
+                        <button type="submit">Enviar</button>
+                    </form>
+                    <div class="existing-comments">
+                        ${this.renderExistingComments(post.comments)}
+                    </div>
+                </section>
+            </article>
         `;
     }
 
@@ -127,40 +119,84 @@ export class PostPresentation {
 
     // 🚀 RESTAURADO: Tu renderizador de comentarios
     renderExistingComments(comments) {
-        if (!comments || comments.length === 0) {
-            return ''; 
-        }
-        
-        const checkNeedsMore = (content) => content.length > 100; 
+        if (!comments || comments.length === 0) {
+            return '';
+        }
+        const commentsHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
+        return `<div class="existing-comments-list">${commentsHtml}</div>`;
+    }
 
-        const commentsHtml = comments.map(comment => {
-            const content = comment.content;
-            const needsMore = checkNeedsMore(content);
-            const showMoreButton = needsMore ? 
-                '<button class="show-more-btn">Ver más...</button>' : '';
-            const commentUserId = comment.idUser || comment.userId || 0; 
-            
-            // 🚨 CAMBIO: Usamos buildFullUrl
-            const commentAvatarUrl = buildFullUrl(comment.userAvatar);
-            
-            return `
-            <div class="comment-item" data-comment-id="${comment.idComment || comment.id}">
-                <a href="user-profile.html?id=${commentUserId}">
-                    <img class="avatar comment-avatar" src="${commentAvatarUrl}" alt="Avatar de ${comment.userName}">
-                </a>
-                <div class="comment-body">
-                    <a class="user-name" href="user-profile.html?id=${commentUserId}">
-                        <span class="clickable-text">${comment.userName}</span> 
-                    </a>
-                    <p class="comment-content">${content}</p>
-                    ${showMoreButton} 
-                </div>
-            </div>
-            `;
-        }).join('');
+    createCommentHtml(comment) {
+        // Hacemos la función robusta a PascalCase (del backend) y camelCase (del frontend)
+        const content = comment.content || comment.Content || '';
+        const commentUserId = comment.idUser || comment.userId || comment.UserId || 0;
+        const commentAvatarUrl = buildFullUrl(comment.userAvatar || comment.UserAvatar || this.loggedUser.urlAvatar);
+        const commentUserName = comment.userName || comment.UserName || this.loggedUser.userName;
+        const commentId = comment.idComment || comment.id || comment.Id || 0;
 
-        return `<div class="existing-comments-list">${commentsHtml}</div>`;
-    }  
+        const needsShowMore = content.length > 100;
+        const showMoreButton = needsShowMore ? '<button class="show-more-btn">Ver más...</button>' : '';
+
+        return `
+            <div class="comment-item" data-comment-id="${commentId}">
+                <a href="user-profile.html?id=${commentUserId}">
+                    <img class="avatar comment-avatar" src="${commentAvatarUrl}" alt="Avatar de ${commentUserName}">
+                </a>
+                <div class="comment-body">
+                    <a class="user-name" href="user-profile.html?id=${commentUserId}">
+                        <span class="clickable-text">${commentUserName}</span>
+                    </a>
+                    <p class="comment-content">${content}</p>
+                    ${showMoreButton}
+                </div>
+            </div>
+        `;
+    }
+
+    renderNewComment(postId, newCommentData) {
+        const postElement = this.container.querySelector(`.post[data-post-id="${postId}"]`);
+        if (!postElement) return;
+
+        const commentsContainer = postElement.querySelector('.existing-comments');
+        if (!commentsContainer) return;
+
+        let commentList = commentsContainer.querySelector('.existing-comments-list');
+        if (!commentList) {
+            commentList = document.createElement('div');
+            commentList.className = 'existing-comments-list';
+            // Si no había lista, la insertamos al principio del contenedor de comentarios existentes.
+            commentsContainer.prepend(commentList);
+        }
+        
+        // Desempaquetamos el comentario si viene dentro de una propiedad 'data'
+        const comment = newCommentData.data || newCommentData;
+
+        const commentHtml = this.createCommentHtml(comment);
+        commentList.insertAdjacentHTML('beforeend', commentHtml);
+
+        const commentCountBtn = postElement.querySelector('.comment-count-btn span');
+        if (commentCountBtn) {
+            const newCount = parseInt(commentCountBtn.textContent) + 1;
+            commentCountBtn.textContent = newCount;
+        }
+    } 
+
+    updateSinglePost(updatedPostData) {
+        const postId = updatedPostData.idPost || updatedPostData.id || updatedPostData.Id || updatedPostData.postId;
+        if (!postId) return;
+
+        const postElement = this.container.querySelector(`.post[data-post-id="${postId}"]`);
+        if (!postElement) return;
+
+        // Creamos el nuevo HTML para el post actualizado
+        const newPostHtml = this.createPostHtml(updatedPostData);
+        
+        // Reemplazamos el elemento antiguo con el nuevo
+        postElement.outerHTML = newPostHtml;
+
+        // Re-aplicamos los listeners que podrían haberse perdido en el reemplazo
+        this.setupTextareaAutoResize();
+    }
     
     // 🚀 RESTAURADO: Tu auto-resize
     setupTextareaAutoResize() {

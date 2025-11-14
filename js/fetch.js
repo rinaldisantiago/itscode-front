@@ -29,8 +29,18 @@ export async function apiFetch(url, config = {}) {
             throw new Error(errorMessage);
         }
 
-        const data = await response.json();
-        return data;
+        if (response.status === 204) {
+            return null;
+        }
+
+        const contentType = response.headers.get("content-type");
+
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+            const data = await response.json();
+            return data;
+        }
+
+        return response;
 
     } catch (error) {
 

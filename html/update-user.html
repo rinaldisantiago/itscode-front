@@ -17,62 +17,67 @@
 
 <body>
 
-  <main class="container">
-    <section class="left-panel">
-      <h2>ITSCode</h2>
-      <img class="imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando" />
-    </section>
+    <main class="container">
+      <section class="left-panel">
+        <h2>ITSCode</h2>
+        <img class="imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando" />
+      </section>
 
-    <section class="right-panel">
-      <article class="card-right">
-        <h2>Actualizar Datos</h2>
+      <section class="right-panel">
+        <article class="card-right">
+          <h2>Actualizar Datos</h2>
 
-        <form>
-          <div class="input-group">
-            <i class="fas fa-user" aria-hidden="true"></i>
-            <input type="text" name="nombre" placeholder="Nombre Completo" />
-          </div>
-          <div class="input-group">
-            <i class="fas fa-envelope" aria-hidden="true"></i>
-            <input type="email" name="email" placeholder="Correo Electrónico" />
-          </div>
-          <div class="input-group">
-            <i class="fas fa-user" aria-hidden="true"></i>
-            <input type="text" name="usuario" placeholder="Nombre de Usuario" />
-          </div>
-          <div class="input-group">
-            <i class="fas fa-lock" aria-hidden="true"></i>
-            <input type="password" name="password" placeholder="Contraseña" />
-          </div>
-          <div class="ingrese-foto-perfil">
-            <i class="fas fa-camera" aria-hidden="true"></i>
-            <label for="image">Foto de Perfil</label>
-          </div>
-          <div class="input-group">
-            <i class="fas fa-image" aria-hidden="true"></i>
-            <input type="file" name="image" placeholder="seleccionar imagen" />
-          </div>
-          <div class="button-group">
-            <a href="./my-profile.html" class="btn-update">Actualizar</a>
-            <a href="./my-profile.html" class="btn-cancel">Cancelar</a>
-          </div>
-        </form>
+          <form id="update-form" enctype="multipart/form-data">
+            
+            <div class="input-group">
+              <i class="fas fa-user" aria-hidden="true"></i>
+              <input type="text" name="fullName" placeholder="Nombre Completo" required />
+            </div>
+            <div class="input-group">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <input type="email" name="email" placeholder="Correo Electrónico" required />
+            </div>
+            <div class="input-group">
+              <i class="fas fa-user" aria-hidden="true"></i>
+              <input type="text" name="userName" placeholder="Nombre de Usuario" required />
+            </div>
+            <div class="input-group">
+              <i class="fas fa-lock" aria-hidden="true"></i>
+              <input type="password" name="password" placeholder="Nueva contraseña (opcional)" />
+              
+            </div>
+            <div class="input-group">
+              <i class="fas fa-upload" aria-hidden="true"></i>
+              <input type="file" name="image" accept="image/*" />
+              
+            </div>
+            <div class="input-group">
+              <i class="fas fa-image" aria-hidden="true"></i>
+              <input type="url" name="urlAvatar" placeholder="O pega una URL de imagen" />
+            </div>
+            
+            <div class="button-group">
+              <button type="submit" class="btn-update">Actualizar</button>
+              <a href="./my-profile.html" class="btn-cancel">Cancelar</a>
+            </div>
+          </form>
 
-        <footer class="footer-card">
-          <p>© 2025 CodeHype. All rights reserved.</p>
-        </footer>
-      </article>
-    </section>
-  </main>
-          <script 
+          <footer class="footer-card">
+            <p>© 2025 CodeHype. All rights reserved.</p>
+          </footer>
+        </article>
+      </section>
+    </main>
+    <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous">
     </script>
     <script src="../js/script.js"></script>
-    <script src="../js/UpdateUser/Updateuser.js"></script>
-    <script src="../js/UpdateUser/UpdateuserPresentation.js"></script>
-    <script src="../js/UpdateUser/UpdateuserRepository.js"></script>
+    <script type="module">
+      import { loadUpdateUserView } from '../js/Controller/updateUserController.js';
+      document.addEventListener('DOMContentLoaded', loadUpdateUserView);
+    </script>
 
 </body>
 
