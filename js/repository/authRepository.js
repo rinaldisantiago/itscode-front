@@ -4,13 +4,10 @@ import { apiFetch } from '../fetch.js';
 
 const AUTH_URLS = {
     REGISTER: '/User',
-    LOGIN: '/User/Login' 
+    LOGIN: '/Session' 
 };
 
-/**
- * Realiza la llamada a la API para registrar un nuevo usuario.
- * CAMBIO CLAVE: Esta versión está preparada para enviar FormData con archivos.
- */
+
 export async function registerUser(formData) {
     const config = {
         method: 'POST',
@@ -20,10 +17,7 @@ export async function registerUser(formData) {
     return apiFetch(AUTH_URLS.REGISTER, config);
 }
 
-/**
- * Realiza la llamada a la API para iniciar sesión.
- * (Esta función no cambia)
- */
+
 export async function loginUser(username, password) {
     const loginData = { 
         userName: username, 

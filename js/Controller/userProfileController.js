@@ -1,8 +1,7 @@
-// js/Views/myProfileViews.js
 
 // 👇 CAMBIO: Importamos la función directamente, no la clase
+import { UserPresentation } from '../presentation/profilePresentation.js';
 import { getUserById } from '../repository/userRepository.js'; 
-import { UserPresentation } from '../presentation/userPresentation.js';
 
 const PROFILE_CONTAINER_SELECTOR = '#infoUser';
 

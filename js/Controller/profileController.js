@@ -174,7 +174,7 @@ export async function loadProfileView() {
     try {
         // A. Pedir datos al Modelo
         const [userData, userPosts] = await Promise.all([
-            getUserById(user.id),
+            getUserById(user.id, user.id), // ✅ CORRECCIÓN: Se llama una sola vez con ambos parámetros
             postRepo.getPostsForProfile(user.id, user.id) 
       ]);
 
@@ -191,4 +191,3 @@ export async function loadProfileView() {
         console.error("Error cargando datos del perfil:", error);
     }
 }
-

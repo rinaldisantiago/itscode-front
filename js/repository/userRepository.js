@@ -1,26 +1,33 @@
 import { apiFetch } from '../fetch.js'; 
 
 const USER_URLS = {
-    GET_BY_ID: '/User', // La ruta base para GET /User/{id}
-    UPDATE: '/User' // La ruta base para PUT /User/{id}
+    BASE: '/User',
 };
 
-export async function getUserById(userId) {
-    const url = `${USER_URLS.GET_BY_ID}?id=${userId}`;
-    
-    // Usa tu apiFetch para una petición GET
-    return apiFetch(url); 
+export async function getUserById(userIdToFetch, loggedInUserId) {
+    // ✅ CORRECCIÓN: El backend espera el ID en la ruta y el loggerId como query param.
+    const url = `${USER_URLS.BASE}/${userIdToFetch}?idUserLogger=${loggedInUserId}`;
+    return apiFetch(url);
 }
 
-export async function updateUser(userId, formData) { // Renombrado a formData para más claridad
-    const url = `${USER_URLS.UPDATE}/${userId}`;
+export async function updateUser(userId, formData) {
+    const url = USER_URLS.BASE;
     
-    // Creamos el objeto de configuración correctamente
     const config = {
         method: 'PUT',
-        body: formData // formData es el objeto FormData que viene del controlador
+        body: formData,
+        // 🚨 CORRECCIÓN CLAVE: No establecemos Content-Type.
+        // El navegador lo hará automáticamente por ser un FormData.
     };
 
-    // Llamamos a apiFetch con la url y el objeto de configuración
     return apiFetch(url, config);
+}
+
+/**
+ * Busca usuarios por un término de búsqueda.
+ * El backend espera los parámetros en la ruta.
+ */
+export async function searchUsers(searchTerm, loggedInUserId, pageNumber = 1, pageSize = 10) {
+    const url = `${USER_URLS.BASE}/search/${searchTerm}/${loggedInUserId}/${pageNumber}/${pageSize}`;
+    return apiFetch(url);
 }

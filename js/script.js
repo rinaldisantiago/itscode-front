@@ -1,8 +1,10 @@
 import { loadWallView } from './Controller/wallController.js';
 import { loadSignupView, loadLoginView } from './presentation/authPresentation.js'; 
+import { apiFetch } from './fetch.js'; // ✅ IMPORTAMOS apiFetch
 import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
 import { loadProfileView } from './Controller/profileController.js';
-import { loadUpdateUserView } from './Controller/updateUserController.js';
+import { loadUpdateUserView } from './Controller/updateUserController.js'; 
+
 
 
 // =======================================================
@@ -49,6 +51,13 @@ function initializeApp() {
         loadUpdateUserView();
         console.log("Cargando vista de Actualización de Perfil.");
     }
+
+    // Ruta: BÚSQUEDA / SUGERENCIAS (asumiendo search.html)
+    else if (path.includes('search.html')) {
+        loadSuggestionsView();
+        console.log("Cargando vista de Búsqueda de Usuarios.");
+    }
+
     
     // --- LÓGICA GLOBAL (se ejecuta en todas las páginas) ---
     setupNavBarToggle();
@@ -75,20 +84,30 @@ function setupNavBarToggle() {
 function setupLogoutHandler() {
     // Buscamos el botón "De acuerdo" dentro del modal de cierre de sesión
     // (Basado en el HTML que me enviaste de 'my-profile.html')
-    const logoutConfirmButton = document.querySelector('.button-modal-boostrap');
+    const logoutConfirmButton = document.querySelector('.button-modal-boostrap');
 
     if (logoutConfirmButton) {
-        logoutConfirmButton.addEventListener('click', (event) => {
+        logoutConfirmButton.addEventListener('click', async (event) => {
             // Prevenimos que el enlace <a> navegue antes de limpiar
             event.preventDefault(); 
             
-            // 1. Limpiar la sesión del localStorage
-            localStorage.removeItem('userSession');
-            
-            // 2. Redirigir al Login
-            // Usamos la URL del href del botón para asegurarnos de que sea la correcta
-            const loginUrl = logoutConfirmButton.href; 
-            window.location.href = loginUrl; 
+            const userSession = JSON.parse(localStorage.getItem('userSession'));
+            const loginUrl = logoutConfirmButton.href;
+
+            // Si hay una sesión, notificamos al backend
+            if (userSession && userSession.id) {
+                try {
+                    // ✅ LLAMADA AL NUEVO ENDPOINT DE LOGOUT
+                    await apiFetch(`/Session/${userSession.id}`, { method: 'POST' });
+                } catch (error) {
+                    console.error("La llamada de logout al backend falló, pero se procederá con el logout local:", error);
+                }
+            }
+
+            // Independientemente de si la llamada a la API fue exitosa o no,
+            // limpiamos la sesión local y redirigimos.
+            localStorage.removeItem('userSession'); 
+            window.location.href = loginUrl;
         });
     }
 }

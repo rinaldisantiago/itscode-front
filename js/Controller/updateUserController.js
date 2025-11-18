@@ -25,13 +25,16 @@ async function handleUpdateFormSubmit(event) {
         return;
     }
 
-    // ✨ CORRECCIÓN CLAVE ✨
-    // Creamos el FormData directamente desde el elemento del formulario.
-    // Esto captura TODOS los campos, incluyendo el archivo si se seleccionó uno.
+    // ✅ CORRECCIÓN: Creamos el FormData directamente desde el elemento del formulario.
+    // Esto captura automáticamente todos los campos con un atributo 'name'.
     const formData = new FormData(form);
 
-    // Si la contraseña está vacía, la eliminamos del FormData
-    // para que el backend no la actualice a una cadena vacía.
+    // ✅ CORRECCIÓN: Añadimos el ID del usuario al FormData para que el backend lo reciba.
+    formData.append('id', userId);
+
+    // Si el campo de contraseña está vacío, lo eliminamos del FormData.
+    // Esto evita que se envíe una contraseña vacía y que el backend
+    // intente actualizarla innecesariamente.
     if (!formData.get('password')) {
         formData.delete('password');
     }
@@ -82,7 +85,7 @@ export async function loadUpdateUserView() {
 
     try {
         // 1. Modelo: Obtener los datos actuales del usuario
-        const currentUserData = await getUserById(userSession.id);
+        const currentUserData = await getUserById(userSession.id, userSession.id);
 
         // 2. Vista: Poblar el formulario con los datos
         populateUpdateForm(form, currentUserData);
