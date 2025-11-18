@@ -4,6 +4,7 @@ import { apiFetch } from './fetch.js'; // ✅ IMPORTAMOS apiFetch
 import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
 import { loadProfileView } from './Controller/profileController.js';
 import { loadUpdateUserView } from './Controller/updateUserController.js'; 
+import { loadSuggestionsView } from './Controller/suggestionsController.js';
 
 
 
@@ -52,8 +53,8 @@ function initializeApp() {
         console.log("Cargando vista de Actualización de Perfil.");
     }
 
-    // Ruta: BÚSQUEDA / SUGERENCIAS (asumiendo search.html)
-    else if (path.includes('search.html')) {
+    // Ruta: BÚSQUEDA / SUGERENCIAS (following.html)
+    else if (path.includes('following.html')) {
         loadSuggestionsView();
         console.log("Cargando vista de Búsqueda de Usuarios.");
     }

@@ -1,12 +1,7 @@
-// js/Controller/profileController.js
-
-// --- 1. IMPORTACIONES DE MODELO (DATOS) ---
 import { PostRepository } from '../repository/postRepository.js';
 import { getUserById } from '../repository/userRepository.js'; 
 import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
 import { CommentRepository } from '../repository/commentRepository.js';
-
-// --- 2. IMPORTACIONES DE VISTA (HTML) ---
 import { PostPresentation } from '../presentation/postPresentation.js'; 
 import { renderUserInfo } from '../presentation/profilePresentation.js';
 

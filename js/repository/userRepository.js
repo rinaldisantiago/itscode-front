@@ -28,6 +28,17 @@ export async function updateUser(userId, formData) {
  * El backend espera los parámetros en la ruta.
  */
 export async function searchUsers(searchTerm, loggedInUserId, pageNumber = 1, pageSize = 10) {
-    const url = `${USER_URLS.BASE}/search/${searchTerm}/${loggedInUserId}/${pageNumber}/${pageSize}`;
+    // ✅ CORRECCIÓN: El backend espera los parámetros como Query String, no en la ruta.
+    const url = `${USER_URLS.BASE}?searchTerm=${searchTerm}&idUserLogger=${loggedInUserId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return apiFetch(url);
+}
+
+/**
+ * 🚀 NUEVA FUNCIÓN
+ * Obtiene una lista de usuarios sugeridos para seguir.
+ * Llama al endpoint de sugerencias del backend.
+ */
+export async function getSuggestions(loggedInUserId, pageNumber = 1, pageSize = 10) {
+    const url = `${USER_URLS.BASE}/Suggestions/${loggedInUserId}/${pageNumber}/${pageSize}`;
     return apiFetch(url);
 }
