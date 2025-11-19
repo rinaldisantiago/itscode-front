@@ -84,7 +84,12 @@ export async function loadVisitedProfileView() {
             // ✅ CORRECCIÓN: Llamamos directamente al repositorio y a la presentación.
             // El primer parámetro es quién pide, el segundo es de quién son los posts.
             // Pasamos el ID del usuario visitado en el segundo parámetro.
-            const userPosts = await postRepo.getPostsForProfile(loggedUserId, visitedUserId);
+            // ✅ CORRECCIÓN: Se ha corregido el error de tipeo en el nombre de la función.
+            // Antes era 'getPostsFor-profile' y ahora es 'getPostsForProfile'.
+            // ✅ SOLUCIÓN FINAL: Para que el backend devuelva los posts del usuario VISITADO,
+            // pasamos el ID del usuario visitado (visitedUserId) como PRIMER parámetro.
+            // El backend usa 'idUserLogger' para buscar posts cuando 'isMyPosts' es true.
+            const userPosts = await postRepo.getPostsForProfile(visitedUserId, visitedUserId, true);
             postPresentation.renderPosts(userPosts);
             setupProfileInteractions(postsContainer, loggedUserId);
 
@@ -205,7 +210,7 @@ async function handleFollowClick(event) {
             const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
             // El primer parámetro es quién pide, el segundo es de quién son los posts.
             // Pasamos el ID del usuario a seguir en el segundo parámetro.
-            const userPosts = await postRepo.getPostsForProfile(loggedUserId, userIdToFollow);
+            const userPosts = await postRepo.getPostsForProfile(userIdToFollow, userIdToFollow, true);
             postPresentation.renderPosts(userPosts);
             // Re-inicializamos las interacciones para los nuevos posts
             setupProfileInteractions(postsContainer, loggedUserId);

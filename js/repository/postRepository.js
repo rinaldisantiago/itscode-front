@@ -32,9 +32,10 @@ export class PostRepository {
      * 🚀 NUEVO MÉTODO
      * Obtiene solo los posts del usuario especificado (para "My Profile").
      */
-    async getPostsForProfile(loggedUserId, profileUserId, pageNumber = 1, pageSize = 10) {
+    async getPostsForProfile(loggedUserId, profileUserId, isOwnProfile, pageNumber = 1, pageSize = 10) {
     try {
-        const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=true&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        // ✅ CAMBIO: El valor de 'isMyPosts' ahora es dinámico según el parámetro 'isOwnProfile'.
+        const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=${isOwnProfile}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
         
         const responseData = await apiFetch(url);
         return responseData.posts || []; 

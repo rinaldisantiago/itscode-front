@@ -27,7 +27,7 @@ export async function loadProfileView() {
         window.location.href = '../index.html';
         return; 
     }
-    const userId = userSession.id;
+    const loggedUserId = userSession.id;
 
     const userPresentation = new UserPresentation(MY_PROFILE_CONTAINER_SELECTOR);
     const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession);
@@ -38,15 +38,18 @@ export async function loadProfileView() {
     try {
         const postRepo = new PostRepository();
         const [userData, userPosts] = await Promise.all([
-            getUserById(userId, userId),
-            postRepo.getPostsForProfile(userId, userId)
+            getUserById(loggedUserId, loggedUserId),
+            // ✅ CAMBIO: Pasamos 'true' para indicar que es nuestro propio perfil.
+            // ✅ COHERENCIA: Mantenemos la lógica de que el primer parámetro determina
+            // de quién son los posts que se piden.
+            postRepo.getPostsForProfile(loggedUserId, loggedUserId, true)
         ]);
 
         userPresentation.renderProfile(userData, true); // true para mostrar el botón de editar
         postPresentation.renderPosts(userPosts);
 
         // ✅ CORRECCIÓN: Le devolvemos su propia lógica de interacciones.
-        setupMyProfileInteractions(document.querySelector(MY_POSTS_CONTAINER_SELECTOR), userId, postRepo);
+        setupMyProfileInteractions(document.querySelector(MY_POSTS_CONTAINER_SELECTOR), loggedUserId, postRepo);
     } catch (error) {
         console.error("Error al cargar el perfil:", error);
         userPresentation.showError("No se pudo cargar la información del perfil.");
