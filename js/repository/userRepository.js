@@ -5,8 +5,11 @@ const USER_URLS = {
 };
 
 export async function getUserById(userIdToFetch, loggedInUserId) {
-    // ✅ CORRECCIÓN: El backend espera el ID en la ruta y el loggerId como query param.
-    const url = `${USER_URLS.BASE}/${userIdToFetch}?idUserLogger=${loggedInUserId}`;
+    // ✅ CORRECCIÓN: Nos aseguramos de que loggedInUserId sea un número válido.
+    // Si es nulo o undefined, lo convertimos a 0 para que el backend no falle.
+    const safeLoggedInUserId = Number(loggedInUserId) || 0;
+
+    const url = `${USER_URLS.BASE}/${userIdToFetch}?idUserLogger=${safeLoggedInUserId}`;
     return apiFetch(url);
 }
 

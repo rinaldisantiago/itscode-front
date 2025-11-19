@@ -1,8 +1,9 @@
 import { loadWallView } from './Controller/wallController.js';
 import { loadSignupView, loadLoginView } from './presentation/authPresentation.js'; 
 import { apiFetch } from './fetch.js'; // ✅ IMPORTAMOS apiFetch
-import { loadPostCreateView } from './presentation/postCreatePresentation.js'; 
-import { loadProfileView } from './Controller/profileController.js';
+import { loadPostCreateView } from './presentation/postCreatePresentation.js';
+import { loadProfileView } from './Controller/profileController.js'; // Importamos el controlador original
+import { loadVisitedProfileView } from './Controller/userProfileController.js'; // Este solo tiene la vista de visita
 import { loadUpdateUserView } from './Controller/updateUserController.js'; 
 import { loadSuggestionsView } from './Controller/suggestionsController.js';
 
@@ -38,8 +39,14 @@ function initializeApp() {
 
     // 🚀 NUEVA RUTA: MI PERFIL (my-profile.html)
     else if (path.includes('my-profile.html')) {
-        loadProfileView();
+        loadProfileView(); // <-- Llamamos al controlador original y correcto
         console.log("Cargando vista de Mi Perfil.");
+    }
+
+    // 🚀 NUEVA RUTA: PERFIL VISITADO (user-profile.html)
+    else if (path.includes('user-profile.html')) {
+        loadVisitedProfileView();
+        console.log("Cargando vista de Perfil de Usuario Visitado.");
     }
 
     // Ruta: Muro principal (wall.html)

@@ -33,7 +33,9 @@ export class SuggestionsPresentation {
 
         return `
             <div class="card-user" data-user-id="${user.id}">
-                <img class="avatar" src="${avatarUrl}" alt="Avatar de ${user.userName}" />
+                <a href="./user-profile.html?id=${user.id}">
+                    <img class="avatar" src="${avatarUrl}" alt="Avatar de ${user.userName}" />
+                </a>
                 <a class="user-name-search" href="./user-profile.html?id=${user.id}">
                     <span class="clickable-text">${user.userName}</span>
                 </a>

@@ -33,18 +33,17 @@ export class PostRepository {
      * Obtiene solo los posts del usuario especificado (para "My Profile").
      */
     async getPostsForProfile(loggedUserId, profileUserId, pageNumber = 1, pageSize = 10) {
-        try {
-            // DTO: idUserLogger, idUserConsultado, isMyPosts = true
-            const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=true&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-            
-            const responseData = await apiFetch(url); // GET por defecto
-            return responseData.posts || []; 
+    try {
+        const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=true&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        
+        const responseData = await apiFetch(url);
+        return responseData.posts || []; 
 
-        } catch (error) {
-            console.error("Fallo en postRepository.getPostsForProfile:", error);
-            return []; 
-        }
+    } catch (error) {
+        console.error("Fallo en postRepository.getPostsForProfile:", error);
+        return []; 
     }
+}
 
     /**
      * 🚀 NUEVO MÉTODO
@@ -53,8 +52,8 @@ export class PostRepository {
      */
     async getPostById(postId, loggedUserId) {
         try {
-            // El backend necesita idUserLogger para calcular la interacción del usuario (si le dio like, etc.)
-            const url = `${POST_API_URL}/${postId}?idUserLogger=${loggedUserId}`;
+            // ✅ CORRECCIÓN: El endpoint es GET /Post/{id}/{idUserLogger}
+            const url = `${POST_API_URL}/${postId}/${loggedUserId}`;
             
             const postData = await apiFetch(url);
             return postData;

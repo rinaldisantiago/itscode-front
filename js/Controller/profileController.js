@@ -1,24 +1,19 @@
+// js/Controller/profileController.js
+
 import { PostRepository } from '../repository/postRepository.js';
 import { getUserById } from '../repository/userRepository.js'; 
+import { UserPresentation } from '../presentation/profilePresentation.js';
+import { PostPresentation } from '../presentation/postPresentation.js';
 import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
 import { CommentRepository } from '../repository/commentRepository.js';
-import { PostPresentation } from '../presentation/postPresentation.js'; 
-import { renderUserInfo } from '../presentation/profilePresentation.js';
 
-// --- 3. INSTANCIAS DE REPOSITORIO ---
-const postRepo = new PostRepository();
-const interactionRepo = new InteractionRepository();
-const commentRepo = new CommentRepository();
-
-// =======================================================
-// --- HELPERS DE SESIÓN Y RENDERIZADO ---
-// =======================================================
+const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
+const MY_POSTS_CONTAINER_SELECTOR = '#myPostsContainer';
 
 const getUserSession = () => {
-    const sessionData = localStorage.getItem('userSession');
+    const sessionData = localStorage.getItem('userSession');
     if (!sessionData) return null;
     const rawUser = JSON.parse(sessionData);
-    // Parsear la sesión (corrigiendo mayúsculas/minúsculas)
     return {
         id: rawUser.Id || rawUser.id,
         userName: rawUser.UserName || rawUser.userName,
@@ -26,163 +21,101 @@ const getUserSession = () => {
     };
 };
 
-// =======================================================
-// --- 🚀 LÓGICA DE INTERACCIÓN (RESTAURADA) ---
-// (Esta es la lógica que me pasaste de tu wallViews.js original)
-// =======================================================
-
-// Variable para la instancia de PostPresentation 
-let postPresentation; 
-// Semaforo para asegurar que los listeners se adjuntan una sola vez
-let profileInteractionsInitialized = false;
-
-function updateButtonState(currentButton, newInteractionId) {
-    const postArticle = currentButton.closest('article.post');
-    if (!postArticle) return;
-    const isLike = currentButton.classList.contains('like-btn');
-    const oppositeButton = postArticle.querySelector(isLike ? '.dislike-btn' : '.like-btn');
-    const likeButton = postArticle.querySelector('.like-btn');
-    const dislikeButton = postArticle.querySelector('.dislike-btn');
-    let likesCount = parseInt(likeButton.dataset.count);
-    let dislikesCount = parseInt(dislikeButton.dataset.count);
-
-    if (newInteractionId) { 
-        if (isLike) {
-            likesCount++;
-            if (oppositeButton.dataset.interactionId) dislikesCount = Math.max(0, dislikesCount - 1);
-        } else {
-            dislikesCount++;
-            if (oppositeButton.dataset.interactionId) likesCount = Math.max(0, likesCount - 1);
-        }
-        oppositeButton.classList.remove('active');
-        oppositeButton.dataset.interactionId = '';
-        currentButton.classList.add('active');
-        currentButton.dataset.interactionId = newInteractionId;
-    } else { 
-        if (isLike) likesCount = Math.max(0, likesCount - 1);
-        else dislikesCount = Math.max(0, dislikesCount - 1);
-        currentButton.classList.remove('active');
-        currentButton.dataset.interactionId = '';
-    }
-    likeButton.querySelector('span').textContent = likesCount;
-    likeButton.dataset.count = likesCount;
-    dislikeButton.querySelector('span').textContent = dislikesCount;
-    dislikeButton.dataset.count = dislikesCount;
-}
-
-function setupProfileInteractions(containerElement, loggedUserId) {
-    // Si ya hemos añadido los listeners, no hacemos nada más.
-    if (profileInteractionsInitialized) {
-        return;
-    }
-    
-    // --- MANEJO DE LIKES Y DISLIKES ---
-    containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn');
-        if (!button) return;
-
-        event.preventDefault();
-        const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
-        const postId = button.dataset.postId;
-        const interactionId = button.dataset.interactionId;
-        button.disabled = true;
-        
-        try {
-            if (interactionId) {
-                await interactionRepo.deleteInteraction(interactionId);
-                updateButtonState(button, null);
-            } else {
-                const response = await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
-                if (response && response.interactionId) {
-                    updateButtonState(button, response.interactionId);
-                }
-            }
-        } catch (error) {
-            console.error('Error en la interacción:', error);
-        } finally {
-            setTimeout(() => { button.disabled = false; }, 300);
-        }
-    });
-
-    // --- MANEJO DE COMENTARIOS ---
-    containerElement.addEventListener('submit', async (event) => {
-        if (event.target.classList.contains('comment-form')) {
-            event.preventDefault(); 
-            const form = event.target;
-            const postId = parseInt(form.dataset.postId);
-            const contentInput = form.querySelector('textarea[name="commentContent"]');
-            const content = contentInput ? contentInput.value.trim() : '';
-
-            if (!content) return;
-
-            try {
-                // 1. Crear el comentario
-                await commentRepo.createComment(postId, loggedUserId, content);
-                contentInput.value = ''; 
-                contentInput.style.height = 'auto';
-
-                // 2. Obtener el post actualizado del backend
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
-
-                // 3. Re-renderizar solo ese post con la nueva información
-                if (updatedPost && postPresentation) {
-                    postPresentation.updateSinglePost(updatedPost);
-                }
-                
-            } catch (error) {
-                console.error('Fallo al crear y refrescar comentario:', error);
-            }
-        }
-    });
-    
-    // Marcamos los listeners como inicializados
-    profileInteractionsInitialized = true;
-}
-
-
-// =======================================================
-// --- FUNCIÓN PRINCIPAL DEL CONTROLADOR (EXPORTADA) ---
-// =======================================================
-
 export async function loadProfileView() {
-    // 1. OBTENER ELEMENTOS DEL DOM
-    const infoUserContainer = document.getElementById('infoUserContainer');
-    const myPostsContainer = document.getElementById('myPostsContainer');
-    const userSession = getUserSession();
+    const userSession = getUserSession();
     if (!userSession) { 
         window.location.href = '../index.html';
         return; 
     }
-    const user = userSession; 
+    const userId = userSession.id;
 
-    // 2. VALIDAR CONTENEDORES
-    if (!infoUserContainer || !myPostsContainer) {
-        console.error("IDs de HTML (infoUserContainer o myPostsContainer) no encontrados.");
-        return; 
-    } 
-    
-    // 3. INSTANCIAR PRESENTACIÓN (VISTA)
-    // Usamos la variable global para que sea accesible desde los listeners
-    postPresentation = new PostPresentation('#myPostsContainer', userSession);
+    const userPresentation = new UserPresentation(MY_PROFILE_CONTAINER_SELECTOR);
+    const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession);
 
-    // 4. ORQUESTAR: Buscar datos y luego pintar
-    try {
-        // A. Pedir datos al Modelo
-        const [userData, userPosts] = await Promise.all([
-            getUserById(user.id, user.id), // ✅ CORRECCIÓN: Se llama una sola vez con ambos parámetros
-            postRepo.getPostsForProfile(user.id, user.id) 
-      ]);
+    userPresentation.showLoading();
+    postPresentation.showLoading();
 
-        // B. Enviar datos a la Presentación (renderizar cabecera)
-        renderUserInfo(userData, userPosts.length, infoUserContainer);
-        
-        // C. Enviar datos a la Presentación (renderizar posts)
-        postPresentation.renderPosts(userPosts); 
-        
-        // D. Adjuntar Listeners a los posts renderizados (solo la primera vez)
-        setupProfileInteractions(myPostsContainer, user.id);
+    try {
+        const postRepo = new PostRepository();
+        const [userData, userPosts] = await Promise.all([
+            getUserById(userId, userId),
+            postRepo.getPostsForProfile(userId, userId)
+        ]);
 
-    } catch (error) {
-        console.error("Error cargando datos del perfil:", error);
-    }
+        userPresentation.renderProfile(userData, true); // true para mostrar el botón de editar
+        postPresentation.renderPosts(userPosts);
+
+        // ✅ CORRECCIÓN: Le devolvemos su propia lógica de interacciones.
+        setupMyProfileInteractions(document.querySelector(MY_POSTS_CONTAINER_SELECTOR), userId, postRepo);
+    } catch (error) {
+        console.error("Error al cargar el perfil:", error);
+        userPresentation.showError("No se pudo cargar la información del perfil.");
+        postPresentation.renderPosts([]); // Muestra un mensaje de error o vacío
+    }
+}
+
+/**
+ * Configura los listeners para likes y comentarios SOLO para my-profile.html.
+ */
+function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
+    if (!containerElement || containerElement.dataset.interactionsInitialized) {
+        return;
+    }
+    containerElement.dataset.interactionsInitialized = 'true';
+
+    const interactionRepo = new InteractionRepository();
+    const commentRepo = new CommentRepository();
+    const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, getUserSession());
+
+    containerElement.addEventListener('click', async (event) => {
+        const button = event.target.closest('.like-btn, .dislike-btn');
+        if (!button) return;
+
+        event.preventDefault();
+        const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
+        const postId = button.dataset.postId;
+        const interactionId = button.dataset.interactionId;
+        
+        button.disabled = true;
+        
+        try {
+            if (interactionId) {
+                await interactionRepo.deleteInteraction(interactionId);
+            } else {
+                await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
+            }
+            const updatedPost = await postRepo.getPostById(postId, loggedUserId);
+            postPresentation.updateSinglePost(updatedPost);
+
+        } catch (error) {
+            console.error('Error en la interacción:', error);
+        } finally {
+            button.disabled = false;
+        }
+    });
+
+    containerElement.addEventListener('submit', async (event) => {
+        if (event.target.classList.contains('comment-form')) {
+            event.preventDefault(); 
+
+            const form = event.target;
+            const postId = parseInt(form.dataset.postId);
+            const contentInput = form.querySelector('textarea[name="commentContent"]');
+            const content = contentInput.value.trim();
+
+            if (!content) return;
+            
+            form.querySelector('button[type="submit"]').disabled = true;
+
+            try {
+                await commentRepo.createComment(postId, loggedUserId, content);
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
+                postPresentation.updateSinglePost(updatedPost);
+            } catch (error) {
+                console.error('Fallo al crear y refrescar comentario:', error);
+            } finally {
+                form.querySelector('button[type="submit"]').disabled = false;
+            }
+        }
+    });
 }
