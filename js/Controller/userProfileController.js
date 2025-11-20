@@ -84,11 +84,9 @@ export async function loadVisitedProfileView() {
             // ✅ CORRECCIÓN: Llamamos directamente al repositorio y a la presentación.
             // El primer parámetro es quién pide, el segundo es de quién son los posts.
             // Pasamos el ID del usuario visitado en el segundo parámetro.
-            // ✅ CORRECCIÓN: Se ha corregido el error de tipeo en el nombre de la función.
-            // Antes era 'getPostsFor-profile' y ahora es 'getPostsForProfile'.
-            // ✅ SOLUCIÓN FINAL: Para que el backend devuelva los posts del usuario VISITADO,
-            // pasamos el ID del usuario visitado (visitedUserId) como PRIMER parámetro.
-            // El backend usa 'idUserLogger' para buscar posts cuando 'isMyPosts' es true.
+            // ✅ FIX: El primer parámetro es QUIÉN pide (loggedUserId) y el segundo es DE QUIÉN son los posts (visitedUserId).
+            // ✅ SOLUCIÓN: Para que el backend filtre por el usuario visitado, le "engañamos" diciendo
+            // que es su propio perfil (`isMyPosts=true`) y pasamos el ID del visitado en ambos parámetros.
             const userPosts = await postRepo.getPostsForProfile(visitedUserId, visitedUserId, true);
             postPresentation.renderPosts(userPosts);
             setupProfileInteractions(postsContainer, loggedUserId);
@@ -120,14 +118,12 @@ function setupProfileInteractions(containerElement, loggedUserId) {
     const interactionRepo = new InteractionRepository();
     const commentRepo = new CommentRepository();
     const postRepo = new PostRepository();
-    // El selector es dinámico, por lo que no podemos hardcodearlo aquí.
-    // Lo obtenemos del propio contenedor.
-    const containerSelector = `#${containerElement.id}`;
-    const postPresentation = new PostPresentation(containerSelector, getUserSession());
+    // ✅ FIX: Instanciamos PostPresentation con el selector correcto y estático del contenedor de posts.
+    const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
 
     // Listener para Likes/Dislikes
     containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn');
+        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn');
         if (!button) return;
 
         event.preventDefault();
@@ -138,23 +134,54 @@ function setupProfileInteractions(containerElement, loggedUserId) {
         button.disabled = true;
         
         try {
-            if (interactionId) {
-                await interactionRepo.deleteInteraction(interactionId);
-            } else {
-                await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
+            // --- Lógica para Likes/Dislikes ---
+            if (button.classList.contains('like-btn') || button.classList.contains('dislike-btn')) {
+                if (interactionId) {
+                    // ✅ FIX: Pasamos el 'interactionType' para que el backend sepa qué hacer.
+                    await interactionRepo.deleteInteraction(interactionId, loggedUserId, interactionType);
+                } else {
+                    await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
+                }
+                // ✅ FIX: Usamos la llamada correcta a getPostById, incluyendo los parámetros de paginación.
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
+                postPresentation.updateSinglePost(updatedPost);
             }
-            // Recargamos solo el post afectado para actualizar los contadores y estado
-            const updatedPost = await postRepo.getPostById(postId, loggedUserId);
-            postPresentation.updateSinglePost(updatedPost);
+
+            // --- 🚀 LÓGICA AÑADIDA para "Ver más" comentarios ---
+            if (button.classList.contains('load-more-comments-btn')) {
+                const nextPage = parseInt(button.dataset.nextPage);
+                const commentsPerPage = 3;
+
+                button.textContent = 'Cargando...';
+
+                const newComments = await commentRepo.getCommentsByPostId(postId, nextPage, commentsPerPage);
+                if (newComments.length > 0) {
+                    postPresentation.appendComments(postId, newComments);
+                    button.dataset.nextPage = nextPage + 1;
+                }
+
+                // ✅ FIX: Comprobamos el total de comentarios cargados contra el contador total.
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                const commentsList = postElement.querySelector('.comments-list');
+                const totalCommentsCount = parseInt(postElement.querySelector('.comments-count').textContent);
+                if (commentsList.children.length >= totalCommentsCount) {
+                    button.style.display = 'none';
+                }
+                if (button.style.display !== 'none') {
+                    button.textContent = 'Ver más comentarios';
+                }
+            }
 
         } catch (error) {
             console.error('Error en la interacción:', error);
         } finally {
-            button.disabled = false;
+            if (button.style.display !== 'none') {
+                button.disabled = false;
+            }
         }
     });
 
-    // Listener para Comentarios
+    // ✅ FIX: Listener para Comentarios actualizado con la lógica correcta.
     containerElement.addEventListener('submit', async (event) => {
         if (event.target.classList.contains('comment-form')) {
             event.preventDefault(); 
@@ -170,8 +197,17 @@ function setupProfileInteractions(containerElement, loggedUserId) {
 
             try {
                 await commentRepo.createComment(postId, loggedUserId, content);
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
-                postPresentation.updateSinglePost(updatedPost);
+                
+                // Actualizamos solo la sección de comentarios
+                const commentsPerPage = 3;
+                const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
+
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                const commentsCountElement = postElement.querySelector('.comments-count');
+                
+                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent || '0') + 1);
+                contentInput.value = '';
+
             } catch (error) {
                 console.error('Fallo al crear y refrescar comentario:', error);
             } finally {
@@ -208,8 +244,7 @@ async function handleFollowClick(event) {
         if (!isCurrentlyFollowing) {
             // Si acabamos de seguirlo, cargamos sus posts
             const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
-            // El primer parámetro es quién pide, el segundo es de quién son los posts.
-            // Pasamos el ID del usuario a seguir en el segundo parámetro.
+            // ✅ SOLUCIÓN: Aplicamos la misma lógica aquí.
             const userPosts = await postRepo.getPostsForProfile(userIdToFollow, userIdToFollow, true);
             postPresentation.renderPosts(userPosts);
             // Re-inicializamos las interacciones para los nuevos posts

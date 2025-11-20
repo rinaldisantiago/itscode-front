@@ -84,11 +84,13 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
             button.disabled = true;
             try {
                 if (interactionId) {
-                    await interactionRepo.deleteInteraction(interactionId);
+                    // ✅ FIX: Pasamos el 'interactionType' para que el backend sepa qué hacer.
+                    await interactionRepo.deleteInteraction(interactionId, loggedUserId, interactionType);
                 } else {
                     await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
                 }
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 10);
+                // ✅ FIX: Ajustamos la llamada para que coincida con la nueva ruta del backend.
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3); // La paginación es correcta
                 postPresentation.updateSinglePost(updatedPost);
             } catch (error) {
                 console.error('Error en la interacción:', error);
@@ -112,8 +114,12 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
                     // Actualizamos el botón para la siguiente página
                     button.dataset.nextPage = nextPage + 1;
                 }
-                // Ocultamos el botón si ya no hay más comentarios por cargar
-                if (newComments.length < commentsPerPage) {
+
+                // ✅ FIX: Comprobamos el total de comentarios cargados contra el contador total.
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                const commentsList = postElement.querySelector('.comments-list');
+                const totalCommentsCount = parseInt(postElement.querySelector('.comments-count').textContent);
+                if (commentsList.children.length >= totalCommentsCount) {
                     button.style.display = 'none';
                 }
             } catch (error) {
@@ -149,12 +155,13 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
                 const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
 
                 // Buscamos el post en el DOM para actualizar solo sus comentarios.
-                const postElement = containerElement.querySelector(`.post-card[data-post-id="${postId}"]`);
+                // ✅ FIX: Corregimos el selector que estaba mal escrito ('post-card' en lugar de 'post').
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`); 
                 // Obtenemos el contador de comentarios del post para incrementarlo.
                 const commentsCountElement = postElement.querySelector('.comments-count');
                 
                 // Llamamos al nuevo método de la presentación para que actualice el DOM.
-                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent) + 1);
+                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent || '0') + 1);
                 contentInput.value = '';
             } catch (error) {
                 console.error('Fallo al crear y refrescar comentario:', error);

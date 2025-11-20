@@ -33,7 +33,8 @@ export class PostPresentation {
     }
 
     updateSinglePost(post) {
-        const postElement = this.container.querySelector(`.post-card[data-post-id="${post.id}"]`);
+        // ✅ FIX: Corregimos el selector para que coincida con el HTML renderizado (<article class="post">).
+        const postElement = this.container.querySelector(`.post[data-post-id="${post.id}"]`);
         if (postElement) {
             postElement.outerHTML = this.createPostHtml(post);
         }
@@ -50,7 +51,8 @@ export class PostPresentation {
 
     // 🚀 NUEVO: Actualiza la sección de comentarios después de añadir uno nuevo
     updateCommentsSection(postElement, comments, totalComments) {
-        const commentsContainer = postElement.querySelector('.comments-container');
+        // ✅ FIX: Usamos el selector correcto '.comment-section' que coincide con tu HTML.
+        const commentsContainer = postElement.querySelector('.comment-section');
         if (!commentsContainer) return;
 
         // Actualiza el contador
@@ -61,7 +63,7 @@ export class PostPresentation {
 
         // Re-renderiza la lista de comentarios
         const commentsListHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
-        commentsContainer.querySelector('.comments-list').innerHTML = commentsListHtml;
+        commentsContainer.querySelector('.existing-comments .comments-list').innerHTML = commentsListHtml;
 
         // Re-renderiza el botón "Ver más"
         const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn'); // ✅ FIX: Usamos tu clase original
@@ -133,8 +135,8 @@ export class PostPresentation {
     // ✅ RESTAURADO: Tu método para crear el HTML de un comentario
     createCommentHtml(comment) {
         // ✅ FIX DEFINITIVO: Ahora el DTO de comentario SÍ trae el avatar y el nombre del autor.
-        const avatarUrl = buildFullUrl(comment.userAvatar);
-        const userName = comment.userName;
+        const avatarUrl = buildFullUrl(comment.avatarUrl);
+        const userName = comment.username;
 
         return `
             <div class="comment-item" data-comment-id="${comment.id}">
@@ -153,8 +155,9 @@ export class PostPresentation {
     getLoadMoreButtonHtml(post) {
         const commentsLoaded = post.comments.length;
         if (post.commentsCount > commentsLoaded) {
+            // ✅ FIX: La siguiente página a cargar es la 2, no la 3.
             const nextPage = Math.floor(commentsLoaded / 3) + 1;
-            return `<button class="load-more-comments-btn action-btn" data-post-id="${post.id}" data-next-page="${nextPage + 1}">Ver más comentarios</button>`;
+            return `<button class="load-more-comments-btn action-btn" data-post-id="${post.id}" data-next-page="${nextPage}">Ver más comentarios</button>`;
         }
         return ''; // No mostrar el botón si no hay más comentarios
     }

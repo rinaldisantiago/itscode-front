@@ -44,11 +44,14 @@ export class InteractionRepository {
     /**
      * Elimina una interacción (e.g., quitar un like/dislike).
      */
-    async deleteInteraction(interactionId) {
+    async deleteInteraction(interactionId, userId, interactionType) {
         const url = '/Interaction';
         
         const requestBody = {
-            interactionId: interactionId  
+            interactionId: interactionId,
+            // ✅ AÑADIDO: Enviamos el tipo de interacción que se quiere crear
+            // para que el backend sepa si es un cambio de opinión.
+            interactionType: interactionType
         };
         
         try {

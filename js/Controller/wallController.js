@@ -33,43 +33,6 @@ const loadUserData = (userSession) => {
     }
 };
 
-function updateButtonState(currentButton, newInteractionId) {
-    const postArticle = currentButton.closest('article.post');
-    if (!postArticle) return;
-
-    const isLike = currentButton.classList.contains('like-btn');
-    const oppositeButton = postArticle.querySelector(isLike ? '.dislike-btn' : '.like-btn');
-    const likeButton = postArticle.querySelector('.like-btn');
-    const dislikeButton = postArticle.querySelector('.dislike-btn');
-    
-    let likesCount = parseInt(likeButton.dataset.count);
-    let dislikesCount = parseInt(dislikeButton.dataset.count);
-
-    if (newInteractionId) {
-        if (isLike) {
-            likesCount++;
-            if (oppositeButton.dataset.interactionId) dislikesCount = Math.max(0, dislikesCount - 1);
-        } else {
-            dislikesCount++;
-            if (oppositeButton.dataset.interactionId) likesCount = Math.max(0, likesCount - 1);
-        }
-        oppositeButton.classList.remove('active');
-        oppositeButton.dataset.interactionId = '';
-        currentButton.classList.add('active');
-        currentButton.dataset.interactionId = newInteractionId;
-    } else {
-        if (isLike) likesCount = Math.max(0, likesCount - 1);
-        else dislikesCount = Math.max(0, dislikesCount - 1);
-        currentButton.classList.remove('active');
-        currentButton.dataset.interactionId = '';
-    }
-
-    likeButton.querySelector('span').textContent = likesCount;
-    likeButton.dataset.count = likesCount;
-    dislikeButton.querySelector('span').textContent = dislikesCount;
-    dislikeButton.dataset.count = dislikesCount;
-}
-
 function setupWallInteractions(containerElement, loggedUserId, postRepo) {
     if (containerElement.dataset.interactionsInitialized) return;
     containerElement.dataset.interactionsInitialized = 'true';
@@ -78,7 +41,7 @@ function setupWallInteractions(containerElement, loggedUserId, postRepo) {
     const commentRepo = new CommentRepository();
     
     containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn');
+        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn');
         if (!button) return;
 
         event.preventDefault();
@@ -89,19 +52,47 @@ function setupWallInteractions(containerElement, loggedUserId, postRepo) {
         button.disabled = true;
         
         try {
-            if (interactionId) {
-                await interactionRepo.deleteInteraction(interactionId);
-                updateButtonState(button, null);
-            } else {
-                const response = await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
-                if (response && response.interactionId) {
-                    updateButtonState(button, response.interactionId);
+            // --- Lógica para Likes/Dislikes (UNIFICADA) ---
+            if (button.classList.contains('like-btn') || button.classList.contains('dislike-btn')) {
+                if (interactionId) {
+                    await interactionRepo.deleteInteraction(interactionId, loggedUserId, interactionType);
+                } else {
+                    await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
+                }
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
+                postPresentation.updateSinglePost(updatedPost);
+            }
+
+            // --- Lógica para "Ver más" comentarios (UNIFICADA) ---
+            if (button.classList.contains('load-more-comments-btn')) {
+                const nextPage = parseInt(button.dataset.nextPage);
+                const commentsPerPage = 3;
+
+                button.textContent = 'Cargando...';
+                const newComments = await commentRepo.getCommentsByPostId(postId, nextPage, commentsPerPage);
+                
+                if (newComments.length > 0) {
+                    postPresentation.appendComments(postId, newComments);
+                    button.dataset.nextPage = nextPage + 1;
+                }
+
+                // ✅ FIX: Comprobamos el total de comentarios cargados contra el contador total.
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                const commentsList = postElement.querySelector('.comments-list');
+                const totalCommentsCount = parseInt(postElement.querySelector('.comments-count').textContent);
+                if (commentsList.children.length >= totalCommentsCount) {
+                    button.style.display = 'none';
+                }
+                if (button.style.display !== 'none') {
+                    button.textContent = 'Ver más comentarios';
                 }
             }
         } catch (error) {
             console.error('Error en la interacción:', error);
         } finally {
-            setTimeout(() => { button.disabled = false; }, 300);
+            if (button.style.display !== 'none') {
+                button.disabled = false;
+            }
         }
     });
 
@@ -122,16 +113,16 @@ function setupWallInteractions(containerElement, loggedUserId, postRepo) {
             try {
                 // 1. Crear el comentario
                 await commentRepo.createComment(postId, loggedUserId, content);
-                contentInput.value = ''; 
-                contentInput.style.height = 'auto'; // Reset height
 
-                // 2. Obtener el post actualizado del backend
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
+                // 2. Actualizar solo la sección de comentarios
+                const commentsPerPage = 3;
+                const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
 
-                // 3. Re-renderizar solo ese post con la nueva información
-                if (updatedPost && postPresentation) {
-                    postPresentation.updateSinglePost(updatedPost);
-                }
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                const commentsCountElement = postElement.querySelector('.comments-count');
+                
+                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent || '0') + 1);
+                contentInput.value = '';
                 
             } catch (error) {
                 console.error('Fallo al crear y refrescar comentario:', error);
