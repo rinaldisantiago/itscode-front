@@ -1,14 +1,13 @@
-import { INTERACTION_TYPE } from '../repository/interactionRepository.js'; 
 // 🚨 AÑADIDO: Importamos el helper para construir las URLs
 import { buildFullUrl } from '../repository/postRepository.js';
+// 🚨 AÑADIDO: Importamos los tipos de interacción para los botones de like/dislike
+import { INTERACTION_TYPE } from '../repository/interactionRepository.js';
 
 export class PostPresentation {
     
-    constructor(containerSelector, loggedUser) { // 👈 AÑADIDO: loggedUser
+    constructor(containerSelector, loggedUser) {
         this.container = document.querySelector(containerSelector);
-        this.loggedUser = loggedUser; // 👈 Guardamos el usuario logueado
-        this.showMoreListenerSet = false; // Flag para listeners
-        this.textareaListenerSet = false; // Flag para listeners
+        this.loggedUser = loggedUser;
     }
 
     showLoading() {
@@ -17,201 +16,146 @@ export class PostPresentation {
         }
     }
 
+    showError(message) {
+        this.container.innerHTML = `<div class="error">${message}</div>`;
+    }
+
     renderPosts(posts) {
         if (!this.container) return;
-        this.container.innerHTML = ''; 
 
         if (!posts || posts.length === 0) {
             this.container.innerHTML = '<p class="empty-message">No hay publicaciones para mostrar.</p>';
             return;
         }
 
-        // Renderizamos cada post
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.innerHTML = postsHtml;
-
-        // Adjuntamos los listeners de UI (Ver Más y Auto-Resize)
-        this.setupShowMoreListeners(); 
-        this.setupTextareaAutoResize();
     }
 
-    
-    createPostHtml(post) {
-        let postId = post.idPost || post.id || post.Id || post.postId || 0; 
-        const userId = post.idUser || post.userId || post.UserId || 0; 
+    updateSinglePost(post) {
+        const postElement = this.container.querySelector(`.post-card[data-post-id="${post.id}"]`);
+        if (postElement) {
+            postElement.outerHTML = this.createPostHtml(post);
+        }
+    }
 
-        const userInteraction = post.userInteraction || { interactionId: null, type: null };
-        const isLiked = userInteraction.type === INTERACTION_TYPE.LIKE;
-        const isDisliked = userInteraction.type === INTERACTION_TYPE.DISLIKE;
-        const interactionId = userInteraction.interactionId || '';
+    // 🚀 NUEVO: Añade comentarios a un post existente (para "Ver más")
+    appendComments(postId, newComments) {
+        const commentsList = this.container.querySelector(`.comments-list[data-post-id="${postId}"]`);
+        if (commentsList) {
+            const commentsHtml = newComments.map(comment => this.createCommentHtml(comment)).join('');
+            commentsList.insertAdjacentHTML('beforeend', commentsHtml);
+        }
+    }
 
-        const avatarUrl = buildFullUrl(post.userAvatar);
+    // 🚀 NUEVO: Actualiza la sección de comentarios después de añadir uno nuevo
+    updateCommentsSection(postElement, comments, totalComments) {
+        const commentsContainer = postElement.querySelector('.comments-container');
+        if (!commentsContainer) return;
+
+        // Actualiza el contador
+        const commentsCountElement = postElement.querySelector('.comments-count');
+        if (commentsCountElement) { // ✅ FIX: Usamos tu clase original 'comment-count-btn span'
+            commentsCountElement.textContent = totalComments;
+        }
+
+        // Re-renderiza la lista de comentarios
+        const commentsListHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
+        commentsContainer.querySelector('.comments-list').innerHTML = commentsListHtml;
+
+        // Re-renderiza el botón "Ver más"
+        const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn'); // ✅ FIX: Usamos tu clase original
+        const newButtonHtml = this.getLoadMoreButtonHtml({ id: postElement.dataset.postId, commentsCount: totalComments, comments: comments });
+        
+        if (loadMoreButton) {
+            loadMoreButton.outerHTML = newButtonHtml;
+        } else if(newButtonHtml) {
+            commentsContainer.insertAdjacentHTML('beforeend', newButtonHtml);
+        }
+    }
+
+
+    // ✅ RESTAURADO: Tu método original con tus clases CSS
+    createPostHtml(post) {
         const postImageUrl = post.fileUrl ? buildFullUrl(post.fileUrl) : '';
+        const avatarUrl = buildFullUrl(post.userAvatar);
         const loggedUserAvatarUrl = buildFullUrl(this.loggedUser.urlAvatar);
 
-        // 3. GENERAR EL HTML (basado en tu estructura anterior)
-        return `
-            <article class="post" data-post-id="${postId}">
+        const commentsHtml = post.comments.map(comment => this.createCommentHtml(comment)).join('');
+        
+        const isLiked = post.userInteraction?.type === INTERACTION_TYPE.LIKE;
+        const isDisliked = post.userInteraction?.type === INTERACTION_TYPE.DISLIKE;
+
+        return `
+            <article class="post" data-post-id="${post.id}">
                 <div class="post-header">
-                    <a href="user-profile.html?id=${userId}"> 
+                    <a href="user-profile.html?id=${post.idUser}"> 
                         <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
                         <h4 class="user-name">${post.userName}</h4>
                     </a>
                 </div>
                 <h3 class="post-title">${post.title}</h3>
-                <p>${post.content ? post.content : ''}</p>
+                <p>${post.content || ''}</p>
                 ${postImageUrl ? `<img class="img-post" src="${postImageUrl}" alt="Imagen del post">` : ''}
                 <section class="post-actions">
                     <button class="action-btn like-btn ${isLiked ? 'active' : ''}" 
-                            data-post-id="${postId}" 
-                            data-interaction-type="${INTERACTION_TYPE.LIKE}"
-                            data-interaction-id="${interactionId}"
-                            data-count="${post.likesCount || 0}">
+                            data-post-id="${post.id}" 
+                            data-interaction-id="${post.userInteraction?.interactionId || ''}">
                         <i class="fa-solid fa-thumbs-up"></i>
                         <span>${post.likesCount || 0}</span>
                     </button>
                     <button class="action-btn dislike-btn ${isDisliked ? 'active' : ''}" 
-                            data-post-id="${postId}" 
-                            data-interaction-type="${INTERACTION_TYPE.DISLIKE}"
-                            data-interaction-id="${interactionId}"
-                            data-count="${post.dislikesCount || 0}">
+                            data-post-id="${post.id}" 
+                            data-interaction-id="${post.userInteraction?.interactionId || ''}">
                         <i class="fa-solid fa-thumbs-down"></i>
                         <span>${post.dislikesCount || 0}</span>
                     </button>
                     <button class="action-btn comment-count-btn">
                         <i class="fa-solid fa-comment"></i>
-                        <span>${post.commentsCount || 0}</span>
+                        <span class="comments-count">${post.commentsCount || 0}</span>
                     </button>
                 </section>
                 <section class="comment-section">
-                    <form class="comment-form" data-post-id="${postId}">
+                    <form class="comment-form" data-post-id="${post.id}">
                         <img class="avatar" src="${loggedUserAvatarUrl}" alt="Tu avatar">
                         <textarea placeholder="Escribe un comentario..." rows="1" name="commentContent"></textarea>
                         <button type="submit">Enviar</button>
                     </form>
                     <div class="existing-comments">
-                        ${this.renderExistingComments(post.comments)}
+                        <div class="comments-list" data-post-id="${post.id}">${commentsHtml}</div>
+                        ${this.getLoadMoreButtonHtml(post)}
                     </div>
                 </section>
             </article>
-        `;
-    }
-
-    // 🚀 RESTAURADO: Tu función de "Ver más"
-    setupShowMoreListeners() {
-        if (this.showMoreListenerSet || !this.container) {
-            return;
-        }
-        this.container.addEventListener('click', (event) => {
-            if (event.target.classList.contains('show-more-btn')) {
-                const button = event.target;
-                const content = button.previousElementSibling; 
-                
-                if(content && content.classList.contains('comment-content')) {
-                    content.classList.toggle('expanded');
-                    button.textContent = content.classList.contains('expanded') ? 'Ver menos...' : 'Ver más...';
-                }
-                event.preventDefault();
-            }
-        });
-        this.showMoreListenerSet = true;
-    }
-
-    // 🚀 RESTAURADO: Tu renderizador de comentarios
-    renderExistingComments(comments) {
-        if (!comments || comments.length === 0) {
-            return '';
-        }
-        const commentsHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
-        return `<div class="existing-comments-list">${commentsHtml}</div>`;
+        `;
     }
 
+    // ✅ RESTAURADO: Tu método para crear el HTML de un comentario
     createCommentHtml(comment) {
-        // Hacemos la función robusta a PascalCase (del backend) y camelCase (del frontend)
-        const content = comment.content || comment.Content || '';
-        const commentUserId = comment.idUser || comment.userId || comment.UserId || 0;
-        const commentAvatarUrl = buildFullUrl(comment.userAvatar || comment.UserAvatar || this.loggedUser.urlAvatar);
-        const commentUserName = comment.userName || comment.UserName || this.loggedUser.userName;
-        const commentId = comment.idComment || comment.id || comment.Id || 0;
-
-        const needsShowMore = content.length > 100;
-        const showMoreButton = needsShowMore ? '<button class="show-more-btn">Ver más...</button>' : '';
+        // ✅ FIX DEFINITIVO: Ahora el DTO de comentario SÍ trae el avatar y el nombre del autor.
+        const avatarUrl = buildFullUrl(comment.userAvatar);
+        const userName = comment.userName;
 
         return `
-            <div class="comment-item" data-comment-id="${commentId}">
-                <a href="user-profile.html?id=${commentUserId}">
-                    <img class="avatar comment-avatar" src="${commentAvatarUrl}" alt="Avatar de ${commentUserName}">
+            <div class="comment-item" data-comment-id="${comment.id}">
+                <a href="user-profile.html?id=${comment.userId}">
+                    <img class="avatar comment-avatar" src="${avatarUrl}" alt="Avatar de ${userName}">
                 </a>
                 <div class="comment-body">
-                    <a class="user-name" href="user-profile.html?id=${commentUserId}">
-                        <span class="clickable-text">${commentUserName}</span>
-                    </a>
-                    <p class="comment-content">${content}</p>
-                    ${showMoreButton}
+                     <a class="user-name" href="user-profile.html?id=${comment.userId}">${userName}</a>
+                     <p class="comment-content">${comment.content}</p>
                 </div>
             </div>
         `;
     }
 
-    renderNewComment(postId, newCommentData) {
-        const postElement = this.container.querySelector(`.post[data-post-id="${postId}"]`);
-        if (!postElement) return;
-
-        const commentsContainer = postElement.querySelector('.existing-comments');
-        if (!commentsContainer) return;
-
-        let commentList = commentsContainer.querySelector('.existing-comments-list');
-        if (!commentList) {
-            commentList = document.createElement('div');
-            commentList.className = 'existing-comments-list';
-            // Si no había lista, la insertamos al principio del contenedor de comentarios existentes.
-            commentsContainer.prepend(commentList);
+    // ✅ ADAPTADO: La lógica del botón "Ver más" ahora usa tus clases
+    getLoadMoreButtonHtml(post) {
+        const commentsLoaded = post.comments.length;
+        if (post.commentsCount > commentsLoaded) {
+            const nextPage = Math.floor(commentsLoaded / 3) + 1;
+            return `<button class="load-more-comments-btn action-btn" data-post-id="${post.id}" data-next-page="${nextPage + 1}">Ver más comentarios</button>`;
         }
-        
-        // Desempaquetamos el comentario si viene dentro de una propiedad 'data'
-        const comment = newCommentData.data || newCommentData;
-
-        const commentHtml = this.createCommentHtml(comment);
-        commentList.insertAdjacentHTML('beforeend', commentHtml);
-
-        const commentCountBtn = postElement.querySelector('.comment-count-btn span');
-        if (commentCountBtn) {
-            const newCount = parseInt(commentCountBtn.textContent) + 1;
-            commentCountBtn.textContent = newCount;
-        }
-    } 
-
-    updateSinglePost(updatedPostData) {
-        const postId = updatedPostData.idPost || updatedPostData.id || updatedPostData.Id || updatedPostData.postId;
-        if (!postId) return;
-
-        const postElement = this.container.querySelector(`.post[data-post-id="${postId}"]`);
-        if (!postElement) return;
-
-        // Creamos el nuevo HTML para el post actualizado
-        const newPostHtml = this.createPostHtml(updatedPostData);
-        
-        // Reemplazamos el elemento antiguo con el nuevo
-        postElement.outerHTML = newPostHtml;
-
-        // Re-aplicamos los listeners que podrían haberse perdido en el reemplazo
-        this.setupTextareaAutoResize();
+        return ''; // No mostrar el botón si no hay más comentarios
     }
-    
-    // 🚀 RESTAURADO: Tu auto-resize
-    setupTextareaAutoResize() {
-        if (!this.container || this.textareaListenerSet) return; // Prevenir duplicados
-        
-        // Usamos delegación de eventos en el contenedor
-        this.container.addEventListener('input', (event) => {
-            const textarea = event.target;
-            // Solo actuar si es un textarea dentro de un comment-form
-            if (textarea.tagName.toLowerCase() === 'textarea' && textarea.closest('.comment-form')) {
-                textarea.style.height = 'auto'; // Reset height
-                textarea.style.height = (textarea.scrollHeight) + 'px'; // Set new height
-            }
-        });
-
-        this.textareaListenerSet = true;
-    }
 }

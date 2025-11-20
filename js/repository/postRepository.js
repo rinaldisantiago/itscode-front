@@ -14,7 +14,8 @@ export class PostRepository {
     async getAllWallPosts(loggedUserId, pageNumber = 1, pageSize = 10) {
         try {
             // DTO: idUserLogger, isMyPosts = false, idUserConsultado = 0
-            const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=0&isMyPosts=false&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+            // ✅ FIX: Pedimos solo los primeros 3 comentarios para la carga inicial.
+            const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=0&isMyPosts=false&pageNumber=${pageNumber}&pageSize=${pageSize}&pageNumberComments=1&pageSizeComments=3`;
             
             const responseData = await apiFetch(url, {
                 method: 'GET',
@@ -35,7 +36,8 @@ export class PostRepository {
     async getPostsForProfile(loggedUserId, profileUserId, isOwnProfile, pageNumber = 1, pageSize = 10) {
     try {
         // ✅ CAMBIO: El valor de 'isMyPosts' ahora es dinámico según el parámetro 'isOwnProfile'.
-        const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=${isOwnProfile}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        // ✅ FIX: Pedimos solo los primeros 3 comentarios para la carga inicial.
+        const url = `${POST_API_URL}?idUserLogger=${loggedUserId}&idUserConsultado=${profileUserId}&isMyPosts=${isOwnProfile}&pageNumber=${pageNumber}&pageSize=${pageSize}&pageNumberComments=1&pageSizeComments=3`;
         
         const responseData = await apiFetch(url);
         return responseData.posts || []; 
@@ -51,13 +53,14 @@ export class PostRepository {
      * Obtiene un único post por su ID.
      * Asume que existe un endpoint GET /Post/{id}
      */
-    async getPostById(postId, loggedUserId) {
+    async getPostById(postId, userId, pageNumberComments = 1, pageSizeComments = 10) {
         try {
-            // ✅ CORRECCIÓN: El endpoint es GET /Post/{id}/{idUserLogger}
-            const url = `${POST_API_URL}/${postId}/${loggedUserId}`;
-            
-            const postData = await apiFetch(url);
-            return postData;
+            // ✅ FIX: Se incluyen los parámetros de paginación de comentarios en la URL
+            // ✅ FIX: Usamos POST_API_URL en lugar de this.baseUrl, que era undefined.
+            const url = `${POST_API_URL}/${postId}/${userId}/${pageNumberComments}/${pageSizeComments}`;
+            const post = await apiFetch(url, { method: 'GET' });
+            // ✅ FIX: Corregimos el typo, devolvemos la variable correcta.
+            return post;
 
         } catch (error) {
             console.error(`Fallo en PostRepository.getPostById para el post ${postId}:`, error);

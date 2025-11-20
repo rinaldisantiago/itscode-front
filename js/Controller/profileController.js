@@ -71,29 +71,60 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
     const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, getUserSession());
 
     containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn');
+        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn');
         if (!button) return;
 
         event.preventDefault();
         const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
         const postId = button.dataset.postId;
         const interactionId = button.dataset.interactionId;
-        
-        button.disabled = true;
-        
-        try {
-            if (interactionId) {
-                await interactionRepo.deleteInteraction(interactionId);
-            } else {
-                await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
-            }
-            const updatedPost = await postRepo.getPostById(postId, loggedUserId);
-            postPresentation.updateSinglePost(updatedPost);
 
-        } catch (error) {
-            console.error('Error en la interacción:', error);
-        } finally {
-            button.disabled = false;
+        // --- Lógica para Likes/Dislikes ---
+        if (button.classList.contains('like-btn') || button.classList.contains('dislike-btn')) {
+            button.disabled = true;
+            try {
+                if (interactionId) {
+                    await interactionRepo.deleteInteraction(interactionId);
+                } else {
+                    await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
+                }
+                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 10);
+                postPresentation.updateSinglePost(updatedPost);
+            } catch (error) {
+                console.error('Error en la interacción:', error);
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        // --- 🚀 NUEVA LÓGICA para "Ver más" comentarios ---
+        if (button.classList.contains('load-more-comments-btn')) {
+            const nextPage = parseInt(button.dataset.nextPage);
+            const commentsPerPage = 3; // Debe coincidir con el tamaño de página que quieres cargar
+
+            button.disabled = true;
+            button.textContent = 'Cargando...';
+
+            try {
+                const newComments = await commentRepo.getCommentsByPostId(postId, nextPage, commentsPerPage);
+                if (newComments.length > 0) {
+                    postPresentation.appendComments(postId, newComments);
+                    // Actualizamos el botón para la siguiente página
+                    button.dataset.nextPage = nextPage + 1;
+                }
+                // Ocultamos el botón si ya no hay más comentarios por cargar
+                if (newComments.length < commentsPerPage) {
+                    button.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error al cargar más comentarios:', error);
+                button.textContent = 'Error al cargar';
+            } finally {
+                if (button.style.display !== 'none') {
+                    button.disabled = false;
+                    button.textContent = 'Ver más comentarios';
+                }
+            }
         }
     });
 
@@ -112,8 +143,19 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
 
             try {
                 await commentRepo.createComment(postId, loggedUserId, content);
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId);
-                postPresentation.updateSinglePost(updatedPost);
+                
+                // ✅ FIX: En lugar de recargar todo el post, actualizamos solo la sección de comentarios.
+                const commentsPerPage = 3;
+                const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
+
+                // Buscamos el post en el DOM para actualizar solo sus comentarios.
+                const postElement = containerElement.querySelector(`.post-card[data-post-id="${postId}"]`);
+                // Obtenemos el contador de comentarios del post para incrementarlo.
+                const commentsCountElement = postElement.querySelector('.comments-count');
+                
+                // Llamamos al nuevo método de la presentación para que actualice el DOM.
+                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent) + 1);
+                contentInput.value = '';
             } catch (error) {
                 console.error('Fallo al crear y refrescar comentario:', error);
             } finally {

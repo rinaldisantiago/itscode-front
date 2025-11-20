@@ -50,4 +50,22 @@ export class CommentRepository {
             throw error;
         }
     }
+
+    /**
+     * 🚀 NUEVA FUNCIÓN
+     * Obtiene comentarios paginados para un post específico.
+     * Llama al endpoint GET /Comment?postId=...&pageNumber=...&pageSize=...
+     */
+    async getCommentsByPostId(postId, pageNumber, pageSize) {
+        const url = `/Comment?postId=${postId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        try {
+            const result = await apiFetch(url, {
+                method: 'GET'
+            });
+            return result.comments || []; // El backend devuelve un objeto { comments: [...] }
+        } catch (error) {
+            console.error(`Fallo al obtener comentarios para el post ${postId}:`, error);
+            throw error;
+        }
+    }
 }
