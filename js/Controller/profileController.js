@@ -71,7 +71,7 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
     const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, getUserSession());
 
     containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn');
+        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn, .delete-post-btn');
         if (!button) return;
 
         event.preventDefault();
@@ -129,6 +129,28 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
                 if (button.style.display !== 'none') {
                     button.disabled = false;
                     button.textContent = 'Ver más comentarios';
+                }
+            }
+        }
+
+        // --- 🚀 NUEVA LÓGICA para Eliminar Post ---
+        if (button.classList.contains('delete-post-btn')) {
+            // Pedimos confirmación al usuario
+            const userConfirmed = confirm("¿Estás seguro de que quieres eliminar esta publicación? Esta acción no se puede deshacer.");
+
+            if (userConfirmed) {
+                button.disabled = true;
+                try {
+                    await postRepo.deletePost(postId, loggedUserId);
+                    // Si la eliminación fue exitosa, removemos el post del DOM
+                    const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                    if (postElement) {
+                        postElement.remove();
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar el post:', error);
+                    alert("No se pudo eliminar la publicación. Inténtalo de nuevo.");
+                    button.disabled = false;
                 }
             }
         }

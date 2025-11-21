@@ -88,6 +88,15 @@ export class PostPresentation {
         const isLiked = post.userInteraction?.type === INTERACTION_TYPE.LIKE;
         const isDisliked = post.userInteraction?.type === INTERACTION_TYPE.DISLIKE;
 
+        // ✅ LÓGICA: Creamos el botón de eliminar solo si el ID del usuario logueado
+        // coincide con el ID del autor del post.
+        const isMyPost = this.loggedUser.id === post.idUser;
+        const deleteButtonHtml = isMyPost ? `
+            <button class="delete-post-btn" data-post-id="${post.id}" title="Eliminar post">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        ` : '';
+
         return `
             <article class="post" data-post-id="${post.id}">
                 <div class="post-header">
@@ -95,6 +104,7 @@ export class PostPresentation {
                         <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
                         <h4 class="user-name">${post.userName}</h4>
                     </a>
+                    ${deleteButtonHtml}
                 </div>
                 <h3 class="post-title">${post.title}</h3>
                 <p>${post.content || ''}</p>
