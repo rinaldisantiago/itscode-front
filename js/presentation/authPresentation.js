@@ -112,7 +112,7 @@ const handleLoginClick = async (event) => {
         Swal.fire({ 
             icon: 'success', 
             title: '¡Bienvenido!', 
-            text: `Sesión iniciada como ${result.user.UserName}. Redireccionando...`, 
+            text: `Sesión iniciada como ${result.user.userName}. Redireccionando...`, 
             showConfirmButton: false, 
             timer: 1500 
         }).then(() => { 
