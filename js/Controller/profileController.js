@@ -173,8 +173,8 @@ function setupMyProfileInteractions(containerElement, loggedUserId, postRepo) {
                 await commentRepo.createComment(postId, loggedUserId, content);
                 
                 // ✅ FIX: En lugar de recargar todo el post, actualizamos solo la sección de comentarios.
-                const commentsPerPage =5;
-                const updatedComments = await commentRepo.getCommentsByPostId(postId, 2, commentsPerPage);
+                const commentsPerPage = 3;
+                const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
 
                 // Buscamos el post en el DOM para actualizar solo sus comentarios.
                 // ✅ FIX: Corregimos el selector que estaba mal escrito ('post-card' en lugar de 'post').
