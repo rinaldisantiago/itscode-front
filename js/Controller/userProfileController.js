@@ -5,8 +5,7 @@ import { PostPresentation } from '../presentation/postPresentation.js';
 import { getUserById } from '../repository/userRepository.js';
 import { FollowingRepository } from '../repository/followingRepository.js';
 import { PostRepository } from '../repository/postRepository.js';
-import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
-import { CommentRepository } from '../repository/commentRepository.js';
+import { setupPostInteractions } from './postInteractionsController.js'; // ✅ 1. IMPORTAMOS el nuevo controlador
 
 const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
 const VISITED_PROFILE_CONTAINER_SELECTOR = '#infoUserVisit';
@@ -84,12 +83,17 @@ export async function loadVisitedProfileView() {
             // ✅ CORRECCIÓN: Llamamos directamente al repositorio y a la presentación.
             // El primer parámetro es quién pide, el segundo es de quién son los posts.
             // Pasamos el ID del usuario visitado en el segundo parámetro.
-            // ✅ FIX: El primer parámetro es QUIÉN pide (loggedUserId) y el segundo es DE QUIÉN son los posts (visitedUserId).
-            // ✅ SOLUCIÓN: Para que el backend filtre por el usuario visitado, le "engañamos" diciendo
-            // que es su propio perfil (`isMyPosts=true`) y pasamos el ID del visitado en ambos parámetros.
-            const userPosts = await postRepo.getPostsForProfile(visitedUserId, visitedUserId, true);
+            // ✅ SOLUCIÓN ESTRATÉGICA:
+            // 1. Obtenemos la lista de posts del usuario visitado. Esta llamada trae los posts correctos pero sin nuestras interacciones.
+            const postList = await postRepo.getPostsForProfile(visitedUserId, visitedUserId, true);
+            // 2. "Hidratamos" cada post pidiendo su versión completa, que SÍ incluye nuestra interacción.
+            const userPosts = await Promise.all(
+                postList.map(p => postRepo.getPostById(p.id, loggedUserId))
+            );
             postPresentation.renderPosts(userPosts);
-            setupProfileInteractions(postsContainer, loggedUserId);
+
+            // ✅ 2. USAMOS el controlador centralizado
+            setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation);
 
         } else {
             // Si no lo sigue, ocultamos el título y mostramos un mensaje
@@ -103,118 +107,6 @@ export async function loadVisitedProfileView() {
         console.error("Error al cargar el perfil del usuario visitado:", error);
         userPresentation.showError("No se pudo cargar el perfil de este usuario.");
     }
-}
-
-/**
- * Configura los listeners para likes y comentarios en CUALQUIER página de perfil.
- * Reutiliza la lógica de wallController y profileController.
- */
-function setupProfileInteractions(containerElement, loggedUserId) {
-    if (!containerElement || containerElement.dataset.interactionsInitialized) {
-        return;
-    }
-    containerElement.dataset.interactionsInitialized = 'true';
-
-    const interactionRepo = new InteractionRepository();
-    const commentRepo = new CommentRepository();
-    const postRepo = new PostRepository();
-    // ✅ FIX: Instanciamos PostPresentation con el selector correcto y estático del contenedor de posts.
-    const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
-
-    // Listener para Likes/Dislikes
-    containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn');
-        if (!button) return;
-
-        event.preventDefault();
-        const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
-        const postId = button.dataset.postId;
-        const interactionId = button.dataset.interactionId;
-        
-        button.disabled = true;
-        
-        try {
-            // --- Lógica para Likes/Dislikes ---
-            if (button.classList.contains('like-btn') || button.classList.contains('dislike-btn')) {
-                if (interactionId) {
-                    // ✅ FIX: Pasamos el 'interactionType' para que el backend sepa qué hacer.
-                    await interactionRepo.deleteInteraction(interactionId, loggedUserId, interactionType);
-                } else {
-                    await interactionRepo.createInteraction(parseInt(postId), loggedUserId, interactionType);
-                }
-                // ✅ FIX: Usamos la llamada correcta a getPostById, incluyendo los parámetros de paginación.
-                const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
-                postPresentation.updateSinglePost(updatedPost);
-            }
-
-            // --- 🚀 LÓGICA AÑADIDA para "Ver más" comentarios ---
-            if (button.classList.contains('load-more-comments-btn')) {
-                const nextPage = parseInt(button.dataset.nextPage);
-                const commentsPerPage = 3;
-
-                button.textContent = 'Cargando...';
-
-                const newComments = await commentRepo.getCommentsByPostId(postId, nextPage, commentsPerPage);
-                if (newComments.length > 0) {
-                    postPresentation.appendComments(postId, newComments);
-                    button.dataset.nextPage = nextPage + 1;
-                }
-
-                // ✅ FIX: Comprobamos el total de comentarios cargados contra el contador total.
-                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
-                const commentsList = postElement.querySelector('.comments-list');
-                const totalCommentsCount = parseInt(postElement.querySelector('.comments-count').textContent);
-                if (commentsList.children.length >= totalCommentsCount) {
-                    button.style.display = 'none';
-                }
-                if (button.style.display !== 'none') {
-                    button.textContent = 'Ver más comentarios';
-                }
-            }
-
-        } catch (error) {
-            console.error('Error en la interacción:', error);
-        } finally {
-            if (button.style.display !== 'none') {
-                button.disabled = false;
-            }
-        }
-    });
-
-    // ✅ FIX: Listener para Comentarios actualizado con la lógica correcta.
-    containerElement.addEventListener('submit', async (event) => {
-        if (event.target.classList.contains('comment-form')) {
-            event.preventDefault(); 
-
-            const form = event.target;
-            const postId = parseInt(form.dataset.postId);
-            const contentInput = form.querySelector('textarea[name="commentContent"]');
-            const content = contentInput.value.trim();
-
-            if (!content) return;
-            
-            form.querySelector('button[type="submit"]').disabled = true;
-
-            try {
-                await commentRepo.createComment(postId, loggedUserId, content);
-                
-                // Actualizamos solo la sección de comentarios
-                const commentsPerPage = 3;
-                const updatedComments = await commentRepo.getCommentsByPostId(postId, 1, commentsPerPage);
-
-                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
-                const commentsCountElement = postElement.querySelector('.comments-count');
-                
-                postPresentation.updateCommentsSection(postElement, updatedComments, parseInt(commentsCountElement.textContent || '0') + 1);
-                contentInput.value = '';
-
-            } catch (error) {
-                console.error('Fallo al crear y refrescar comentario:', error);
-            } finally {
-                form.querySelector('button[type="submit"]').disabled = false;
-            }
-        }
-    });
 }
 
 async function handleFollowClick(event) {
@@ -244,11 +136,15 @@ async function handleFollowClick(event) {
         if (!isCurrentlyFollowing) {
             // Si acabamos de seguirlo, cargamos sus posts
             const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
-            // ✅ SOLUCIÓN: Aplicamos la misma lógica aquí.
-            const userPosts = await postRepo.getPostsForProfile(userIdToFollow, userIdToFollow, true);
+            // ✅ SOLUCIÓN: Aplicamos la misma estrategia aquí para asegurar que los posts cargados
+            // después de seguir a alguien también tengan la información de interacción correcta.
+            const postList = await postRepo.getPostsForProfile(userIdToFollow, userIdToFollow, true);
+            const userPosts = await Promise.all(
+                postList.map(p => postRepo.getPostById(p.id, loggedUserId))
+            );
             postPresentation.renderPosts(userPosts);
             // Re-inicializamos las interacciones para los nuevos posts
-            setupProfileInteractions(postsContainer, loggedUserId);
+            setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation);
             const postsTitle = document.querySelector('.user-profile-post h2');
             if (postsTitle) postsTitle.style.display = 'block';
         } else {

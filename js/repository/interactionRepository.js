@@ -49,9 +49,10 @@ export class InteractionRepository {
         
         const requestBody = {
             interactionId: interactionId,
-            // ✅ AÑADIDO: Enviamos el tipo de interacción que se quiere crear
-            // para que el backend sepa si es un cambio de opinión.
-            interactionType: interactionType
+            // ✅ SOLUCIÓN: Enviamos el tipo de interacción del botón que se está pulsando.
+            // Si el usuario pulsa "like" para quitar un like, el backend recibe
+            // el ID de la interacción a borrar y el tipo "LIKE", permitiéndole resolver la acción.
+            interactionType: interactionType 
         };
         
         try {
