@@ -37,6 +37,7 @@ function initializeApp() {
         console.log("Cargando controlador de Creación de Post.");
     }
 
+
     // 🚀 NUEVA RUTA: MI PERFIL (my-profile.html)
     else if (path.includes('my-profile.html')) {
         loadProfileView(); // <-- Llamamos al controlador original y correcto

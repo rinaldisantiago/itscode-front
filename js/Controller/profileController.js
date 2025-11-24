@@ -29,7 +29,8 @@ export async function loadProfileView() {
     const loggedUserId = userSession.id;
 
     const userPresentation = new UserPresentation(MY_PROFILE_CONTAINER_SELECTOR);
-    const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession);
+    // ✅ SOLUCIÓN: Le decimos a la presentación que estamos en la página de "Mi Perfil".
+    const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession, { isMyProfilePage: true });
 
     userPresentation.showLoading();
     postPresentation.showLoading();

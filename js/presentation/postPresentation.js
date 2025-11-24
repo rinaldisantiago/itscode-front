@@ -5,9 +5,10 @@ import { INTERACTION_TYPE } from '../repository/interactionRepository.js';
 
 export class PostPresentation {
     
-    constructor(containerSelector, loggedUser) {
+    constructor(containerSelector, loggedUser, config = {}) {
         this.container = document.querySelector(containerSelector);
         this.loggedUser = loggedUser;
+        this.config = config; // ✅ 1. Guardamos la configuración
     }
 
     showLoading() {
@@ -90,8 +91,9 @@ export class PostPresentation {
 
         // ✅ LÓGICA: Creamos el botón de eliminar solo si el ID del usuario logueado
         // coincide con el ID del autor del post.
-        const isMyPost = this.loggedUser.id === post.idUser;
-        const deleteButtonHtml = isMyPost ? `
+        // ✅ CORRECCIÓN: Y si estamos en la página de "Mi Perfil" (usando la configuración).
+        const canShowDeleteButton = this.config.isMyProfilePage && (this.loggedUser.id === post.idUser);
+        const deleteButtonHtml = canShowDeleteButton ? `
             <button class="delete-post-btn" data-post-id="${post.id}" title="Eliminar post">
                 <i class="fa-solid fa-trash"></i>
             </button>
@@ -100,8 +102,7 @@ export class PostPresentation {
         return `
             <article class="post" data-post-id="${post.id}">
                 <div class="post-header">
-                    <a href="user-profile.html?id=${post.idUser}"> 
-                        <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
+                    <a href="user-profile.html?id=${post.idUser}"> <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
                         <h4 class="user-name">${post.userName}</h4>
                     </a>
                     ${deleteButtonHtml}

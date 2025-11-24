@@ -1417,3 +1417,34 @@ footer {
     /* CLAVE: Alinea el botón a la derecha dentro de la caja */
     align-self: flex-end; 
 }
+
+/* --- Estilos para posicionar los botones de acción del post (Editar/Eliminar) --- */
+
+/* 1. Establecemos el contenedor del post como el marco de referencia. */
+.post {
+    position: relative; /* Fundamental para que position: absolute funcione correctamente. */
+}
+
+/* 2. Posicionamos el botón de eliminar de forma absoluta dentro del post. */
+.delete-post-btn {
+    position: absolute;
+    top: 1rem;  /* 16px desde arriba */
+    right: 1rem; /* 16px desde la derecha */
+}
+
+/* 3. Estilos del botón de eliminar. */
+.delete-post-btn {
+    background-color: transparent;
+    border: none;
+    color: #888; /* Un color gris sutil */
+    font-size: 1.1rem; /* Un poco más grande para que sea fácil de pulsar */
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+    transition: color 0.3s ease; /* Transición suave del color */
+}
+
+/* 4. Efecto hover para el botón de eliminar. */
+.delete-post-btn:hover {
+    color: #e74c3c; /* Un color rojo al pasar el mouse */
+}
