@@ -406,7 +406,7 @@ a:hover {
 
 .btn-update,
 .btn-cancel {
-  display: inline;
+  display: inline-block;
   width: 50%;
   padding: 12px;
   border: none;
@@ -417,6 +417,10 @@ a:hover {
   font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+a.btn-cancel {
+    margin: 0;
 }
 
 .btn-update:hover,
@@ -1322,31 +1326,23 @@ footer {
     font-size: 0.8em;
   }
 }
-/* ================================================= */
-/* ESTILOS UNIFICADOS PARA COMENTARIOS EXISTENTES */
-/* ================================================= */
 
-/* Contenedor de la lista de comentarios (Añade espacio vertical) */
 .existing-comments-list {
     display: flex;
     flex-direction: column;
-    /* CLAVE: Espacio entre cada comentario */
     gap: 15px; 
     padding-top: 15px;
     text-align: left; 
 }
 
-/* Contenedor de cada comentario individual */
 .comment-item {
     display: flex;
-    /* CLAVE: Alinea el avatar con el inicio de la caja de texto */
     align-items: flex-start; 
     gap: 10px;
     padding: 0 10px;
     text-align: left; 
 }
 
-/* Avatar del comentario */
 .comment-avatar {
     width: 35px; 
     height: 35px;
@@ -1356,21 +1352,17 @@ footer {
     object-fit: cover;
 }
 
-/* Cuerpo del comentario (LA CAJA GRIS CLARO NEÓN) */
 .comment-body {
-    /* CLAVE: Vuelve el fondo de la caja */
     background-color: rgba(255, 255, 255, 0.1); 
     padding: 8px 12px;
     border-radius: 12px;
     flex-grow: 1; 
-    /* CLAVE: Permite que la caja se ajuste cuando el texto es muy largo */
     min-width: 0; 
     text-align: left; 
     display: flex;
     flex-direction: column;
 }
 
-/* Estilo para el nombre de usuario dentro de la caja */
 .comment-body .user-name {
     margin: 0 0 3px 0;
     font-size: 1.1em;
@@ -1378,73 +1370,57 @@ footer {
     display: block; 
 }
 
-/* Contenido del comentario (Texto) */
 .comment-content {
     margin: 0;
     font-size: 0.95em; 
-    line-height: 1.4em; /* CLAVE: Define la altura de la línea para el "Ver más" */
+    line-height: 1.4em;
     color: #ddd;
-    
-    /* Propiedades para limitar a 3 líneas (3 * 1.4em = 4.2em) */
     max-height: 4.2em; 
     overflow: hidden; 
-    
-    /* Propiedades específicas para limitar líneas en WebKit */
     display: -webkit-box;
     -webkit-line-clamp: 3; 
     -webkit-box-orient: vertical;
-
-    /* CLAVE: Para que el texto largo se rompa y no desborde */
     word-wrap: break-word; 
     overflow-wrap: break-word;
 }
 
-/* Clase para expandir el contenido */
 .comment-content.expanded {
     max-height: none; 
     -webkit-line-clamp: unset; 
 }
 
-/* Botón "Ver más" */
 .show-more-btn {
     background: none;
     border: none;
-    color: #00bcd4; /* Color neón */
+    color: #00bcd4;
     cursor: pointer;
     padding: 0;
     margin-top: 5px;
     font-size: 0.85em;
-    /* CLAVE: Alinea el botón a la derecha dentro de la caja */
     align-self: flex-end; 
 }
 
-/* --- Estilos para posicionar los botones de acción del post (Editar/Eliminar) --- */
-
-/* 1. Establecemos el contenedor del post como el marco de referencia. */
 .post {
-    position: relative; /* Fundamental para que position: absolute funcione correctamente. */
+    position: relative;
 }
 
-/* 2. Posicionamos el botón de eliminar de forma absoluta dentro del post. */
 .delete-post-btn {
     position: absolute;
-    top: 1rem;  /* 16px desde arriba */
-    right: 1rem; /* 16px desde la derecha */
+    top: 1em;
+    right: 1em;
 }
 
-/* 3. Estilos del botón de eliminar. */
 .delete-post-btn {
     background-color: transparent;
     border: none;
-    color: #888; /* Un color gris sutil */
-    font-size: 1.1rem; /* Un poco más grande para que sea fácil de pulsar */
+    color: #888;
+    font-size: 1.1em;
     cursor: pointer;
     padding: 5px;
     line-height: 1;
-    transition: color 0.3s ease; /* Transición suave del color */
+    transition: color 0.3s ease; 
 }
 
-/* 4. Efecto hover para el botón de eliminar. */
 .delete-post-btn:hover {
-    color: #e74c3c; /* Un color rojo al pasar el mouse */
+    color: #e74c3c; 
 }
