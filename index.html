@@ -27,7 +27,6 @@
     </section>
 
     <section class="right-panel" aria-label="Formulario de inicio de sesión">
-      <input type="checkbox" id="mode_button"> Modo Claro
       <article class="card-right">
         <div class="icon" aria-hidden="true">
           <span class="fas fa-code fa-3x"></span>
@@ -36,15 +35,16 @@
         <p class="subtitle">Accede a tu comunidad de desarrollo</p>
         <form id="login-form" method="post" aria-label="Formulario de acceso">
           <div class="input-group">
-            <i class="fas fa-user" aria-hidden="true"></i>
-            <input id="username" type="username" placeholder=" Usuario" required />
+              <i class="fas fa-user" aria-hidden="true"></i>
+              <!-- 👇 CORREGIDO: type="text" y añadido name="username" -->
+              <input id="username" name="username" type="text" placeholder=" Usuario" required />
           </div>
           <div class="input-group">
-            <i class="fas fa-lock" aria-hidden="true"></i>
-            <input id="password" type="password" placeholder="Contraseña" required />
+              <i class="fas fa-lock" aria-hidden="true"></i>
+              <!-- 👇 AÑADIDO: name="password" -->
+              <input id="password" name="password" type="password" placeholder="Contraseña" required />
           </div>
-          <a href="./html/wall.html" class="btn">Entrar</a>
-          <!-- <button type="submit" class="btn">Entrar</button> -->
+          <button type="submit" class="btn">Entrar</button>
         </form>
         <a href="./html/sign-up.html">¿No tienes cuenta? <strong>Regístrate</strong></a>
 
@@ -54,9 +54,9 @@
       </article>
     </section>
   </main>
-  <script src="./js/Index/index.js"></script>
-  <script src="./js/Index/indexRepository.js"></script>
-  <script src="./js/mode.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+  
+  <script type="module" src="./js/script.js"></script>
 </body>
 
 </html>

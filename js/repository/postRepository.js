@@ -1,31 +1,47 @@
-// js/repository/PostRepository.js
+// js/repository/postRepository.js
 
 import { apiFetch } from '../fetch.js';
 
-export class PostRepository {
-    
-    /**
-     * Obtiene una página de publicaciones del muro.
-     * @param {number} loggedUserId - ID del usuario logueado.
-     * @param {number} pageNumber - Número de página.
-     * @param {number} pageSize - Tamaño de la página.
-     * @returns {Promise<Array>} Un array de objetos post.
-     */
-    async getAllWallPosts(loggedUserId, pageNumber = 1, pageSize = 10) {
-        try {
-            // Endpoint: /Post?idUserLogger=X&pageNumber=Y&pageSize=Z&isMyPosts=false
-            const url = `/Post?idUserLogger=${loggedUserId}&pageNumber=${pageNumber}&pageSize=${pageSize}&isMyPosts=false`;
-            
-            const responseData = await apiFetch(url, {
-                method: 'GET',
-            });
+const API_BASE_URL = 'http://localhost:5052';
 
-            // Asume que la respuesta JSON tiene la estructura { posts: [...] }
-            return responseData.posts || []; 
-
-        } catch (error) {
-            console.error("Fallo en PostRepository.getAllWallPosts:", error);
-            return []; 
-        }
+export const buildFullUrl = (relativeUrl) => {
+    if (!relativeUrl || relativeUrl.startsWith('http')) {
+        return relativeUrl;
     }
+    return `${API_BASE_URL}${relativeUrl}`;
+};
+
+export class PostRepository {
+
+    async getAllWallPosts(userId, pageNumber = 1, pageSize = 10) {
+        const response = await apiFetch(`/Post?idUserLogger=${userId}&isMyPosts=false&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return response.posts;
+    }
+
+    async getPostsForProfile(idUserConsultado, idUserLogger, isMyPosts, pageNumber = 1, pageSize = 10) {
+        const response = await apiFetch(`/Post?idUserConsultado=${idUserConsultado}&idUserLogger=${idUserLogger}&isMyPosts=${isMyPosts}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
+        return response.posts;
+    }
+
+    async getPostById(postId, userId, pageNumberComments = 1, pageSizeComments = 3) {
+        return await apiFetch(`/Post/${postId}/${userId}/${pageNumberComments}/${pageSizeComments}`);
+    }
+
+    async deletePost(postId, userId) {
+        // El backend espera los parámetros en la URL (FromQuery)
+        const url = `/Post?id=${postId}&idUser=${userId}`;
+        
+        // Realizamos la petición DELETE
+        return await apiFetch(url, {
+            method: 'DELETE'
+        });
+    }
+}
+
+export async function getUserById(userId, loggedUserId) {
+    return await apiFetch(`/User/${userId}/${loggedUserId}`);
+}
+
+export async function updateUser(userId, formData) {
+    return await apiFetch(`/User/${userId}`, { method: 'PUT', body: formData, isMultipart: true });
 }

@@ -9,38 +9,50 @@ export const INTERACTION_TYPE = {
 };
 
 export class InteractionRepository {
-    
 
     async createInteraction(postId, userId, type) {
-        const url = `/Interaction`; // URL limpia, sin query string
+        const url = `/Interaction`;
         
         const requestBody = {
-            postId: postId,
-            userId: userId,
-            interactionType: type 
+            postId: postId,        
+            userId: userId,        
+            interactionType: type  
         };
+        
+        console.log('Enviando petición de interacción:', {
+            url: url,
+            body: requestBody
+        });
         
         try {
             const result = await apiFetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json' // Crucial para [FromBody]
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestBody) // Enviamos el JSON
+                body: JSON.stringify(requestBody)
             });
+            
+            console.log('Respuesta del backend:', result);
             return result; 
-        } catch (error) { /* ... */ }
+        } catch (error) {
+            console.error("Error al crear interacción:", error);
+            throw error;
+        }
     }
 
     /**
      * Elimina una interacción (e.g., quitar un like/dislike).
      */
-    async deleteInteraction(interactionId) {
+    async deleteInteraction(interactionId, userId, interactionType) {
         const url = '/Interaction';
         
-        // Tu controlador DeleteInteraction espera [FromBody]
         const requestBody = {
-            interactionId: interactionId
+            interactionId: interactionId,
+            // ✅ SOLUCIÓN: Enviamos el tipo de interacción del botón que se está pulsando.
+            // Si el usuario pulsa "like" para quitar un like, el backend recibe
+            // el ID de la interacción a borrar y el tipo "LIKE", permitiéndole resolver la acción.
+            interactionType: interactionType 
         };
         
         try {
