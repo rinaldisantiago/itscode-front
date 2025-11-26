@@ -1,7 +1,5 @@
 // js/presentation/authPresentation.js
-
 import { registerUser, loginUser } from '../repository/authRepository.js'; 
-import { getBanReason } from '../repository/userRepository.js';
 
 // --- ELEMENTOS DEL DOM ---
 const registrationForm = document.getElementById('registration-form');
@@ -11,27 +9,26 @@ const loginForm = document.getElementById('login-form');
 // (Ya no necesitamos los inputs individuales, FormData los leerá)
 const loginButton = loginForm ? loginForm.querySelector('.btn') : null; 
  
-// --- REGLAS DE VALIDACIÓN (SINCRONIZADAS CON EL BACKEND) ---
 const validationRules = {
-    FullName: {
+    FullName: { // ✅ CORRECCIÓN: Volvemos a usar 'FullName' con mayúscula para que coincida con el name="" del HTML del registro.
         fieldName: "Nombre Completo",
         regex: /^(?=.{1,50}$)[a-zA-ZÀ-ÿ]+( [a-zA-ZÀ-ÿ]+)+$/,
-        message: "El nombre completo debe tener al menos dos palabras y no más de 50 caracteres."
-    },
-    Username: {
-        fieldName: "Nombre de Usuario",
-        regex: /^(?=.{5,25}$)[a-zA-Z0-9_]+$/,
-        message: "El nombre de usuario debe tener entre 5 y 25 caracteres, y solo puede contener letras, números y guiones bajos (_)."
+        message: "Debe tener al menos dos palabras y no más de 50 caracteres."
     },
     email: {
         fieldName: "Correo Electrónico",
         regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        message: "El formato del correo electrónico no es válido."
+        message: "El formato del correo no es válido."
+    },
+    Username: { // ✅ CORRECCIÓN: Volvemos a usar 'Username' con mayúscula.
+        fieldName: "Nombre de Usuario",
+        regex: /^(?=.{5,25}$)[a-zA-Z0-9_]+$/,
+        message: "Debe tener entre 5 y 25 caracteres (letras, números, _)."
     },
     password: {
         fieldName: "Contraseña",
         regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
-        message: "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo."
+        message: "Mínimo 8 caracteres, una mayúscula, una minúscula, un número y un símbolo."
     }
 };
  
@@ -104,11 +101,9 @@ const handleRegistration = async (event) => {
     }
 };
 
-// =======================================================
-// --- HANDLER DE LOGIN ---
-// =======================================================
+
 const handleLoginClick = async (event) => {
-    event.preventDefault(); // <-- ¡Previene el error 405!
+    event.preventDefault(); 
 
     const formData = new FormData(loginForm);
     const username = formData.get('username')?.trim(); 
@@ -137,25 +132,24 @@ const handleLoginClick = async (event) => {
             showConfirmButton: false, 
             timer: 1500 
         }).then(() => { 
-            // 🚨 CAMBIO CLAVE: Ruta de redirección corregida
             window.location.href = './html/wall.html'; 
         });
 
     } catch (error) {
-        // ✅ SOLUCIÓN FINAL: Comprobamos el mensaje de error simple que nos llega.
-        if (error.message === "Usuario Baneado.") {
-            // Si el usuario está baneado, hacemos una segunda llamada para obtener el motivo.
-            const reasonData = await getBanReason(username);
-            const banReason = reasonData.reason || "No se especificó un motivo.";
+        if (error.data && error.data.message === "Usuario Baneado.") {
+            const banReason = error.data.reason || "No se especificó un motivo.";
             Swal.fire({
                 icon: 'error',
                 title: 'Acceso Denegado',
                 text: `Tu cuenta ha sido baneada. Motivo: ${banReason}`,
             });
+        } else if (error.data && error.data.message === "Invalid username or password.") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de Autenticación',
+                text: 'El nombre de usuario o la contraseña son incorrectos. Por favor, verifica tus datos.',
+            });
         } else {
-            console.error('Fallo en el flujo de login:', error);
-            // Para cualquier otro error (ej. contraseña incorrecta), apiFetch ya muestra un Swal.
-            // Solo lo logueamos en consola para depuración.
             console.error('Fallo en el flujo de login (error no manejado):', error);
         }
     } finally {
@@ -165,10 +159,6 @@ const handleLoginClick = async (event) => {
         }
     }
 };
-
-// =======================================================
-// --- FUNCIONES DE INICIALIZACIÓN ---
-// =======================================================
 
 function loadSignupView() {
     if (registrationForm) {

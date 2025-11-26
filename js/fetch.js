@@ -7,26 +7,20 @@ export async function apiFetch(url, config = {}) {
         if (!response.ok) {
             const errorText = await response.text(); 
             
-            let errorMessage = `Error en la solicitud a ${url}. Código: ${response.status} (${response.statusText})`;
+            let errorData;
+            let errorMessage;
 
             try {
-                const errorJson = JSON.parse(errorText);
-                if (errorJson.message) {
-                    errorMessage = errorJson.message;
-                }
+                errorData = JSON.parse(errorText);
+                errorMessage = errorData.message || 'Error en la respuesta de la API.';
             } catch (e) {
-                if (errorText) {
-                    errorMessage += ` - Detalle: ${errorText.substring(0, 100)}...`;
-                }
+                errorMessage = errorText || `Error HTTP ${response.status}`;
             }
 
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: errorMessage,
-            });
-
-            throw new Error(errorMessage);
+            // ✅ SOLUCIÓN: Creamos un error que contiene el mensaje Y los datos completos.
+            const error = new Error(errorMessage);
+            error.data = errorData; // Adjuntamos el objeto JSON completo.
+            throw error; // Lanzamos este error enriquecido.
         }
 
         if (response.status === 204) {
@@ -43,13 +37,22 @@ export async function apiFetch(url, config = {}) {
         return response;
 
     } catch (error) {
-
-        if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+        // ✅ MEJORA: Evitamos que apiFetch muestre un Swal para errores que manejamos de forma específica
+        // en la capa de presentación (baneo y credenciales incorrectas).
+        const isBannedError = error.data && error.data.message === "Usuario Baneado.";
+        const isInvalidCredentialsError = error.data && error.data.message === "Invalid username or password.";
+        
+        // Si no es ninguno de los errores que manejamos específicamente, mostramos el Swal genérico.
+        if (!isBannedError && !isInvalidCredentialsError) {
             Swal.fire({
                 icon: 'error',
-                title: 'Error de Conexión',
-                text: 'No se pudo conectar con el servidor de la API. Verifique que esté corriendo.',
+                title: 'Error',
+                // Usamos el mensaje del error si está disponible, si no, un texto genérico.
+                text: error.message || 'Ocurrió un error inesperado.',
             });
+        }
+        if (error.message.includes("Failed to fetch")) {
+            console.error("Error de Conexión: No se pudo conectar con el servidor de la API. Verifique que esté corriendo.");
         }
         
         console.error(`Fallo en apiFetch para ${url}:`, error);
