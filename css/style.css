@@ -33,6 +33,7 @@ html {
   font-size: 100%;
 }
 
+.grid-display,
 .grid-post-create,
 .grid-following {
   min-height: 100vh;
@@ -603,7 +604,7 @@ a.btn-cancel {
 .post-section {
   color: #0097a7;
   text-align: center;
-  padding: 40px;
+  padding: 8px 40px 40px;
 }
 
 .user-search {

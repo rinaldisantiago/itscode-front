@@ -18,75 +18,77 @@
 </head>
 
 <body>
-    <header class="navbar">
-        <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
-        <button class="menu-toggle" aria-label="Menú de navegación">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav id="nav-links">
-            <ul class="nav-content">
-                <li class="nav-list">
-                    <a href="wall.html">
-                        <i class="fas fa-home"></i>
-                        <span> Inicio </span>
-                    </a>
-                </li>
-
-                <li class="nav-list">
-                    <a href="following.html">
-                        <i class="fas fa-search"></i>
-                        <span>Buscar</span>
-                    </a>
-                </li>
-
-                <li class="nav-list">
-                    <a href="my-profile.html">
-                        <i class="fas fa-user-circle"></i>
-                        <span class="text-button">Mi Perfil</span>
-                    </a>
-                </li>
-
-                <li class="nav-list">
-                    <a href="../index.html" data-bs-toggle="modal" data-bs-target="#modal">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span class="text-button"> Cerrar Sesión </span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title fs-5" id="exampleModalLabel">Cerrar Sesión</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ¿Estas seguro que quieres cerrar sesión?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn " data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De
-                            acuerdo</a></button>
+    <div class="grid-display">
+        <header class="navbar">
+            <h1><i class="fas fa-code fa-sm"></i> ITSCode</h1>
+            <button class="menu-toggle" aria-label="Menú de navegación">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="nav-links">
+                <ul class="nav-content">
+                    <li class="nav-list">
+                        <a href="wall.html">
+                            <i class="fas fa-home"></i>
+                            <span> Inicio </span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-list">
+                        <a href="following.html">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-list">
+                        <a href="my-profile.html">
+                            <i class="fas fa-user-circle"></i>
+                            <span class="text-button">Mi Perfil</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-list">
+                        <a href="../index.html" data-bs-toggle="modal" data-bs-target="#modal">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span class="text-button"> Cerrar Sesión </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    
+        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title fs-5" id="exampleModalLabel">Cerrar Sesión</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estas seguro que quieres cerrar sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn " data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De
+                                acuerdo</a></button>
+                    </div>
                 </div>
             </div>
         </div>
+    
+        <main class="profile-conteiner">
+            <section id="infoUserVisit"> </section>
+    
+            <section class="user-profile-post">
+                <h2>Publicaciones</h2>
+    
+                <article id="userPosts"></article>
+            </section>
+        </main>
+        <footer>
+            <p>© 2025 CodeHype. All rights reserved.</p>
+        </footer>
     </div>
-
-    <main class="profile-conteiner">
-        <section id="infoUserVisit"> </section>
-
-        <section class="user-profile-post">
-            <h2>Publicaciones</h2>
-
-            <article id="userPosts"></article>
-        </section>
-    </main>
-    <footer>
-        <p>© 2025 CodeHype. All rights reserved.</p>
-    </footer>
     <script 
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
