@@ -13,14 +13,26 @@ export const buildFullUrl = (relativeUrl) => {
 
 export class PostRepository {
 
-    async getAllWallPosts(userId, pageNumber = 1, pageSize = 10) {
-        const response = await apiFetch(`/Post?idUserLogger=${userId}&isMyPosts=false&pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return response.posts;
-    }
-
+    /**
+     * Obtiene publicaciones. Sirve tanto para el muro como para los perfiles.
+     * @param {string} idUserLogger - El ID del usuario logueado.
+     * @param {object} options - Opciones de filtrado.
+     * @param {string|null} [options.idUserConsultado=null] - Si se provee, se buscan los posts de este usuario. Si no, se devuelve el muro.
+     * @param {number} [options.pageNumber=1] - Número de página.
+     * @param {number} [options.pageSize=10] - Tamaño de la página.
+     */
     async getPostsForProfile(idUserConsultado, idUserLogger, isMyPosts, pageNumber = 1, pageSize = 10) {
-        const response = await apiFetch(`/Post?idUserConsultado=${idUserConsultado}&idUserLogger=${idUserLogger}&isMyPosts=${isMyPosts}&pageNumber=${pageNumber}&pageSize=${pageSize}`);
-        return response.posts;
+        // 🚀 SOLUCIÓN FINAL (Basada en el Controller de C#):
+        // Construimos la URL base.
+        let url = `/Post?idUserLogger=${idUserLogger}&isMyPosts=${isMyPosts}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+        // Añadimos 'idUserConsultado' SOLO si es necesario (cuando vemos el perfil de alguien).
+        if (idUserConsultado) {
+            url += `&idUserConsultado=${idUserConsultado}`;
+        }
+
+        const response = await apiFetch(url);
+        return response.posts; // Asumimos que la respuesta siempre tiene un campo 'posts'
     }
 
     async getPostById(postId, userId, pageNumberComments = 1, pageSizeComments = 3) {

@@ -17,8 +17,19 @@ export class PostPresentation {
         }
     }
 
+    hideLoading() {
+        const loadingMessage = this.container.querySelector('.loading-message');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+    }
+
     showError(message) {
         this.container.innerHTML = `<div class="error">${message}</div>`;
+    }
+
+    clear() {
+        if (this.container) this.container.innerHTML = '';
     }
 
     renderPosts(posts) {
@@ -32,6 +43,19 @@ export class PostPresentation {
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.innerHTML = postsHtml;
     }
+
+    // 🚀 NUEVO: Añade posts al final del contenedor (para scroll infinito)
+    appendPosts(posts) {
+        if (!this.container || !posts || posts.length === 0) {
+            return;
+        }
+        // Si el mensaje de "cargando" inicial está, lo quitamos
+        this.hideLoading();
+
+        // Creamos el HTML y lo añadimos al final
+        const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
+        this.container.insertAdjacentHTML('beforeend', postsHtml);
+    }
 
     updateSinglePost(post) {
         // ✅ FIX: Corregimos el selector para que coincida con el HTML renderizado (<article class="post">).

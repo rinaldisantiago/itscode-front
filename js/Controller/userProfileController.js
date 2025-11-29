@@ -11,6 +11,14 @@ const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
 const VISITED_PROFILE_CONTAINER_SELECTOR = '#infoUserVisit';
 const MY_POSTS_CONTAINER_SELECTOR = '#myPostsContainer';
 const USER_POSTS_CONTAINER_SELECTOR = '#userPosts';
+const POSTS_PER_PAGE = 10;
+
+// --- Variables de estado para el scroll infinito ---
+let currentPage = 1;
+let isLoading = false;
+let hasMorePosts = true;
+let postPresentation;
+
  
 const getUserSession = () => {
     const sessionData = localStorage.getItem('userSession');
@@ -22,6 +30,70 @@ const getUserSession = () => {
         userName: rawUser.UserName || rawUser.userName,
         urlAvatar: rawUser.UrlAvatar || rawUser.urlAvatar
     };
+};
+
+/**
+ * 🚀 Lógica para buscar y renderizar las publicaciones del perfil visitado con paginación.
+ * @param {string} visitedUserId - ID del usuario cuyo perfil se está viendo.
+ * @param {string} loggedUserId - ID del usuario que está viendo el perfil.
+ * @param {PostRepository} postRepository - Instancia del repositorio de posts.
+ */
+async function fetchAndRenderVisitedProfilePosts(visitedUserId, loggedUserId, postRepository) {
+    if (isLoading || !hasMorePosts) return;
+
+    isLoading = true;
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) loadingIndicator.style.display = 'flex';
+
+    try {
+        // Obtenemos la lista de posts para el perfil, ahora con paginación
+        // 🚀 SOLUCIÓN FINAL:
+        // Para obtener los posts de OTRO usuario, le pasamos su ID tanto en 'idUserConsultado' como en 'idUserLogger',
+        // y marcamos 'isMyPosts' como 'true'. Esto le dice al backend de forma inequívoca:
+        // "Dame los posts propios ('isMyPosts: true') del usuario 'visitedUserId'".
+        const postList = await postRepository.getPostsForProfile(visitedUserId, visitedUserId, true, currentPage, POSTS_PER_PAGE);
+
+        if (postList && postList.length > 0) {
+            // "Hidratamos" los posts para obtener toda la información (likes, etc.)
+            const userPosts = await Promise.all(
+                postList.map(p => postRepository.getPostById(p.id, loggedUserId))
+            );
+
+            postPresentation.appendPosts(userPosts);
+            currentPage++;
+
+            if (userPosts.length < POSTS_PER_PAGE) {
+                hasMorePosts = false;
+            }
+        } else {
+            hasMorePosts = false;
+        }
+    } catch (error) {
+        console.error("Error al cargar más publicaciones del perfil visitado:", error);
+        postPresentation.showError('No se pudieron cargar más publicaciones.');
+    } finally {
+        isLoading = false;
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+    }
+}
+
+/**
+ * 🚀 Manejador del evento de scroll para la página de perfil de otro usuario.
+ */
+const handleVisitedProfileInfiniteScroll = async () => {
+    const userSession = getUserSession();
+    if (!userSession) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const visitedUserId = urlParams.get('id');
+    if (!visitedUserId) return;
+
+    const postRepository = new PostRepository();
+    const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+
+    if (endOfPage) {
+        await fetchAndRenderVisitedProfilePosts(visitedUserId, userSession.id, postRepository);
+    }
 };
 
 export async function loadVisitedProfileView() {
@@ -47,6 +119,12 @@ export async function loadVisitedProfileView() {
         window.location.href = 'my-profile.html';
         return;
     }
+
+    // --- Reseteo de estado para el scroll infinito ---
+    currentPage = 1;
+    isLoading = false;
+    hasMorePosts = true;
+    window.removeEventListener('scroll', handleVisitedProfileInfiniteScroll); // Limpiamos listener previo
 
     const userPresentation = new UserPresentation(VISITED_PROFILE_CONTAINER_SELECTOR);
     userPresentation.showLoading();
@@ -77,23 +155,16 @@ export async function loadVisitedProfileView() {
 
         if (userData.isFollowing) {
             if (postsTitle) postsTitle.style.display = 'block';
-            const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, userSession);
+            postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, userSession);
+            postPresentation.clear();
             postPresentation.showLoading();
 
-            // ✅ CORRECCIÓN: Llamamos directamente al repositorio y a la presentación.
-            // El primer parámetro es quién pide, el segundo es de quién son los posts.
-            // Pasamos el ID del usuario visitado en el segundo parámetro.
-            // ✅ SOLUCIÓN ESTRATÉGICA:
-            // 1. Obtenemos la lista de posts del usuario visitado. Esta llamada trae los posts correctos pero sin nuestras interacciones.
-            const postList = await postRepo.getPostsForProfile(visitedUserId, visitedUserId, true);
-            // 2. "Hidratamos" cada post pidiendo su versión completa, que SÍ incluye nuestra interacción.
-            const userPosts = await Promise.all(
-                postList.map(p => postRepo.getPostById(p.id, loggedUserId))
-            );
-            postPresentation.renderPosts(userPosts);
+            // Cargamos la primera página de posts
+            await fetchAndRenderVisitedProfilePosts(visitedUserId, loggedUserId, postRepo);
 
-            // ✅ 2. USAMOS el controlador centralizado
+            // Añadimos el listener para el scroll y las interacciones
             setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation);
+            window.addEventListener('scroll', handleVisitedProfileInfiniteScroll);
 
         } else {
             // Si no lo sigue, ocultamos el título y mostramos un mensaje
@@ -135,15 +206,16 @@ async function handleFollowClick(event) {
         const postsContainer = document.querySelector(USER_POSTS_CONTAINER_SELECTOR);
         if (!isCurrentlyFollowing) {
             // Si acabamos de seguirlo, cargamos sus posts
-            const postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
-            // ✅ SOLUCIÓN: Aplicamos la misma estrategia aquí para asegurar que los posts cargados
-            // después de seguir a alguien también tengan la información de interacción correcta.
-            const postList = await postRepo.getPostsForProfile(userIdToFollow, userIdToFollow, true);
-            const userPosts = await Promise.all(
-                postList.map(p => postRepo.getPostById(p.id, loggedUserId))
-            );
-            postPresentation.renderPosts(userPosts);
-            // Re-inicializamos las interacciones para los nuevos posts
+            postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
+            postPresentation.clear();
+            postPresentation.showLoading();
+            
+            // Reseteamos y cargamos la primera página
+            currentPage = 1;
+            hasMorePosts = true;
+            await fetchAndRenderVisitedProfilePosts(userIdToFollow, loggedUserId, postRepo);
+
+            // Añadimos listeners
             setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation);
             const postsTitle = document.querySelector('.user-profile-post h2');
             if (postsTitle) postsTitle.style.display = 'block';

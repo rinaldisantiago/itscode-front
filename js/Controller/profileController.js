@@ -6,8 +6,16 @@ import { UserPresentation } from '../presentation/profilePresentation.js';
 import { PostPresentation } from '../presentation/postPresentation.js';
 import { setupPostInteractions } from './postInteractionsController.js'; // ✅ 1. IMPORTAMOS el nuevo controlador
 
+// --- CONSTANTES Y VARIABLES DE ESTADO ---
 const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
 const MY_POSTS_CONTAINER_SELECTOR = '#myPostsContainer';
+const POSTS_PER_PAGE = 10;
+
+// 🚀 Variables para el scroll infinito
+let currentPage = 1;
+let isLoading = false;
+let hasMorePosts = true;
+let postPresentation;
 
 const getUserSession = () => {
     const sessionData = localStorage.getItem('userSession');
@@ -20,7 +28,63 @@ const getUserSession = () => {
     };
 };
 
+/**
+ * 🚀 Lógica para buscar y renderizar las publicaciones del perfil con paginación.
+ * @param {string} userId - ID del usuario actual.
+ * @param {PostRepository} postRepository - Instancia del repositorio de posts.
+ */
+async function fetchAndRenderProfilePosts(userId, postRepository) {
+    if (isLoading || !hasMorePosts) return;
+
+    isLoading = true;
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) loadingIndicator.style.display = 'flex';
+
+    try {
+        // Obtenemos la lista de posts para el perfil, ahora con paginación
+        const postList = await postRepository.getPostsForProfile(userId, userId, true, currentPage, POSTS_PER_PAGE);
+
+        if (postList && postList.length > 0) {
+            // "Hidratamos" los posts para obtener toda la información (likes, etc.)
+            const userPosts = await Promise.all(
+                postList.map(p => postRepository.getPostById(p.id, userId))
+            );
+
+            postPresentation.appendPosts(userPosts);
+            currentPage++;
+
+            if (userPosts.length < POSTS_PER_PAGE) {
+                hasMorePosts = false;
+            }
+        } else {
+            hasMorePosts = false;
+        }
+    } catch (error) {
+        console.error("Error al cargar más publicaciones del perfil:", error);
+        postPresentation.showError('No se pudieron cargar más publicaciones.');
+    } finally {
+        isLoading = false;
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+    }
+}
+
+/**
+ * 🚀 Manejador del evento de scroll para la página de perfil.
+ */
+const handleProfileInfiniteScroll = async () => {
+    const userSession = getUserSession();
+    if (!userSession) return;
+    const postRepository = new PostRepository();
+
+    const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+
+    if (endOfPage) {
+        await fetchAndRenderProfilePosts(userSession.id, postRepository);
+    }
+};
+
 export async function loadProfileView() {
+    // --- 1. CONFIGURACIÓN INICIAL Y RESETEO DE ESTADO ---
     const userSession = getUserSession();
     if (!userSession) { 
         window.location.href = '../index.html';
@@ -29,34 +93,28 @@ export async function loadProfileView() {
     const loggedUserId = userSession.id;
 
     const userPresentation = new UserPresentation(MY_PROFILE_CONTAINER_SELECTOR);
-    // ✅ SOLUCIÓN: Le decimos a la presentación que estamos en la página de "Mi Perfil".
-    const postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession, { isMyProfilePage: true });
+    postPresentation = new PostPresentation(MY_POSTS_CONTAINER_SELECTOR, userSession, { isMyProfilePage: true });
 
     userPresentation.showLoading();
+    postPresentation.clear();
     postPresentation.showLoading();
 
     try {
         const postRepo = new PostRepository();
-        // Obtenemos primero los datos del usuario y la lista básica de posts.
-        const [userData, postList] = await Promise.all([
-            getUserById(loggedUserId, loggedUserId),
-            postRepo.getPostsForProfile(loggedUserId, loggedUserId, true)
-        ]);
-
-        // ✅ SOLUCIÓN: "Hidratamos" la lista de posts para asegurar que las interacciones estén completas.
-        const userPosts = await Promise.all(
-            postList.map(p => postRepo.getPostById(p.id, loggedUserId))
-        );
-
+        const userData = await getUserById(loggedUserId, loggedUserId);
         userPresentation.renderProfile(userData, true); // true para mostrar el botón de editar
-        postPresentation.renderPosts(userPosts);
 
-        // ✅ 2. USAMOS el controlador centralizado
+        // --- 2. CARGA DE LA PRIMERA PÁGINA DE POSTS ---
+        await fetchAndRenderProfilePosts(loggedUserId, postRepo);
+
+        // --- 3. CONFIGURACIÓN DE INTERACCIONES Y EVENTOS ---
         const postsContainer = document.querySelector(MY_POSTS_CONTAINER_SELECTOR);
         setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation, { handleDelete: true });
+        window.addEventListener('scroll', handleProfileInfiniteScroll);
+
     } catch (error) {
         console.error("Error al cargar el perfil:", error);
         userPresentation.showError("No se pudo cargar la información del perfil.");
-        postPresentation.renderPosts([]); // Muestra un mensaje de error o vacío
+        postPresentation.showError("No se pudieron cargar las publicaciones.");
     }
 }
