@@ -1,5 +1,5 @@
 import { getUserById, updateUser } from '../repository/userRepository.js';
-import { populateUpdateForm } from '../presentation/updateUserPresentation.js';
+import { populateUpdateForm } from '../presentation/UpdateUserPresentation.js';
 
 // Tu función getUserSession está bien
 const getUserSession = () => {

@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-
-/**
- * Realiza una solicitud a la API y devuelve los datos JSON si es exitosa.
- * Muestra una alerta de error usando SweetAlert2 (Swal.fire) si falla.
- * @param {string} url - La ruta relativa de la API (ej: '/User/login').
- * @param {Object} config - Objeto de configuración de la solicitud fetch (method, headers, body, etc.).
- * @returns {Promise<Object>} Una promesa que resuelve en el objeto JSON de la respuesta.
- * @throws {Error} Lanza un error si la respuesta HTTP no es exitosa.
- */
-=======
->>>>>>> development
 export async function apiFetch(url, config = {}) {
     const fullUrl = `http://localhost:5052${url}`;
     
