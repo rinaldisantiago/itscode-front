@@ -35,11 +35,6 @@ const loadUserData = (userSession) => {
     }
 };
 
-/**
- * 🚀 Lógica para buscar y renderizar publicaciones con paginación.
- * @param {string} userId - ID del usuario actual.
- * @param {PostRepository} postRepository - Instancia del repositorio de posts.
- */
 async function fetchAndRenderPosts(userId, postRepository) {
     if (isLoading || !hasMorePosts) return;
 

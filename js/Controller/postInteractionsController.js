@@ -3,15 +3,6 @@
 import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
 import { CommentRepository } from '../repository/commentRepository.js';
 
-/**
- * Controlador centralizado para todas las interacciones de los posts.
- * @param {HTMLElement} containerElement - El contenedor de los posts.
- * @param {number} loggedUserId - El ID del usuario logueado.
- * @param {PostRepository} postRepo - Instancia del repositorio de posts.
- * @param {PostPresentation} postPresentation - Instancia de la presentación de posts.
- * @param {object} config - Opciones de configuración.
- * @param {boolean} [config.handleDelete=false] - Si es true, manejará el borrado de posts.
- */
 export function setupPostInteractions(containerElement, loggedUserId, postRepo, postPresentation, config = {}) {
     if (!containerElement || containerElement.dataset.interactionsInitialized) {
         return;
@@ -33,7 +24,7 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
             event.preventDefault();
             const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
             const interactionId = button.dataset.interactionId;
-            
+
             button.disabled = true;
             try {
                 if (interactionId) {

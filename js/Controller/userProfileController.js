@@ -1,11 +1,9 @@
-
-// 👇 CAMBIO: Importamos la función directamente, no la clase
 import { UserPresentation } from '../presentation/profilePresentation.js';
 import { PostPresentation } from '../presentation/postPresentation.js';
 import { getUserById } from '../repository/userRepository.js';
 import { FollowingRepository } from '../repository/followingRepository.js';
 import { PostRepository } from '../repository/postRepository.js';
-import { setupPostInteractions } from './postInteractionsController.js'; // ✅ 1. IMPORTAMOS el nuevo controlador
+import { setupPostInteractions } from './postInteractionsController.js';
 
 const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
 const VISITED_PROFILE_CONTAINER_SELECTOR = '#infoUserVisit';
@@ -19,7 +17,7 @@ let isLoading = false;
 let hasMorePosts = true;
 let postPresentation;
 
- 
+
 const getUserSession = () => {
     const sessionData = localStorage.getItem('userSession');
     if (!sessionData) return null;
@@ -32,12 +30,7 @@ const getUserSession = () => {
     };
 };
 
-/**
- * 🚀 Lógica para buscar y renderizar las publicaciones del perfil visitado con paginación.
- * @param {string} visitedUserId - ID del usuario cuyo perfil se está viendo.
- * @param {string} loggedUserId - ID del usuario que está viendo el perfil.
- * @param {PostRepository} postRepository - Instancia del repositorio de posts.
- */
+
 async function fetchAndRenderVisitedProfilePosts(visitedUserId, loggedUserId, postRepository) {
     if (isLoading || !hasMorePosts) return;
 
@@ -128,20 +121,20 @@ export async function loadVisitedProfileView() {
 
     const userPresentation = new UserPresentation(VISITED_PROFILE_CONTAINER_SELECTOR);
     userPresentation.showLoading();
-    
+
     // Instanciamos el repositorio de Following
     const postRepo = new PostRepository();
 
     try {
         // 1. Modelo: Obtenemos los datos del perfil del usuario visitado
         const userData = await getUserById(visitedUserId, loggedUserId);
-        
+
         // 2. Vista: Renderizamos el perfil con los datos obtenidos
         userPresentation.renderProfile(userData, false); // false indica que no es el perfil propio
 
         // 3. Controlador: Añadimos el listener para el botón de seguir/dejar de seguir
         const profileContainer = document.querySelector(VISITED_PROFILE_CONTAINER_SELECTOR);
-        
+
         // ✅ CORRECCIÓN: Nos aseguramos de que el listener se añada solo una vez.
         if (profileContainer && !profileContainer.dataset.listenerAttached) {
             profileContainer.dataset.listenerAttached = 'true'; // Marcamos que el listener fue añadido
@@ -188,14 +181,14 @@ async function handleFollowClick(event) {
     const loggedUserId = getUserSession()?.id; // Ahora podemos usar 'id' de forma segura
     const userIdToFollow = button.dataset.userId;
     const isCurrentlyFollowing = button.dataset.isFollowing === 'true';
-    
+
     const followingRepo = new FollowingRepository();
     const postRepo = new PostRepository();
     const userPresentation = new UserPresentation(VISITED_PROFILE_CONTAINER_SELECTOR);
 
     button.disabled = true;
     const action = isCurrentlyFollowing ? followingRepo.unfollowUser : followingRepo.followUser;
-    
+
     try {
         // 1. Ejecutar la acción de seguir/dejar de seguir
         await action(loggedUserId, userIdToFollow);
@@ -209,7 +202,7 @@ async function handleFollowClick(event) {
             postPresentation = new PostPresentation(USER_POSTS_CONTAINER_SELECTOR, getUserSession());
             postPresentation.clear();
             postPresentation.showLoading();
-            
+
             // Reseteamos y cargamos la primera página
             currentPage = 1;
             hasMorePosts = true;

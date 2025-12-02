@@ -33,32 +33,32 @@
                             <span> Inicio </span>
                         </a>
                     </li>
-    
+
                     <li class="nav-list">
                         <a href="following.html">
                             <i class="fas fa-search"></i>
                             <span>Buscar</span>
                         </a>
                     </li>
-    
+
                     <li class="nav-list">
                         <a href="my-profile.html">
                             <i class="fas fa-user-circle"></i>
                             <span class="text-button">Mi Perfil</span>
                         </a>
                     </li>
-    
+
                     <li class="nav-list">
                         <a href="../index.html" data-bs-toggle="modal" data-bs-target="#modal">
                             <i class="fa-solid fa-right-from-bracket"></i>
-    
+
                             <span class="text-button"> Cerrar Sesión </span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </header>
-    
+
         <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -71,25 +71,26 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De acuerdo</a></button>
+                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De
+                                acuerdo</a></button>
                     </div>
                 </div>
             </div>
         </div>
-    
+
         <main class="post-section">
             <h2>Inicio</h2>
-    
+
             <p>Personas Conectadas: <span id="users_online">0</span></p>
-    
+
             <section class="post-create-redirection">
                 <!-- 👇 AÑADIMOS UN ID Y UN SRC POR DEFECTO -->
                 <img id="user-avatar-redirect" class="avatar" src="../img/default-avatar.png" alt="Tu avatar" />
                 <a href="post-create.html">Hablemos . . .</a>
             </section>
-    
+
             <section id="posts-collection" class="posts-collection"></section>
-    
+
             <!-- 🚀 Indicador de Carga para Scroll Infinito -->
             <div id="loading-indicator" class="loading-container" style="display: none;">
                 <div class="spinner"></div>
@@ -97,16 +98,14 @@
             </div>
 
         </main>
-    
+
         <footer>
             <p>© 2025 CodeHype. All rights reserved.</p>
         </footer>
     </div>
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-        crossorigin="anonymous">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+        </script>
     <script type="module" src="../js/count.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../js/script.js"></script>

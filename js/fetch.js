@@ -3,10 +3,10 @@ export async function apiFetch(url, config = {}) {
 
     try {
         const response = await fetch(fullUrl, config);
-        
+
         if (!response.ok) {
-            const errorText = await response.text(); 
-            
+            const errorText = await response.text();
+
             let errorData;
             let errorMessage;
 
@@ -41,7 +41,7 @@ export async function apiFetch(url, config = {}) {
         // en la capa de presentación (baneo y credenciales incorrectas).
         const isBannedError = error.data && error.data.message === "Usuario Baneado.";
         const isInvalidCredentialsError = error.data && error.data.message === "Invalid username or password.";
-        
+
         // Si no es ninguno de los errores que manejamos específicamente, mostramos el Swal genérico.
         if (!isBannedError && !isInvalidCredentialsError) {
             Swal.fire({
@@ -54,10 +54,10 @@ export async function apiFetch(url, config = {}) {
         if (error.message.includes("Failed to fetch")) {
             console.error("Error de Conexión: No se pudo conectar con el servidor de la API. Verifique que esté corriendo.");
         }
-        
+
         console.error(`Fallo en apiFetch para ${url}:`, error);
         throw error;
-        
+
     } finally {
         // 6. Ocultar spinner
         // hideSpinner();

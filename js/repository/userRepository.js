@@ -1,4 +1,4 @@
-import { apiFetch } from '../fetch.js'; 
+import { apiFetch } from '../fetch.js';
 
 const USER_URLS = {
     BASE: '/User',
@@ -8,14 +8,14 @@ export async function getUserById(userIdToFetch, loggedInUserId) {
     // ✅ CORRECCIÓN: Nos aseguramos de que loggedInUserId sea un número válido.
     // Si es nulo o undefined, lo convertimos a 0 para que el backend no falle.
     const safeLoggedInUserId = Number(loggedInUserId) || 0;
-    
+
     // ✅ SOLUCIÓN: Construimos la URL para que coincida con el endpoint del backend: /User/{id}/{idUserLogger}
     return apiFetch(`${USER_URLS.BASE}/${userIdToFetch}/${safeLoggedInUserId}`);
 }
 
 export async function updateUser(userId, formData) {
     const url = USER_URLS.BASE;
-    
+
     const config = {
         method: 'PUT',
         body: formData,

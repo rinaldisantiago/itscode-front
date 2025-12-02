@@ -19,7 +19,7 @@ export class UserPresentation {
         }
     }
 
-    
+
     renderProfile(userData, isMyProfile = true) {
         if (!this.container || !userData) {
             this.showError("No se pudo renderizar el perfil.");
@@ -32,7 +32,7 @@ export class UserPresentation {
         let actionButtonHtml = '';
         if (isMyProfile) {
             actionButtonHtml = `<a href="update-user.html" class="edit-btn">
-                   <i class="fas fa-user-edit"></i> Editar
+                    <i class="fas fa-user-edit"></i> Editar
                 </a>`;
         } else {
             // ✅ CORRECCIÓN: Hacemos la comprobación robusta, aceptando 'isFollowing' (del DTO de perfil)
@@ -65,7 +65,7 @@ export class UserPresentation {
         // Envolvemos el HTML en el div con la clase 'user-info' que tus estilos esperan.
         // Y nos aseguramos de que el contenedor principal también tenga la clase correcta.
         this.container.className = 'user-info';
-        this.container.innerHTML = profileHtml; 
+        this.container.innerHTML = profileHtml;
     }
 
     /**

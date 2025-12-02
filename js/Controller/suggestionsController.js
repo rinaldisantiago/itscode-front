@@ -18,7 +18,7 @@ const getUserSession = () => {
  */
 function debounce(func, delay) {
     let timeout;
-    return function(...args) {
+    return function (...args) {
         const context = this;
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(context, args), delay);
@@ -73,7 +73,7 @@ export async function loadSuggestionsView() {
         presentation.showLoading();
         try {
             const results = await searchUsers(searchTerm, userSession.id);
-            
+
             // ✅ CORRECCIÓN: Filtramos también en los resultados de búsqueda.
             // Hacemos el filtro más robusto para contemplar 'id' o 'Id'.
             // Usamos parseInt() para evitar problemas de comparación entre string y number.

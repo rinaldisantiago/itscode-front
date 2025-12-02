@@ -10,7 +10,7 @@ bodyElement.classList.add(mode);
 
 checkMode.addEventListener('change', (evt) => {
     let value = checkMode.checked;
-    if(value) localStorage.setItem('mode', 'light');
+    if (value) localStorage.setItem('mode', 'light');
     else localStorage.setItem('mode', 'dark');
 
     bodyElement.classList.remove(value ? 'dark' : 'light');

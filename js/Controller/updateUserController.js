@@ -42,7 +42,7 @@ async function handleUpdateFormSubmit(event) {
     try {
         // Llamamos a la función del repositorio, pasándole el FormData
         const updatedUser = await updateUser(userId, formData);
-        
+
         // Actualizar la sesión del usuario con los nuevos datos
         const session = getUserSession();
         if (session && updatedUser) { // Asegurarse que updatedUser no es nulo

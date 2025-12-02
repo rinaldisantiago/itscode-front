@@ -4,18 +4,18 @@ import { buildFullUrl } from '../repository/postRepository.js';
 import { INTERACTION_TYPE } from '../repository/interactionRepository.js';
 
 export class PostPresentation {
-    
-    constructor(containerSelector, loggedUser, config = {}) {
-        this.container = document.querySelector(containerSelector);
-        this.loggedUser = loggedUser;
-        this.config = config; // ✅ 1. Guardamos la configuración
-    }
 
-    showLoading() {
-        if (this.container) {
-            this.container.innerHTML = '<p class="loading-message">Cargando publicaciones...</p>';
-        }
-    }
+    constructor(containerSelector, loggedUser, config = {}) {
+        this.container = document.querySelector(containerSelector);
+        this.loggedUser = loggedUser;
+        this.config = config; // ✅ 1. Guardamos la configuración
+    }
+
+    showLoading() {
+        if (this.container) {
+            this.container.innerHTML = '<p class="loading-message">Cargando publicaciones...</p>';
+        }
+    }
 
     hideLoading() {
         const loadingMessage = this.container.querySelector('.loading-message');
@@ -32,17 +32,17 @@ export class PostPresentation {
         if (this.container) this.container.innerHTML = '';
     }
 
-    renderPosts(posts) {
-        if (!this.container) return;
+    renderPosts(posts) {
+        if (!this.container) return;
 
-        if (!posts || posts.length === 0) {
-            this.container.innerHTML = '<p class="empty-message">No hay publicaciones para mostrar.</p>';
-            return;
-        }
+        if (!posts || posts.length === 0) {
+            this.container.innerHTML = '<p class="empty-message">No hay publicaciones para mostrar.</p>';
+            return;
+        }
 
-        const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
-        this.container.innerHTML = postsHtml;
-    }
+        const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
+        this.container.innerHTML = postsHtml;
+    }
 
     // 🚀 NUEVO: Añade posts al final del contenedor (para scroll infinito)
     appendPosts(posts) {
@@ -93,10 +93,10 @@ export class PostPresentation {
         // Re-renderiza el botón "Ver más"
         const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn'); // ✅ FIX: Usamos tu clase original
         const newButtonHtml = this.getLoadMoreButtonHtml({ id: postElement.dataset.postId, commentsCount: totalComments, comments: comments });
-        
+
         if (loadMoreButton) {
             loadMoreButton.outerHTML = newButtonHtml;
-        } else if(newButtonHtml) {
+        } else if (newButtonHtml) {
             commentsContainer.insertAdjacentHTML('beforeend', newButtonHtml);
         }
     }
@@ -109,7 +109,7 @@ export class PostPresentation {
         const loggedUserAvatarUrl = buildFullUrl(this.loggedUser.urlAvatar);
 
         const commentsHtml = post.comments.map(comment => this.createCommentHtml(comment)).join('');
-        
+
         const isLiked = post.userInteraction?.type === INTERACTION_TYPE.LIKE;
         const isDisliked = post.userInteraction?.type === INTERACTION_TYPE.DISLIKE;
 
@@ -179,8 +179,8 @@ export class PostPresentation {
                     <img class="avatar comment-avatar" src="${avatarUrl}" alt="Avatar de ${userName}">
                 </a>
                 <div class="comment-body">
-                     <a class="user-name" href="user-profile.html?id=${comment.userId}">${userName}</a>
-                     <p class="comment-content">${comment.content}</p>
+                    <a class="user-name" href="user-profile.html?id=${comment.userId}">${userName}</a>
+                    <p class="comment-content">${comment.content}</p>
                 </div>
             </div>
         `;

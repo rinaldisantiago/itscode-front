@@ -1,7 +1,7 @@
 // js/PostCreate/PostCreate.js
 
 // Importamos la función del repositorio
-import { createPost } from '../repository/postCreateRepository.js'; 
+import { createPost } from '../repository/postCreateRepository.js';
 
 // --- ELEMENTOS DEL DOM ---
 const createPostForm = document.getElementById('frmPost');
@@ -46,7 +46,7 @@ const handleCreatePostSubmit = async (event) => {
         });
         return;
     }
-    
+
     // 4. Añadir el idUser al FormData (ya que no está en el formulario HTML)
     postFormData.append('idUser', userSession.id);
 

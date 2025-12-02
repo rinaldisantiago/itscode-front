@@ -1,7 +1,7 @@
 // js/repository/postCreateRepository.js
 
 // Importamos la función genérica de fetch
-import { apiFetch } from '../fetch.js'; 
+import { apiFetch } from '../fetch.js';
 
 const POST_URLS = {
     CREATE: '/Post' // La ruta base de tu PostController

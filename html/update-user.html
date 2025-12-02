@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Actualizar los datos de usuario de tu cuenta en ITSCode, incluyendo nombre, correo electrónico, usuario y foto de perfil.">
-  <meta name="keywords" content="ITSCode, actualizar datos, red social de programación, update user, editar perfil, foto de perfil"> 
+  <meta name="description"
+    content="Actualizar los datos de usuario de tu cuenta en ITSCode, incluyendo nombre, correo electrónico, usuario y foto de perfil.">
+  <meta name="keywords"
+    content="ITSCode, actualizar datos, red social de programación, update user, editar perfil, foto de perfil">
   <title>Actualizar Datos - ITSCode</title>
   <link rel="shortcut icon" href="../img/favicon/favicon.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,65 +18,62 @@
 </head>
 
 <body>
+  <main class="container">
+    <section class="left-panel">
+      <h2>ITSCode</h2>
+      <img class="imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando" />
+    </section>
 
-    <main class="container">
-      <section class="left-panel">
-        <h2>ITSCode</h2>
-        <img class="imagen" src="../img/15 may 2025, 08_01_39 p.m.-min.webp" alt="Estudiante programando" />
-      </section>
+    <section class="right-panel">
+      <article class="card-right">
+        <h2>Actualizar Datos</h2>
 
-      <section class="right-panel">
-        <article class="card-right">
-          <h2>Actualizar Datos</h2>
+        <form id="update-form" enctype="multipart/form-data">
 
-          <form id="update-form" enctype="multipart/form-data">
-            
-            <div class="input-group">
-              <i class="fas fa-user" aria-hidden="true"></i>
-              <input type="text" name="fullName" placeholder="Nombre Completo" required />
-            </div>
-            <div class="input-group">
-              <i class="fas fa-envelope" aria-hidden="true"></i>
-              <input type="email" name="email" placeholder="Correo Electrónico" required />
-            </div>
-            <div class="input-group">
-              <i class="fas fa-user" aria-hidden="true"></i>
-              <input type="text" name="userName" placeholder="Nombre de Usuario" required />
-            </div>
-            <div class="input-group">
-              <i class="fas fa-lock" aria-hidden="true"></i>
-              <input type="password" name="password" placeholder="Nueva contraseña (opcional)" />
-              
-            </div>
-            <div class="input-group">
-              <i class="fas fa-upload" aria-hidden="true"></i>
-              <input type="file" name="image" accept="image/*" />
-              
-            </div>
-            <div class="input-group">
-              <i class="fas fa-image" aria-hidden="true"></i>
-              <input type="url" name="urlAvatar" placeholder="O pega una URL de imagen" />
-            </div>
-            
-            <div class="button-group">
-              <button type="submit" class="btn-update">Actualizar</button>
-              <a href="./my-profile.html" class="btn-update btn-cancel">Cancelar</a>
-            </div>
-          </form>
+          <div class="input-group">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            <input type="text" name="fullName" placeholder="Nombre Completo" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <input type="email" name="email" placeholder="Correo Electrónico" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            <input type="text" name="userName" placeholder="Nombre de Usuario" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+            <input type="password" name="password" placeholder="Nueva contraseña (opcional)" />
 
-          <footer class="footer-card">
-            <p>© 2025 CodeHype. All rights reserved.</p>
-          </footer>
-        </article>
-      </section>
-    </main>
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-        crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="../js/script.js"></script>
+          </div>
+          <div class="input-group">
+            <i class="fas fa-upload" aria-hidden="true"></i>
+            <input type="file" name="image" accept="image/*" />
+
+          </div>
+          <div class="input-group">
+            <i class="fas fa-image" aria-hidden="true"></i>
+            <input type="url" name="urlAvatar" placeholder="O pega una URL de imagen" />
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-update">Actualizar</button>
+            <a href="./my-profile.html" class="btn-update btn-cancel">Cancelar</a>
+          </div>
+        </form>
+
+        <footer class="footer-card">
+          <p>© 2025 CodeHype. All rights reserved.</p>
+        </footer>
+      </article>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="../js/script.js"></script>
 
 </body>
 

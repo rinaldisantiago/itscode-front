@@ -1,5 +1,3 @@
-// js/Controller/profileController.js
-
 import { PostRepository } from '../repository/postRepository.js';
 import { getUserById } from '../repository/userRepository.js';
 import { UserPresentation } from '../presentation/profilePresentation.js';
@@ -28,11 +26,7 @@ const getUserSession = () => {
     };
 };
 
-/**
- * 🚀 Lógica para buscar y renderizar las publicaciones del perfil con paginación.
- * @param {string} userId - ID del usuario actual.
- * @param {PostRepository} postRepository - Instancia del repositorio de posts.
- */
+
 async function fetchAndRenderProfilePosts(userId, postRepository) {
     if (isLoading || !hasMorePosts) return;
 
@@ -86,9 +80,9 @@ const handleProfileInfiniteScroll = async () => {
 export async function loadProfileView() {
     // --- 1. CONFIGURACIÓN INICIAL Y RESETEO DE ESTADO ---
     const userSession = getUserSession();
-    if (!userSession) { 
+    if (!userSession) {
         window.location.href = '../index.html';
-        return; 
+        return;
     }
     const loggedUserId = userSession.id;
 

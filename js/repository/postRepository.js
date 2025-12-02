@@ -42,7 +42,7 @@ export class PostRepository {
     async deletePost(postId, userId) {
         // El backend espera los parámetros en la URL (FromQuery)
         const url = `/Post?id=${postId}&idUser=${userId}`;
-        
+
         // Realizamos la petición DELETE
         return await apiFetch(url, {
             method: 'DELETE'

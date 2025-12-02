@@ -67,7 +67,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn " data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De acuerdo</a></button>
+                        <button type="button" class="btn"><a href="../index.html" class="button-modal-boostrap">De
+                                acuerdo</a></button>
                     </div>
                 </div>
             </div>
@@ -78,29 +79,26 @@
 
             <section class="box-section">
                 <form id="frmPost" method="post">
-                    <!-- name="title" para coincidir con el DTO -->
-                    <input id="txt_post_title" class="content-form no-margin dark-background" type="text" name="title"  
-                        placeholder="Tema de la publicación..." aria-label="Campo obligatorio: título de la publicación en formato texto" 
-                        required 
-                    />
+                    <input id="txt_post_title" class="content-form no-margin dark-background" type="text" name="title"
+                        placeholder="Tema de la publicación..."
+                        aria-label="Campo obligatorio: título de la publicación en formato texto" required />
 
-                    <!-- Campo para la URL externa, name="fileUrl" -->
-                    <input type="text" name="fileUrl" class="content-form dark-background" placeholder="O pega la URL de una imagen aquí">
+                    <input type="text" name="fileUrl" class="content-form dark-background"
+                        placeholder="O pega la URL de una imagen aquí">
 
-                    <label for="load-post-image" class="content-form dark-background label-file-image" 
+                    <label for="load-post-image" class="content-form dark-background label-file-image"
                         aria-label="Opcional: agregar imagen a la publicación">
                         <i class="fa-solid fa-image"></i>
                         O sube una imagen desde tu equipo
                     </label>
 
-                    <!-- name="File" para coincidir con la propiedad IFormFile del DTO -->
                     <input id="load-post-image" class="content-form file-image" type="file" name="File"
-                        accept="image/*" 
-                    />
+                        accept="image/*" />
 
-                    <!-- name="content" para coincidir con el DTO -->
-                    <textarea id="txt_post_description" class="content-form dark-background" name="content" placeholder="Escribe algo..." rows="13" 
-                    aria-label="Campo obligatorio: contenido de la publicación en formato texto" required></textarea>
+                    <textarea id="txt_post_description" class="content-form dark-background" name="content"
+                        placeholder="Escribe algo..." rows="13"
+                        aria-label="Campo obligatorio: contenido de la publicación en formato texto"
+                        required></textarea>
 
                     <div>
                         <button id="btn_form_post" class="buttons-post" type="submit">Publicar</button>
@@ -115,18 +113,11 @@
         </footer>
     </div>
 
-    <!-- BLOQUE DE SCRIPTS CORREGIDO -->
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
-        crossorigin="anonymous">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <!-- Carga tu aplicación como un módulo a través del router principal -->
     <script type="module" src="../js/script.js"></script>
 </body>
 
 </html>
-
-
