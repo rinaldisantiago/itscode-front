@@ -658,7 +658,7 @@ a.btn-cancel {
   color: (61, 59, 59, 0.483);
 }
 
-.card-users {
+.suggestions-list {
   color: white;
   display: flex;
   flex-wrap: wrap;

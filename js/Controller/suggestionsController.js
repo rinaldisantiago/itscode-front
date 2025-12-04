@@ -4,6 +4,11 @@ import { SuggestionsPresentation } from '../presentation/suggestionsPresentation
 
 const SEARCH_INPUT_SELECTOR = '#search-input';
 const RESULTS_CONTAINER_SELECTOR = '#search-results';
+const SUGGESTIONS_PER_PAGE = 8;
+
+let currentPage = 1;
+let isLoading = false;
+let hasMorePosts = true;
 
 const getUserSession = () => {
     const sessionData = localStorage.getItem('userSession');
@@ -37,13 +42,31 @@ export async function loadSuggestionsView() {
     const presentation = new SuggestionsPresentation(RESULTS_CONTAINER_SELECTOR);
     const followingRepo = new FollowingRepository();
 
-    const loadInitialSuggestions = async () => {
-        presentation.showLoading();
-        const results = await getSuggestions(userSession.id);
-        const loggedId = parseInt(userSession.id || userSession.Id);
-        const filteredSuggestions = results.suggestions.filter(user => parseInt(user.id || user.Id) !== loggedId);
-        presentation.renderSuggestions(filteredSuggestions);
+    const fetchAndRenderSuggestions = async () => {
+        if (isLoading || !hasMorePosts) return;
+        isLoading = true;
 
+        if (currentPage === 1) {
+            presentation.showLoading();
+        } else {
+            presentation.showLoadingIndicator();
+        }
+        try {
+            const results = await getSuggestions(userSession.id, currentPage, SUGGESTIONS_PER_PAGE);
+            const loggedId = parseInt(userSession.id || userSession.Id);
+            const filteredSuggestions = results.suggestions.filter(user => parseInt(user.id || user.Id) !== loggedId);
+
+            if (currentPage === 1) {
+                presentation.renderSuggestions(filteredSuggestions);
+            } else {
+                presentation.appendSuggestions(filteredSuggestions);
+            }
+            currentPage++;
+            hasMorePosts = filteredSuggestions.length === SUGGESTIONS_PER_PAGE;
+        } finally {
+            isLoading = false;
+            presentation.hideLoadingIndicator();
+        }
     };
 
     const performSearch = async (searchTerm) => {
@@ -59,8 +82,24 @@ export async function loadSuggestionsView() {
         presentation.renderSuggestions(filteredUsers);
     };
 
+    const handleInfiniteScroll = async () => {
+        const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+        if (endOfPage && !isLoading && hasMorePosts && !searchInput.value.trim()) {
+            await fetchAndRenderSuggestions();
+        }
+    };
+
     searchInput.addEventListener('input', debounce((e) => {
-        performSearch(e.target.value.trim());
+        const searchTerm = e.target.value.trim();
+        if (searchTerm) {
+            window.removeEventListener('scroll', handleInfiniteScroll);
+            performSearch(searchTerm);
+        } else {
+            currentPage = 1;
+            hasMorePosts = true;
+            fetchAndRenderSuggestions();
+            window.addEventListener('scroll', handleInfiniteScroll);
+        }
     }, 300));
 
     resultsContainer.addEventListener('click', async (event) => {
@@ -84,5 +123,10 @@ export async function loadSuggestionsView() {
         }
     });
 
-    loadInitialSuggestions();
+    currentPage = 1;
+    isLoading = false;
+    hasMorePosts = true;
+    window.removeEventListener('scroll', handleInfiniteScroll);
+    fetchAndRenderSuggestions();
+    window.addEventListener('scroll', handleInfiniteScroll);
 }

@@ -26,7 +26,7 @@ export async function searchUsers(searchTerm, loggedInUserId, pageNumber = 1, pa
     return apiFetch(url);
 }
 
-export async function getSuggestions(loggedInUserId, pageNumber = 1, pageSize = 10) {
+export async function getSuggestions(loggedInUserId, pageNumber = 1, pageSize = 8) {
     const url = `${USER_URLS.BASE}/Suggestions/${loggedInUserId}/${pageNumber}/${pageSize}`;
     return apiFetch(url);
 }

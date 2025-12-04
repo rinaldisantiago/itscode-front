@@ -6,8 +6,10 @@ export class SuggestionsPresentation {
     }
 
     showLoading() {
-        if (this.container) {
+        if (this.container && !this.container.querySelector('.suggestions-list')) {
             this.container.innerHTML = '<p class="loading-message">Buscando usuarios...</p>';
+        } else {
+            this.showLoadingIndicator();
         }
     }
 
@@ -21,6 +23,29 @@ export class SuggestionsPresentation {
 
         const suggestionsHtml = users.map(user => this.createSuggestionHtml(user)).join('');
         this.container.innerHTML = `<div class="suggestions-list">${suggestionsHtml}</div>`;
+    }
+
+    appendSuggestions(users) {
+        if (!this.container || users.length === 0) return;
+
+        const list = this.container.querySelector('.suggestions-list');
+        if (list) {
+            const suggestionsHtml = users.map(user => this.createSuggestionHtml(user)).join('');
+            list.insertAdjacentHTML('beforeend', suggestionsHtml);
+        }
+    }
+
+    showLoadingIndicator() {
+        if (!this.container || this.container.querySelector('.loading-indicator-mini')) return;
+        const indicator = '<p class="loading-indicator-mini">Cargando más...</p>';
+        this.container.insertAdjacentHTML('beforeend', indicator);
+    }
+
+    hideLoadingIndicator() {
+        const indicator = this.container.querySelector('.loading-indicator-mini');
+        if (indicator) {
+            indicator.remove();
+        }
     }
 
     createSuggestionHtml(user) {
