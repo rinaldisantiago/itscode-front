@@ -1,5 +1,3 @@
-// js/presentation/profilePresentation.js
-
 import { buildFullUrl } from '../repository/postRepository.js';
 
 export class UserPresentation {
@@ -28,18 +26,13 @@ export class UserPresentation {
 
         const avatarUrl = buildFullUrl(userData.urlAvatar);
 
-        // Lógica de botones: Editar para mi perfil, Seguir/Dejar de Seguir para otros.
         let actionButtonHtml = '';
         if (isMyProfile) {
             actionButtonHtml = `<a href="update-user.html" class="edit-btn">
                     <i class="fas fa-user-edit"></i> Editar
                 </a>`;
         } else {
-            // ✅ CORRECCIÓN: Hacemos la comprobación robusta, aceptando 'isFollowing' (del DTO de perfil)
-            // o 'isFollowing' (del DTO de sugerencias).
             const isFollowing = userData.isFollowing || userData.isFollowing;
-
-            // ✅ CORRECCIÓN: Lógica invertida. Si isFollowing es true, el texto debe ser "Dejar de Seguir".
             const buttonText = isFollowing ? 'Dejar de Seguir' : 'Seguir';
             const buttonClass = isFollowing ? 'unfollow' : 'follow';
 
@@ -61,16 +54,10 @@ export class UserPresentation {
             ${actionButtonHtml}
         `;
 
-        // 💡 CORRECCIÓN CLAVE:
-        // Envolvemos el HTML en el div con la clase 'user-info' que tus estilos esperan.
-        // Y nos aseguramos de que el contenedor principal también tenga la clase correcta.
         this.container.className = 'user-info';
         this.container.innerHTML = profileHtml;
     }
 
-    /**
-     * Actualiza el estado y estilo del botón de seguir/dejar de seguir.
-     */
     updateFollowButton(button, isFollowing) {
         button.dataset.isFollowing = isFollowing;
         if (isFollowing) {

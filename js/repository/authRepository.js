@@ -1,5 +1,3 @@
-// js/repository/authRepository.js
-
 import { apiFetch } from '../fetch.js';
 
 const AUTH_URLS = {
@@ -11,8 +9,7 @@ const AUTH_URLS = {
 export async function registerUser(formData) {
     const config = {
         method: 'POST',
-        body: formData // Enviamos el objeto FormData directamente
-        // NO establecemos 'Content-Type', el navegador lo hará por nosotros.
+        body: formData
     };
     return apiFetch(AUTH_URLS.REGISTER, config);
 }

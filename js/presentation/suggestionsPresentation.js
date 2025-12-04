@@ -1,5 +1,3 @@
-// js/presentation/suggestionsPresentation.js
-
 import { buildFullUrl } from '../repository/postRepository.js';
 
 export class SuggestionsPresentation {
@@ -28,7 +26,6 @@ export class SuggestionsPresentation {
     createSuggestionHtml(user) {
         const avatarUrl = buildFullUrl(user.avatar);
         const buttonText = user.isFollowing ? 'Dejar de Seguir' : 'Seguir';
-        // Usando los estilos de tu código de ejemplo
         const buttonClass = user.isFollowing ? 'unfollow' : 'follow';
 
         return `

@@ -1,6 +1,4 @@
-// 🚨 AÑADIDO: Importamos el helper para construir las URLs
 import { buildFullUrl } from '../repository/postRepository.js';
-// 🚨 AÑADIDO: Importamos los tipos de interacción para los botones de like/dislike
 import { INTERACTION_TYPE } from '../repository/interactionRepository.js';
 
 export class PostPresentation {
@@ -8,7 +6,7 @@ export class PostPresentation {
     constructor(containerSelector, loggedUser, config = {}) {
         this.container = document.querySelector(containerSelector);
         this.loggedUser = loggedUser;
-        this.config = config; // ✅ 1. Guardamos la configuración
+        this.config = config;
     }
 
     showLoading() {
@@ -44,28 +42,23 @@ export class PostPresentation {
         this.container.innerHTML = postsHtml;
     }
 
-    // 🚀 NUEVO: Añade posts al final del contenedor (para scroll infinito)
     appendPosts(posts) {
         if (!this.container || !posts || posts.length === 0) {
             return;
         }
-        // Si el mensaje de "cargando" inicial está, lo quitamos
         this.hideLoading();
 
-        // Creamos el HTML y lo añadimos al final
         const postsHtml = posts.map(post => this.createPostHtml(post)).join('');
         this.container.insertAdjacentHTML('beforeend', postsHtml);
     }
 
     updateSinglePost(post) {
-        // ✅ FIX: Corregimos el selector para que coincida con el HTML renderizado (<article class="post">).
         const postElement = this.container.querySelector(`.post[data-post-id="${post.id}"]`);
         if (postElement) {
             postElement.outerHTML = this.createPostHtml(post);
         }
     }
 
-    // 🚀 NUEVO: Añade comentarios a un post existente (para "Ver más")
     appendComments(postId, newComments) {
         const commentsList = this.container.querySelector(`.comments-list[data-post-id="${postId}"]`);
         if (commentsList) {
@@ -74,24 +67,19 @@ export class PostPresentation {
         }
     }
 
-    // 🚀 NUEVO: Actualiza la sección de comentarios después de añadir uno nuevo
     updateCommentsSection(postElement, comments, totalComments) {
-        // ✅ FIX: Usamos el selector correcto '.comment-section' que coincide con tu HTML.
         const commentsContainer = postElement.querySelector('.comment-section');
         if (!commentsContainer) return;
 
-        // Actualiza el contador
         const commentsCountElement = postElement.querySelector('.comments-count');
-        if (commentsCountElement) { // ✅ FIX: Usamos tu clase original 'comment-count-btn span'
+        if (commentsCountElement) {
             commentsCountElement.textContent = totalComments;
         }
 
-        // Re-renderiza la lista de comentarios
         const commentsListHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
         commentsContainer.querySelector('.existing-comments .comments-list').innerHTML = commentsListHtml;
 
-        // Re-renderiza el botón "Ver más"
-        const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn'); // ✅ FIX: Usamos tu clase original
+        const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn');
         const newButtonHtml = this.getLoadMoreButtonHtml({ id: postElement.dataset.postId, commentsCount: totalComments, comments: comments });
 
         if (loadMoreButton) {
@@ -101,22 +89,15 @@ export class PostPresentation {
         }
     }
 
-
-    // ✅ RESTAURADO: Tu método original con tus clases CSS
     createPostHtml(post) {
         const postImageUrl = post.fileUrl ? buildFullUrl(post.fileUrl) : '';
         const avatarUrl = buildFullUrl(post.userAvatar);
         const loggedUserAvatarUrl = buildFullUrl(this.loggedUser.urlAvatar);
-
         const commentsHtml = post.comments.map(comment => this.createCommentHtml(comment)).join('');
-
         const isLiked = post.userInteraction?.type === INTERACTION_TYPE.LIKE;
         const isDisliked = post.userInteraction?.type === INTERACTION_TYPE.DISLIKE;
-
-        // ✅ LÓGICA: Creamos el botón de eliminar solo si el ID del usuario logueado
-        // coincide con el ID del autor del post.
-        // ✅ CORRECCIÓN: Y si estamos en la página de "Mi Perfil" (usando la configuración).
         const canShowDeleteButton = this.config.isMyProfilePage && (this.loggedUser.id === post.idUser);
+
         const deleteButtonHtml = canShowDeleteButton ? `
             <button class="delete-post-btn" data-post-id="${post.id}" title="Eliminar post">
                 <i class="fa-solid fa-trash"></i>
@@ -167,9 +148,7 @@ export class PostPresentation {
         `;
     }
 
-    // ✅ RESTAURADO: Tu método para crear el HTML de un comentario
     createCommentHtml(comment) {
-        // ✅ FIX DEFINITIVO: Ahora el DTO de comentario SÍ trae el avatar y el nombre del autor.
         const avatarUrl = buildFullUrl(comment.avatarUrl);
         const userName = comment.username;
 
@@ -186,14 +165,12 @@ export class PostPresentation {
         `;
     }
 
-    // ✅ ADAPTADO: La lógica del botón "Ver más" ahora usa tus clases
     getLoadMoreButtonHtml(post) {
         const commentsLoaded = post.comments.length;
         if (post.commentsCount > commentsLoaded) {
-            // ✅ FIX: La siguiente página a cargar es la 2, no la 3.
             const nextPage = Math.floor(commentsLoaded / 3) + 1;
             return `<button class="load-more-comments-btn action-btn" data-post-id="${post.id}" data-next-page="${nextPage}">Ver más comentarios</button>`;
         }
-        return ''; // No mostrar el botón si no hay más comentarios
+        return '';
     }
 }

@@ -2,14 +2,12 @@ import { PostRepository } from '../repository/postRepository.js';
 import { getUserById } from '../repository/userRepository.js';
 import { UserPresentation } from '../presentation/profilePresentation.js';
 import { PostPresentation } from '../presentation/postPresentation.js';
-import { setupPostInteractions } from './postInteractionsController.js'; // ✅ 1. IMPORTAMOS el nuevo controlador
+import { setupPostInteractions } from './postInteractionsController.js';
 
-// --- CONSTANTES Y VARIABLES DE ESTADO ---
 const MY_PROFILE_CONTAINER_SELECTOR = '#infoUserContainer';
 const MY_POSTS_CONTAINER_SELECTOR = '#myPostsContainer';
 const POSTS_PER_PAGE = 10;
 
-// 🚀 Variables para el scroll infinito
 let currentPage = 1;
 let isLoading = false;
 let hasMorePosts = true;
@@ -35,11 +33,9 @@ async function fetchAndRenderProfilePosts(userId, postRepository) {
     if (loadingIndicator) loadingIndicator.style.display = 'flex';
 
     try {
-        // Obtenemos la lista de posts para el perfil, ahora con paginación
         const postList = await postRepository.getPostsForProfile(userId, userId, true, currentPage, POSTS_PER_PAGE);
 
         if (postList && postList.length > 0) {
-            // "Hidratamos" los posts para obtener toda la información (likes, etc.)
             const userPosts = await Promise.all(
                 postList.map(p => postRepository.getPostById(p.id, userId))
             );
@@ -54,7 +50,6 @@ async function fetchAndRenderProfilePosts(userId, postRepository) {
             hasMorePosts = false;
         }
     } catch (error) {
-        console.error("Error al cargar más publicaciones del perfil:", error);
         postPresentation.showError('No se pudieron cargar más publicaciones.');
     } finally {
         isLoading = false;
@@ -62,9 +57,6 @@ async function fetchAndRenderProfilePosts(userId, postRepository) {
     }
 }
 
-/**
- * 🚀 Manejador del evento de scroll para la página de perfil.
- */
 const handleProfileInfiniteScroll = async () => {
     const userSession = getUserSession();
     if (!userSession) return;
@@ -78,7 +70,6 @@ const handleProfileInfiniteScroll = async () => {
 };
 
 export async function loadProfileView() {
-    // --- 1. CONFIGURACIÓN INICIAL Y RESETEO DE ESTADO ---
     const userSession = getUserSession();
     if (!userSession) {
         window.location.href = '../index.html';
@@ -96,18 +87,15 @@ export async function loadProfileView() {
     try {
         const postRepo = new PostRepository();
         const userData = await getUserById(loggedUserId, loggedUserId);
-        userPresentation.renderProfile(userData, true); // true para mostrar el botón de editar
+        userPresentation.renderProfile(userData, true);
 
-        // --- 2. CARGA DE LA PRIMERA PÁGINA DE POSTS ---
         await fetchAndRenderProfilePosts(loggedUserId, postRepo);
 
-        // --- 3. CONFIGURACIÓN DE INTERACCIONES Y EVENTOS ---
         const postsContainer = document.querySelector(MY_POSTS_CONTAINER_SELECTOR);
         setupPostInteractions(postsContainer, loggedUserId, postRepo, postPresentation, { handleDelete: true });
         window.addEventListener('scroll', handleProfileInfiniteScroll);
 
     } catch (error) {
-        console.error("Error al cargar el perfil:", error);
         userPresentation.showError("No se pudo cargar la información del perfil.");
         postPresentation.showError("No se pudieron cargar las publicaciones.");
     }

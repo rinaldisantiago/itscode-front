@@ -1,5 +1,3 @@
-// js/Controller/postInteractionsController.js
-
 import { InteractionRepository, INTERACTION_TYPE } from '../repository/interactionRepository.js';
 import { CommentRepository } from '../repository/commentRepository.js';
 
@@ -12,14 +10,12 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
     const interactionRepo = new InteractionRepository();
     const commentRepo = new CommentRepository();
 
-    // --- LISTENER PRINCIPAL PARA CLICS ---
     containerElement.addEventListener('click', async (event) => {
         const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn, .delete-post-btn');
         if (!button) return;
 
         const postId = button.dataset.postId;
 
-        // --- Lógica para Likes/Dislikes ---
         if (button.classList.contains('like-btn') || button.classList.contains('dislike-btn')) {
             event.preventDefault();
             const interactionType = button.classList.contains('like-btn') ? INTERACTION_TYPE.LIKE : INTERACTION_TYPE.DISLIKE;
@@ -34,14 +30,11 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                 }
                 const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
                 postPresentation.updateSinglePost(updatedPost);
-            } catch (error) {
-                console.error('Error en la interacción:', error);
             } finally {
                 button.disabled = false;
             }
         }
 
-        // --- Lógica para "Ver más" comentarios ---
         else if (button.classList.contains('load-more-comments-btn')) {
             event.preventDefault();
             const nextPage = parseInt(button.dataset.nextPage);
@@ -62,8 +55,6 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                 if (commentsList.children.length >= totalCommentsCount) {
                     button.style.display = 'none';
                 }
-            } catch (error) {
-                console.error('Error al cargar más comentarios:', error);
             } finally {
                 if (button.style.display !== 'none') {
                     button.disabled = false;
@@ -71,8 +62,6 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                 }
             }
         }
-
-        // --- Lógica para Eliminar Post (solo si está configurado) ---
         else if (config.handleDelete && button.classList.contains('delete-post-btn')) {
             event.preventDefault();
             Swal.fire({
@@ -93,7 +82,6 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                         if (postElement) postElement.remove();
                         Swal.fire('¡Eliminado!', 'La publicación ha sido eliminada.', 'success');
                     } catch (error) {
-                        console.error('Error al eliminar el post:', error);
                         button.disabled = false;
                     }
                 }
@@ -101,7 +89,6 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
         }
     });
 
-    // --- LISTENER PRINCIPAL PARA SUBMIT DE COMENTARIOS ---
     containerElement.addEventListener('submit', async (event) => {
         if (event.target.classList.contains('comment-form')) {
             event.preventDefault();
@@ -120,8 +107,6 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                 const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
                 postPresentation.updateSinglePost(updatedPost);
                 contentInput.value = '';
-            } catch (error) {
-                console.error('Fallo al crear y refrescar comentario:', error);
             } finally {
                 submitButton.disabled = false;
             }
