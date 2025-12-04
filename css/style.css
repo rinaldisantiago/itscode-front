@@ -1354,7 +1354,7 @@ footer {
 
 .comment-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 0 10px;
   text-align: left;
@@ -1446,4 +1446,28 @@ footer {
   color: #ff3860;
   margin-bottom: 15px;
   text-align: center;
+}
+
+.comment-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+}
+
+.comment-body {
+    flex-grow: 1;
+}
+
+.delete-comment-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.delete-comment-btn:hover {
+    color: #e74c3c;
 }

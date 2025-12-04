@@ -59,10 +59,11 @@ export class PostPresentation {
         }
     }
 
-    appendComments(postId, newComments) {
-        const commentsList = this.container.querySelector(`.comments-list[data-post-id="${postId}"]`);
-        if (commentsList) {
-            const commentsHtml = newComments.map(comment => this.createCommentHtml(comment)).join('');
+    appendComments(postElement, newComments) {
+        if (!postElement) return;
+        const commentsList = postElement.querySelector(`.comments-list`);
+        if (commentsList && newComments.length > 0) {
+            const commentsHtml = newComments.map(comment => this.createCommentHtml(comment, { id: postElement.dataset.postId, idUser: postElement.dataset.idUser })).join('');
             commentsList.insertAdjacentHTML('beforeend', commentsHtml);
         }
     }
@@ -76,7 +77,7 @@ export class PostPresentation {
             commentsCountElement.textContent = totalComments;
         }
 
-        const commentsListHtml = comments.map(comment => this.createCommentHtml(comment)).join('');
+        const commentsListHtml = comments.map(comment => this.createCommentHtml(comment, postElement.dataset.postId)).join('');
         commentsContainer.querySelector('.existing-comments .comments-list').innerHTML = commentsListHtml;
 
         const loadMoreButton = commentsContainer.querySelector('.load-more-comments-btn');
@@ -93,7 +94,7 @@ export class PostPresentation {
         const postImageUrl = post.fileUrl ? buildFullUrl(post.fileUrl) : '';
         const avatarUrl = buildFullUrl(post.userAvatar);
         const loggedUserAvatarUrl = buildFullUrl(this.loggedUser.urlAvatar);
-        const commentsHtml = post.comments.map(comment => this.createCommentHtml(comment)).join('');
+        const commentsHtml = post.comments.map(comment => this.createCommentHtml(comment, { id: post.id, idUser: post.idUser })).join('');
         const isLiked = post.userInteraction?.type === INTERACTION_TYPE.LIKE;
         const isDisliked = post.userInteraction?.type === INTERACTION_TYPE.DISLIKE;
         const canShowDeleteButton = this.config.isMyProfilePage && (this.loggedUser.id === post.idUser);
@@ -105,7 +106,7 @@ export class PostPresentation {
         ` : '';
 
         return `
-            <article class="post" data-post-id="${post.id}">
+            <article class="post" data-post-id="${post.id}" data-id-user="${post.idUser}">
                 <div class="post-header">
                     <a href="user-profile.html?id=${post.idUser}"> <img class="avatar" src="${avatarUrl}" alt="Avatar de ${post.userName}">
                         <h4 class="user-name">${post.userName}</h4>
@@ -148,9 +149,21 @@ export class PostPresentation {
         `;
     }
 
-    createCommentHtml(comment) {
+    createCommentHtml(comment, post) {
         const avatarUrl = buildFullUrl(comment.avatarUrl);
         const userName = comment.username;
+
+        const isCommentOwner = parseInt(this.loggedUser.id) === parseInt(comment.userId);
+        const isPostOwner = parseInt(this.loggedUser.id) === parseInt(post.idUser);
+
+        const canDelete = isCommentOwner || isPostOwner;
+
+        const deleteButtonHtml = canDelete ? `
+            <button class="delete-comment-btn" data-comment-id="${comment.id}" data-post-id="${post.id}" title="Eliminar comentario">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        ` : '';
+
 
         return `
             <div class="comment-item" data-comment-id="${comment.id}">
@@ -161,6 +174,7 @@ export class PostPresentation {
                     <a class="user-name" href="user-profile.html?id=${comment.userId}">${userName}</a>
                     <p class="comment-content">${comment.content}</p>
                 </div>
+                ${deleteButtonHtml}
             </div>
         `;
     }

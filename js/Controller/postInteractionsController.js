@@ -11,7 +11,7 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
     const commentRepo = new CommentRepository();
 
     containerElement.addEventListener('click', async (event) => {
-        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn, .delete-post-btn');
+        const button = event.target.closest('.like-btn, .dislike-btn, .load-more-comments-btn, .delete-post-btn, .delete-comment-btn');
         if (!button) return;
 
         const postId = button.dataset.postId;
@@ -43,13 +43,14 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
             button.disabled = true;
             button.textContent = 'Cargando...';
             try {
+                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
                 const newComments = await commentRepo.getCommentsByPostId(postId, nextPage, commentsPerPage);
                 if (newComments.length > 0) {
-                    postPresentation.appendComments(postId, newComments);
+                    postPresentation.appendComments(postElement, newComments);
                     button.dataset.nextPage = nextPage + 1;
                 }
 
-                const postElement = containerElement.querySelector(`.post[data-post-id="${postId}"]`);
+                
                 const commentsList = postElement.querySelector('.comments-list');
                 const totalCommentsCount = parseInt(postElement.querySelector('.comments-count').textContent);
                 if (commentsList.children.length >= totalCommentsCount) {
@@ -83,6 +84,32 @@ export function setupPostInteractions(containerElement, loggedUserId, postRepo, 
                         Swal.fire('¡Eliminado!', 'La publicación ha sido eliminada.', 'success');
                     } catch (error) {
                         button.disabled = false;
+                    }
+                }
+            });
+        }
+        else if (button.classList.contains('delete-comment-btn')) {
+            event.preventDefault();
+            const commentId = button.dataset.commentId;
+
+            Swal.fire({
+                title: '¿Eliminar este comentario?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, ¡eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    button.disabled = true;
+                    try {
+                        await commentRepo.deleteComment(commentId, postId, loggedUserId);
+                        const updatedPost = await postRepo.getPostById(postId, loggedUserId, 1, 3);
+                        postPresentation.updateSinglePost(updatedPost);
+                    } finally {
+                        // El botón se eliminará al refrescar el post, no es necesario re-habilitarlo.
                     }
                 }
             });

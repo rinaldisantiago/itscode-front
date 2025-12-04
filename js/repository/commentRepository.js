@@ -14,4 +14,11 @@ export class CommentRepository {
             body: JSON.stringify({ postId, userId, content })
         });
     }
+
+    async deleteComment(commentId, postId, userId) {
+        const url = `/Comment?id=${commentId}&idPost=${postId}&idUser=${userId}`;
+        return await apiFetch(url, {
+            method: 'DELETE'
+        });
+    }
 }
