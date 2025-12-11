@@ -50,6 +50,8 @@ const handleFileSelect = (event) => {
             img.style.marginTop = '15px';
             img.style.borderRadius = '10px';
             img.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            img.style.maxWidth= '250px';
+            img.style.maxHeight= '250px';
             
             if (label && label.parentNode) {
                 label.parentNode.insertBefore(img, label.nextSibling);
