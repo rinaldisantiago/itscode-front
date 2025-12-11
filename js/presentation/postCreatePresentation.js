@@ -27,6 +27,44 @@ const validatePostForm = () => {
     return true;
 };
 
+const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    const label = document.querySelector('.label-file-image');
+
+    const existingPreview = document.getElementById('post-image-preview');
+    if (existingPreview) existingPreview.remove();
+
+    if (file) {
+        if (label) {
+            label.style.backgroundColor = 'rgba(46, 204, 113, 0.1)'; 
+            label.style.border = '1px solid #2ecc71';
+            label.style.color = '#2ecc71';
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.id = 'post-image-preview';
+            img.style.maxWidth = '100%';
+            img.style.marginTop = '15px';
+            img.style.borderRadius = '10px';
+            img.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+            
+            if (label && label.parentNode) {
+                label.parentNode.insertBefore(img, label.nextSibling);
+            }
+        };
+        reader.readAsDataURL(file);
+    } else {
+        if (label) {
+            label.style.backgroundColor = '';
+            label.style.border = '';
+            label.style.color = '';
+        }
+    }
+};
+
 const handleCreatePostSubmit = async (event) => {
     event.preventDefault();
 
@@ -61,6 +99,15 @@ const handleCreatePostSubmit = async (event) => {
             showConfirmButton: false
         });
         createPostForm.reset();
+        
+        const label = document.querySelector('.label-file-image');
+        if (label) {
+            label.style.backgroundColor = '';
+            label.style.border = '';
+            label.style.color = '';
+        }
+        const preview = document.getElementById('post-image-preview');
+        if (preview) preview.remove();
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Publicar';
@@ -70,5 +117,8 @@ const handleCreatePostSubmit = async (event) => {
 export function loadPostCreateView() {
     if (createPostForm) {
         createPostForm.addEventListener('submit', handleCreatePostSubmit);
+        if (postFileInput) {
+            postFileInput.addEventListener('change', handleFileSelect);
+        }
     }
 }
