@@ -15,6 +15,15 @@ const validatePostForm = () => {
         });
         return false;
     }
+
+    if (!postFileInput.files || postFileInput.files.length === 0) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Imagen obligatoria',
+            text: 'Por favor, selecciona una imagen o pega una URL para la publicación.',
+        });
+        return false;
+    }
     return true;
 };
 
@@ -61,6 +70,5 @@ const handleCreatePostSubmit = async (event) => {
 export function loadPostCreateView() {
     if (createPostForm) {
         createPostForm.addEventListener('submit', handleCreatePostSubmit);
-        console.log("Controlador de Creación de Post inicializado.");
     }
 }

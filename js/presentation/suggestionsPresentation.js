@@ -6,11 +6,8 @@ export class SuggestionsPresentation {
     }
 
     showLoading() {
-        if (this.container && !this.container.querySelector('.suggestions-list')) {
-            this.container.innerHTML = '<p class="loading-message">Buscando usuarios...</p>';
-        } else {
-            this.showLoadingIndicator();
-        }
+        if (!this.container) return;
+        this.container.innerHTML = '<p class="loading-message">Buscando usuarios...</p>';
     }
 
     renderSuggestions(users) {

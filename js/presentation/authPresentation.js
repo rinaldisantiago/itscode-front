@@ -106,7 +106,7 @@ const handleLoginClick = async (event) => {
 
         Swal.fire({
             icon: 'success',
-            title: '¡Bienvenido!',
+            title: '¡Bienvenido a ITSCode!',
             text: `Sesión iniciada como ${result.user.userName}. Redireccionando...`,
             showConfirmButton: false,
             timer: 1500

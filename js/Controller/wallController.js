@@ -63,17 +63,21 @@ async function fetchAndRenderPosts(userId, postRepository) {
     }
 }
 
-const handleInfiniteScroll = async () => {
+const createInfiniteScrollHandler = (callback, offset = 300) => {
+    return async () => {
+        const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight - offset;
+        if (endOfPage) {
+            await callback();
+        }
+    };
+};
+
+const handleInfiniteScroll = createInfiniteScrollHandler(async () => {
     const userSession = getUserSession();
     if (!userSession) return;
     const postRepository = new PostRepository();
-
-    const endOfPage = window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
-
-    if (endOfPage) {
-        await fetchAndRenderPosts(userSession.id, postRepository);
-    }
-};
+    await fetchAndRenderPosts(userSession.id, postRepository);
+});
 
 export async function loadWallView() {
     const userSession = getUserSession();
