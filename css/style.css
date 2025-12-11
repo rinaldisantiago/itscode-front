@@ -1451,7 +1451,7 @@ footer {
     align-items: center;
     gap: 10px;
     position: relative;
-    height: 75px;
+    margin: 10px 0;
 }
 
 .comment-body {
