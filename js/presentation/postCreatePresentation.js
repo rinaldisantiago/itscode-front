@@ -4,6 +4,7 @@ const createPostForm = document.getElementById('frmPost');
 const postTitleInput = document.getElementById('txt_post_title');
 const postContentTextarea = document.getElementById('txt_post_description');
 const postFileInput = document.getElementById('load-post-image');
+const postUrlInput = document.getElementById('txt_post_image_url');
 const submitButton = document.getElementById('btn_form_post');
 
 const validatePostForm = () => {
@@ -16,7 +17,10 @@ const validatePostForm = () => {
         return false;
     }
 
-    if (!postFileInput.files || postFileInput.files.length === 0) {
+    const hasFile = postFileInput.files && postFileInput.files.length > 0;
+    const hasUrl = postUrlInput && postUrlInput.value.trim().length > 0;
+
+    if (!hasFile && !hasUrl) {
         Swal.fire({
             icon: 'warning',
             title: 'Imagen obligatoria',
