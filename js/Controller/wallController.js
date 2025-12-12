@@ -72,12 +72,14 @@ const createInfiniteScrollHandler = (callback, offset = 300) => {
     };
 };
 
-const handleInfiniteScroll = createInfiniteScrollHandler(async () => {
+const onScrollAction = async () => {
     const userSession = getUserSession();
     if (!userSession) return;
     const postRepository = new PostRepository();
     await fetchAndRenderPosts(userSession.id, postRepository);
-});
+};
+
+const handleInfiniteScroll = createInfiniteScrollHandler(onScrollAction);
 
 export async function loadWallView() {
     const userSession = getUserSession();
