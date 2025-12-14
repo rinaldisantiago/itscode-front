@@ -756,8 +756,8 @@ button:hover {
 .post .img-post {
   display: block;
   margin: 15px auto;
-  width: 40%;
-  max-height: 300px;
+  width: 75%;
+  /* max-height: 300px; */
   border-radius: 8px;
   object-fit: contain;
 }
